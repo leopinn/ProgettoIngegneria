@@ -12,8 +12,6 @@ import java.io.IOException;
 
 public class PaginaAvvio extends Application {
 
-    // Database
-    private Db db = new Db();
     public static Stage stageLogin;
 
     @Override
@@ -26,8 +24,6 @@ public class PaginaAvvio extends Application {
             scene.getStylesheets().add(getClass().getResource("Applicazione.css").toExternalForm());
             stage.setScene(scene);
             stage.show();
-
-            db.getConnection();
 
             stage.setOnCloseRequest(event -> {
                 event.consume();
