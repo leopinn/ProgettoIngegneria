@@ -1,0 +1,184 @@
+* {
+    -primary: #6d24e1;
+    -secondary: #f9f9f9;
+    -fx-font-family: "Gotham-Medium", sans-serif;
+    -fx-font-smoothing-type: gray;
+}
+
+.root {
+    -fx-background-color:  #1e1f22;
+}
+
+TextField {
+    -fx-background-color: #f2f2f2;
+    -fx-text-fill: #333;
+    -fx-font-size: 16;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+
+    -fx-pref-height: 30;
+    -fx-max-height: 30;
+}
+
+PasswordField {
+    -fx-background-color: #f2f2f2;
+    -fx-text-fill: #333;
+    -fx-font-size: 16;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+
+    -fx-pref-height: 30;
+    -fx-max-height: 30;
+}
+
+/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.PaginaLogin_vBox{
+    -fx-background-color: #121212FF;
+    -fx-effect:  dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0, 4);
+    -fx-background-radius: 8;
+
+    -fx-max-height: 350;
+    -fx-pref-height: 350;
+
+    -fx-max-width: 450;
+    -fx-spacing: 10;
+}
+
+.PaginaLogin_textField {
+    -fx-max-width: 300;
+}
+
+.button {
+    -fx-background-radius: 8;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18;
+    -fx-background-color: -primary;
+
+    -fx-max-height: 100;
+    -fx-max-width: 300;
+}
+
+.check-box {
+    -fx-text-fill: #121212;
+    -fx-font-size: 14;
+}
+
+.borderpane-background {
+    -fx-background-image: url("../../../immagini/SfondoApp.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+.PaginaLogin_labelErrore {
+    -fx-text-fill: #f44b47;
+    -fx-font-size: 15;
+
+    -fx-padding: 0 0 10 0;
+}
+
+.PaginaLogin_labelFrasiStyle{
+    -fx-font-family: "Gotham-Bold", sans-serif;
+    -fx-font-size: 32;
+    -fx-text-fill: #ffffff;
+}
+
+.PaginaLogin_hBox{
+    -fx-text-fill: #ffffff;
+    -fx-spacing: 5;
+    -fx-padding-bottom: 10;
+
+    -fx-max-height: 100;
+}
+
+.PaginaLogin_labelBottom{
+    -fx-text-fill: #ffffff;
+    -fx-padding: 10 0 20 0;
+}
+
+.PaginaLogin_LabelPassDimenticata{
+    -fx-padding: 20 0 0 0;
+    -fx-text-fill: #0077ff;
+    -fx-underline: true;
+}
+
+/* ------------------------------------------------------------------------------------------------------- */
+
+.borderpane-background {
+    -fx-background-image: url("../../../immagini/SfondoApp.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+.PaginaIscrizione_vBox{
+    -fx-background-color: #121212FF;
+    -fx-effect:  dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0, 4);
+    -fx-background-radius: 8;
+    -fx-alignment: center;
+
+    -fx-max-height: 350;
+    -fx-pref-height: 350;
+
+    -fx-max-width: 450;
+    -fx-pref-width: 450;
+
+    -fx-spacing: 5;
+}
+
+.PaginaIscrizione_hBoxField{
+    -fx-spacing: 10;
+
+    -fx-alignment: center;
+
+    -fx-max-width: 400;
+    -fx-pref-width: 400;
+}
+
+.PaginaIscrizione_hBoxLabel1{
+    -fx-max-height: 15;
+    -fx-max-width: 400;
+    -fx-alignment: left;
+    -fx-spacing: 174;
+}
+
+.PaginaIscrizione_hBoxLabel2{
+    -fx-max-height: 15;
+    -fx-max-width: 400;
+    -fx-alignment: left;
+    -fx-spacing: 178;
+    -fx-margin:10;
+}
+
+.PaginaIscrizione_hBoxLabel3{
+    -fx-max-height: 15;
+    -fx-max-width: 400;
+    -fx-alignment: left;
+    -fx-spacing: 158;
+    -fx-margin:10;
+}
+
+.PaginaIscrizione_label{
+    -fx-text-fill: #ffffff;
+}
+
+.PaginaIscrizione_bottoneAvanti{
+    -fx-max-width: 200;
+    -fx-pref-width: 200;
+    -fx-spacing: 10;
+}
+
+.PaginaIscrizione_dataNascita{
+    -fx-alignment: center;
+
+    -fx-font-size: 16;
+
+    -fx-pref-height: 30;
+    -fx-max-height: 30;
+
+    -fx-pref-width: 400;
+    -fx-max-width: 400;
+}

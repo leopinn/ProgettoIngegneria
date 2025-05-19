@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="borderpane-background" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaLogin">
+   <center>
+      <StackPane fx:id="stackPane" prefHeight="303.0" prefWidth="847.0" BorderPane.alignment="CENTER">
+         <VBox fx:id="PaginaLogin_vBox" alignment="CENTER" styleClass="PaginaLogin_vBox" StackPane.alignment="CENTER">
+            <Label fx:id="PaginaLogin_frase1" styleClass="PaginaLogin_labelFrasiStyle" text="Accedi per">
+               <padding>
+                  <Insets top="20.0" />
+               </padding></Label>
+            <Label fx:id="PaginaLogin_frase2" styleClass="PaginaLogin_labelFrasiStyle" text="iniziare">
+               <font>
+                  <Font name="Gabriola" size="12.0" />
+               </font></Label>
+            <Label fx:id="PaginaLogin_frase3" styleClass="PaginaLogin_labelFrasiStyle" text="ad ascoltare" />
+            <Label fx:id="PaginaLogin_labelErrore" styleClass="PaginaLogin_labelErrore" text="Errore generico" underline="true" visible="false">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin></Label>
+
+            <TextField fx:id="PaginaLogin_nameTextField" promptText="Username" styleClass="PaginaLogin_textField" />
+            <PasswordField fx:id="PaginaLogin_passwordField" promptText="Password" styleClass="PaginaLogin_textField" />
+            <Button fx:id="PaginaLogin_bottoneLogin" defaultButton="true" onAction="#invio" styleClass="button" text="Invia" />
+
+            <Label fx:id="PaginaLogin_LabelPassDimenticata" styleClass="PaginaLogin_LabelPassDimenticata" text="Password dimenticata?">
+
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></Label>
+            <HBox fx:id="PaginaLogin_hBox" alignment="CENTER" styleClass="PaginaLogin_hBox">
+               <children>
+                  <Label fx:id="PaginaLogin_text1" styleClass="PaginaLogin_labelBottom" text="Non hai un account?" />
+                  <Label fx:id="PaginaLogin_text2" onMouseClicked="#iscriviti" styleClass="PaginaLogin_labelBottom" text="Iscriviti a UniSound." underline="true" />
+               </children>
+            </HBox>
+         </VBox>
+      </StackPane>
+   </center>
+</BorderPane>
