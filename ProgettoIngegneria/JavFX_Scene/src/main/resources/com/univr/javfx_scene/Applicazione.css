@@ -33,6 +33,20 @@ PasswordField {
     -fx-max-height: 30;
 }
 
+.PaginaLogin_labelRichiestaAccount {
+        -fx-background-color: #d4edda;       /* verde chiaro */
+        -fx-text-fill: #155724;              /* verde scuro per il testo */
+        -fx-border-color: #c3e6cb;           /* bordo verde leggero */
+        -fx-border-width: 1;
+        -fx-border-radius: 6;
+        -fx-background-radius: 6;
+        -fx-padding: 10 16;
+        -fx-font-size: 14;
+        -fx-font-weight: bold;
+        -fx-opacity: 0;
+}
+
+
 /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 .PaginaLogin_vBox{

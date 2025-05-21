@@ -19,10 +19,12 @@ public class PaginaAvvio extends Application {
         try {
             stageLogin=stage;
             Parent root = FXMLLoader.load(getClass().getResource("PaginaLogin.fxml"));
-            //Parent root = FXMLLoader.load(getClass().getResource("PaginaHome.fxml"));
+
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("Applicazione.css").toExternalForm());
             stage.setScene(scene);
+            stage.setMinWidth(1280);
+            stage.setMinHeight(720);
             stage.show();
 
             stage.setOnCloseRequest(event -> {

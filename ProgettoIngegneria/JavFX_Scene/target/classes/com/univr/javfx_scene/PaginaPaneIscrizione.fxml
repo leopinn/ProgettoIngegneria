@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="paginaIscrizione_vBox" prefHeight="408.0" prefWidth="600.0" styleClass="PaginaIscrizione_vBox" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneIscrizione">
+   <children>
+      <Label fx:id="PaginaIscrizione_labelErrore" styleClass="PaginaLogin_labelErrore" text="Errore generico" underline="true" visible="false" />
+      <HBox styleClass="PaginaIscrizione_hBoxLabel1">
+         <children>
+            <Label styleClass="PaginaIscrizione_label" text="Nome" />
+            <Label styleClass="PaginaIscrizione_label" text="Cognome" />
+         </children>
+      </HBox>
+      <HBox styleClass="PaginaIscrizione_hBoxField">
+         <children>
+            <TextField fx:id="PaginaIscrizione_textNome" promptText="Nome" />
+            <TextField fx:id="PaginaIscrizione_textCognome" promptText="Cognome" />
+         </children>
+      </HBox>
+      <HBox styleClass="PaginaIscrizione_hBoxLabel2">
+         <children>
+            <Label styleClass="PaginaIscrizione_label" text="Email" />
+            <Label styleClass="PaginaIscrizione_label" text="Ripeti email" />
+         </children>
+      </HBox>
+      <HBox styleClass="PaginaIscrizione_hBoxField">
+         <children>
+            <TextField fx:id="PaginaIscrizione_textEmail" promptText="Email" />
+            <TextField fx:id="PaginaIscrizione_textRipetiEmail" promptText="Ripeti email" />
+         </children>
+      </HBox>
+      <HBox styleClass="PaginaIscrizione_hBoxLabel2">
+         <children>
+            <Label styleClass="PaginaIscrizione_label" text="Data di nascita" />
+         </children>
+      </HBox>
+      <HBox fx:id="PaginaIscrizione_hBoxFieldDataNascita" styleClass="PaginaIscrizione_hBoxField">
+         <children>
+            <DatePicker fx:id="PaginaIscrizione_dataNascita" editable="true" styleClass="PaginaIscrizione_dataNascita" />
+         </children>
+      </HBox>
+      <HBox styleClass="PaginaIscrizione_hBoxLabel3">
+         <children>
+            <Label styleClass="PaginaIscrizione_label" text="Password" />
+            <Label styleClass="PaginaIscrizione_label" text="Ripeti password" />
+         </children>
+      </HBox>
+      <HBox styleClass="PaginaIscrizione_hBoxField">
+         <children>
+            <PasswordField fx:id="PaginaIscrizione_textPassword" promptText="Password" />
+            <PasswordField fx:id="PaginaIscrizione_textRipetiPassword" promptText="Ripeti password" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+      <Button fx:id="PaginaIscrizione_bottoneAvanti" mnemonicParsing="false" onMouseClicked="#richiediIscrizione" styleClass="PaginaIscrizione_bottoneAvanti" text="Avanti">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </Button>
+      <HBox fx:id="PaginaIscrizione_hBoxBottom" alignment="CENTER" styleClass="PaginaLogin_hBox">
+         <children>
+            <Label styleClass="PaginaLogin_labelBottom" text="Sei già iscritto?" />
+            <Label onMouseClicked="#mostraPaginaLogin" styleClass="PaginaLogin_labelBottom" text="Accedi a UniSound." underline="true" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

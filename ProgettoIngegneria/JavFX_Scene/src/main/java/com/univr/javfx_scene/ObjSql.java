@@ -63,7 +63,7 @@ public class ObjSql {
 
         } catch (SQLException e) {
             System.err.println("Errore: " + e.getMessage());
-            return 0;   // Inserimento fallito
+            return e.getErrorCode();   // Inserimento fallito
         }
     }
 
