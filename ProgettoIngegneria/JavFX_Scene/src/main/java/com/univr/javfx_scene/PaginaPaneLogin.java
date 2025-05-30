@@ -9,8 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,6 +19,7 @@ public class PaginaPaneLogin {
     // Dichiarazione variabili pubbliche
     public static int UTENTE_ID;
     public static String UTENTE_NOME;
+    public static String UTENTE_EMAIL;
 
     @FXML
     TextField PaginaLogin_nameTextField;
@@ -29,20 +28,10 @@ public class PaginaPaneLogin {
     PasswordField PaginaLogin_passwordField;
 
     private Stage stage;
-    private Scene scene;
-    private Parent root;
 
-    @FXML
-    private AnchorPane scenePane;
-    @FXML
-    private Button logoutButton;
     @FXML
     private Label PaginaLogin_labelErrore;
     @FXML
-    private VBox PaginaPaneLogin_vBox;
-    @FXML
-    private StackPane PaginaLogin_stackPane;
-
     private PaginaLogin mainController;
 
     public void setMainController(PaginaLogin controller) {
@@ -94,6 +83,7 @@ public class PaginaPaneLogin {
         String loc_username = (String) loc_row.get("NOME");
         UTENTE_ID=loc_chiave;
         UTENTE_NOME=loc_username;
+        UTENTE_EMAIL = (String) loc_row.get("EMAIL");
 
         return 0;
     }
@@ -102,18 +92,23 @@ public class PaginaPaneLogin {
         mainController.paginaIscriviti();
     }
 
-    private void login(ActionEvent par_event, String par_usr, String par_psw) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPrincipale.fxml"));
-        root = loader.load();
+    private void login(ActionEvent par_event, String par_usr, String par_psw) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPrincipale.fxml"));
+            Parent root = loader.load();
 
-        PaginaPrincipale controller = loader.getController();
+            // Ottieni lo stage corrente dalla scena del bottone
+            stage = (Stage) ((Node)par_event.getSource()).getScene().getWindow();
 
-        stage = (Stage) ((Node)par_event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setMinWidth(1280);
-        stage.setMinHeight(720);
-        stage.show();
+            // Crea una nuova scena con le stesse dimensioni attuali
+            Scene nuovaScene = new Scene(root, stage.getWidth(), stage.getHeight());
+
+            stage.setScene(nuovaScene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void erroreLogin(int par_err) {
@@ -143,31 +138,4 @@ public class PaginaPaneLogin {
         PaginaLogin_labelErrore.setText(loc_txt);
         PaginaLogin_labelErrore.setVisible(true);
     }
-
-    public int getID(){
-        return this.UTENTE_ID;
-    }
-
-    public void chiudiProgramma(ActionEvent event) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("Stai per uscire dal programma!");
-        alert.setContentText("Vuoi salvare i tuoi progressi prima di uscire?");
-
-        if(alert.showAndWait().get() == ButtonType.OK) {
-            stage = (Stage) scenePane.getScene().getWindow();
-            System.out.println("Programma chiuso con successo");
-            stage.close();
-        }
-    }
-
-    public void apriPaginaPrincipale(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("PaginaPrincipale.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.centerOnScreen();     // centro la scena rispetto lo schermo
-        stage.show();
-    }
-
 }

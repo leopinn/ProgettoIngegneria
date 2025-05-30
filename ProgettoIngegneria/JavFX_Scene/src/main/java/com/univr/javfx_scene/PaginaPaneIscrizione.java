@@ -38,8 +38,6 @@ public class PaginaPaneIscrizione {
     Label PaginaIscrizione_labelErrore;
     @FXML
     VBox paginaIscrizione_vBox;
-    @FXML
-    Label PaginaLogin_labelRichiestaAccount;
 
     private PaginaLogin mainController;
 
@@ -49,34 +47,6 @@ public class PaginaPaneIscrizione {
 
     public void mostraPaginaLogin(MouseEvent par_event) throws IOException {
         mainController.impostaSchermata();
-    }
-
-
-   /* public void mostraPaginaLogin(MouseEvent par_event) throws IOException {
-        String fxml = "PaginaPaneLogin.fxml";
-
-        mostraLabelIscrizione();
-
-        Parent schermata = FXMLLoader.load(getClass().getResource(fxml));
-        paginaIscrizione_vBox.getChildren().clear();
-        paginaIscrizione_vBox.getChildren().setAll(schermata);
-    }*/
-
-    private void mostraLabelIscrizione() {
-        // FADE IN
-        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), PaginaLogin_labelRichiestaAccount);
-        fadeIn.setFromValue(0.0);
-        fadeIn.setToValue(1.0);
-        fadeIn.setOnFinished(event -> {
-            // Dopo il fade-in, aspetta 2.5 secondi e poi fai fade-out
-            FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), PaginaLogin_labelRichiestaAccount);
-            fadeOut.setFromValue(1.0);
-            fadeOut.setToValue(0.0);
-            fadeOut.setDelay(Duration.seconds(2.5));
-            fadeOut.play();
-        });
-
-        fadeIn.play(); // avvia l’animazione all’avvio
     }
 
     public void richiediIscrizione(){
@@ -145,7 +115,7 @@ public class PaginaPaneIscrizione {
 
                 // Usa un nodo qualsiasi per ottenere lo stage
                 String fxml = "PaginaPaneLogin.fxml";
-                mostraLabelIscrizione();
+                mainController.mostraLabelIscrizione();
                 Parent schermata = FXMLLoader.load(getClass().getResource(fxml));
                 paginaIscrizione_vBox.getChildren().setAll(schermata);
             }catch (IOException e){

@@ -1,12 +1,16 @@
 package com.univr.javfx_scene;
 
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,6 +19,10 @@ public class PaginaLogin implements Initializable {
 
     @FXML
     private BorderPane PaginaLogin_borderPane;
+    @FXML
+    private Label PaginaLogin_labelRichiestaAccount;
+    @FXML
+    private StackPane PaginaLogin_stackPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,6 +58,34 @@ public class PaginaLogin implements Initializable {
         }
     }
 
+    public void mostraLabelIscrizione() {
+        // FADE IN
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), PaginaLogin_labelRichiestaAccount);
+        fadeIn.setFromValue(0.0);
+        fadeIn.setToValue(1.0);
+
+        // Dopo il fade-in, parte il fade-out
+        fadeIn.setOnFinished(event -> {
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), PaginaLogin_labelRichiestaAccount);
+            fadeOut.setFromValue(1.0);
+            fadeOut.setToValue(0.0);
+            fadeOut.setDelay(Duration.seconds(2.5));
+
+            // Quando il fade-out è completato, nasconde e rimuove dal layout
+            fadeOut.setOnFinished(e -> {
+                PaginaLogin_stackPane.setVisible(false);
+                PaginaLogin_stackPane.setManaged(false);
+            });
+
+            fadeOut.play();
+        });
+
+        // Assicura che il nodo sia visibile e gestito prima del fade-in
+        PaginaLogin_stackPane.setVisible(true);
+        PaginaLogin_stackPane.setManaged(true);
+
+        fadeIn.play();
+    }
 
 
 

@@ -33,6 +33,35 @@ public class ObjSql {
         return connection;
     }
 
+    public int aggiorna(String nomeTabella, String where, Map<String, Object> row) {
+        if (row == null || row.isEmpty()) return 0;
+
+        StringBuilder colonne = new StringBuilder();
+        List<Object> listaValori = new ArrayList<>();
+
+        for (String column : row.keySet()) {
+            if (colonne.length() > 0) {
+                colonne.append(", ");
+            }
+            colonne.append(column).append(" = ?");
+            listaValori.add(row.get(column));
+        }
+
+        String sql = "UPDATE " + nomeTabella + " SET " + colonne + " " + where;
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            for (int i = 0; i < listaValori.size(); i++) {
+                pstmt.setObject(i + 1, listaValori.get(i));
+            }
+
+            return pstmt.executeUpdate(); // restituisce il numero di righe aggiornate
+
+        } catch (SQLException e) {
+            System.err.println("Errore SQL: " + e.getMessage());
+            return -1;
+        }
+    }
+
     public int inserisci(String nomeTabella, Map<String, Object> row) {
         if (row == null || row.isEmpty()) return 0;
 

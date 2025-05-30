@@ -1,6 +1,7 @@
 package com.univr.javfx_scene;
 
 import com.univr.javfx_scene.classi.*;
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,34 +13,57 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class PaginaPrincipale {
+public class PaginaPrincipale implements Initializable {
 
     @FXML
     Label nameLabel;
 
     @FXML
-    private StackPane PaginaPrincipale_stackPane;
-
+    private BorderPane PaginaPrincipale_borderPane;
 
     private Stage stage;
     private Scene scene;
     private Parent root;
 
-    public void impostazioni() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         try {
-            String fxml = "PaginaImpostazioni.fxml";
-            Parent schermata = FXMLLoader.load(getClass().getResource(fxml));
-            PaginaPrincipale_stackPane.getChildren().setAll(schermata);
+            paginaPrincipale();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+    }
+
+    public void paginaPrincipale() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPanePrincipale.fxml"));
+        Parent registerPane = loader.load();
+
+        // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
+        PaginaPanePrincipale controller = loader.getController();
+        controller.setMainController(this);  // <<< passaggio chiave
+
+        PaginaPrincipale_borderPane.setCenter(registerPane);
+    }
+
+    public void impostazioni() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneImpostazioni.fxml"));
+        Parent registerPane = loader.load();
+
+        // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
+        PaginaPaneImpostazioni controller = loader.getController();
+        controller.setMainController(this);  // <<< passaggio chiave
+
+        PaginaPrincipale_borderPane.setCenter(registerPane);
     }
 
     public void logout(ActionEvent event) throws IOException {
@@ -50,6 +74,4 @@ public class PaginaPrincipale {
         stage.setScene(scene);
         stage.show();
     }
-
-
 }
