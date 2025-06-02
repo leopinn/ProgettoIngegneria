@@ -1,11 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUpload">
+    <children>
+        <VBox centerShape="false" spacing="5.0" HBox.hgrow="ALWAYS">
+            <children>
+                <Label text="Upload musica mp3, mp4, midi, ecc" />
+                <VBox id="paneMusica" prefHeight="100.0" prefWidth="350.0" style="-fx-border-color: gray; -fx-border-style: dashed; fx-border-width: 2; -fx-alignment: center;">
+                    <children>
+                        <Label text="Trascina qui iltuo file audio" />
+                    </children>
+                </VBox>
+                <Label text="Titolo *" textFill="RED" />
+                <TextField prefHeight="4.0" prefWidth="245.0" promptText="Titolo" />
+                <Label text="Genere *" textFill="RED" />
+                <ComboBox prefHeight="25.0" prefWidth="174.0" />
+            </children>
+            <HBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </HBox.margin>
+        </VBox>
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <children>
+                <Label text="Upload spartiti, test, doc, ecc." />
+                <VBox id="paneSpartiti" prefHeight="100.0" prefWidth="350.0" style="-fx-border-color: gray; -fx-border-style: dashed; fx-border-width: 2; -fx-alignment: center;">
+                    <children>
+                        <Label text="Trascina qui il tuo file" />
+                    </children>
+                </VBox>
+                <Label text="Autore *" textFill="#f70000" />
+                <TextField prefHeight="4.0" prefWidth="245.0" promptText="Autore" />
+                <Label prefHeight="17.0" prefWidth="125.0" text="Anno di composizione" />
+                <TextField prefHeight="25.0" prefWidth="148.0" promptText="Anno di composizione" />
+            </children>
+            <HBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </HBox.margin>
+        </VBox>
+        <VBox centerShape="false" spacing="5.0" HBox.hgrow="ALWAYS">
+            <children>
+                <Label text="Upload copertina  jpg, png, ecc." />
+                <VBox id="paneCopertina" prefHeight="100.0" prefWidth="350.0" style="-fx-border-color: gray; -fx-border-style: dashed; fx-border-width: 2; -fx-alignment: center;">
+                    <children>
+                        <Label text="Trascina qui iltuo file audio" />
+                    </children>
+                </VBox>
+                <Label prefHeight="17.0" prefWidth="164.0" text="Link YouTube correlato" />
+                <TextField promptText="Link YouTube" />
+                <VBox alignment="BOTTOM_RIGHT" prefHeight="103.0" prefWidth="194.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="44.0" text="Salva" />
+                    </children>
+                    <padding>
+                        <Insets right="5.0" />
+                    </padding>
+                </VBox>
+            </children>
+            <HBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </HBox.margin>
+        </VBox>
+    </children>
+</HBox>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUpload">
 
-
-
-
-</AnchorPane>
