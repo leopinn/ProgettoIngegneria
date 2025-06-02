@@ -226,6 +226,25 @@ PasswordField {
     -fx-padding: 10 10 10 10;
 }
 
+.PaginaPrincipale_bottoneUpload{
+    -fx-background-image: url("../../../immagini/iconaUpload.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 42 42;
+
+    -fx-background-color: #1f1f1f;
+    -fx-border-color: #1f1f1f;
+
+    -fx-min-width: 60;
+    -fx-min-height: 60;
+    -fx-max-width: 60;
+    -fx-max-height: 60;
+
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-padding: 10 10 10 10;
+}
+
 .PaginaPrincipale_bottoneHome{
     -fx-background-image: url("../../../immagini/iconaHome.png");
     -fx-background-repeat: no-repeat;

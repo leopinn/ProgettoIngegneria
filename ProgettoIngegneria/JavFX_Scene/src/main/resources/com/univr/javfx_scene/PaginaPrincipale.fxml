@@ -29,6 +29,11 @@
                <HBox.margin>
                   <Insets right="10.0" top="10.0" />
                </HBox.margin></Button>
+            <Button fx:id="PaginaPrincipale_bottoneUpload" mnemonicParsing="false" onAction="#upload" styleClass="PaginaPrincipale_bottoneUpload">
+               <HBox.margin>
+                  <Insets right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
             <Button fx:id="PaginaPrincipale_bottoneImpostazioni" mnemonicParsing="false" onAction="#impostazioni" styleClass="PaginaPrincipale_bottoneImpostazioni">
                <HBox.margin>
                   <Insets right="10.0" top="10.0" />

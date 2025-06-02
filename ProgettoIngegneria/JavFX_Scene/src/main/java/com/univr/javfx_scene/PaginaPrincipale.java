@@ -1,7 +1,5 @@
 package com.univr.javfx_scene;
 
-import com.univr.javfx_scene.classi.*;
-import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,23 +8,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class PaginaPrincipale implements Initializable {
-
-    @FXML
-    Label nameLabel;
 
     @FXML
     private BorderPane PaginaPrincipale_borderPane;
@@ -73,5 +62,16 @@ public class PaginaPrincipale implements Initializable {
         scene.getStylesheets().add(getClass().getResource("Applicazione.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void upload(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneUpload.fxml"));
+        Parent registerPane = loader.load();
+
+        // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
+        PaginaPaneUpload controller = loader.getController();
+        controller.setMainController(this);  // <<< passaggio chiave
+
+        PaginaPrincipale_borderPane.setCenter(registerPane);
     }
 }

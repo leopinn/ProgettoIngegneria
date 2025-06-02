@@ -5,6 +5,5 @@ module com.univr.javfx_scene {
 
 
     opens com.univr.javfx_scene to javafx.fxml;
-    opens com.univr.javfx_scene.classi to javafx.fxml, javafx.base;
     exports com.univr.javfx_scene;
 }
