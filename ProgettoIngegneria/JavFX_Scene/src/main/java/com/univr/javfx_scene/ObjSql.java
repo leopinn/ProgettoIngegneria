@@ -96,6 +96,7 @@ public class ObjSql {
         }
     }
 
+    // Per ritornare una row di dati
     public Map<String, Object> leggi(String par_query){
         Map<String, Object> row=null;
 
@@ -114,6 +115,29 @@ public class ObjSql {
 
         return row;
     }
+
+    // Per ritornare una lista di dati
+    public List<Map<String, Object>> leggiLista(String par_query){
+        List<Map<String, Object>> lista=new ArrayList<>();
+        Map<String, Object> row;
+
+        try (PreparedStatement statement = connection.prepareStatement(par_query)) {
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                row=passaRiga(rs);
+                lista.add(row);
+            }
+            logger.info(par_query+"\n->eseguita con successo!");
+
+        } catch (SQLException e) {
+            logger.info(e.toString());
+        }
+
+        return lista;
+    }
+
 
     private static Map<String, Object> passaRiga(ResultSet resultSet) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();

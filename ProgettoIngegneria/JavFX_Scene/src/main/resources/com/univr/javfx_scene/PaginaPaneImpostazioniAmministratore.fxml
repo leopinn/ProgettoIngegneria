@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="PaginaPaneImpostazioniAmministrazione_anchoraPane" prefHeight="400.0" prefWidth="600.0" styleClass="PaginaPaneImpostazioniAmministrazione_anchoraPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneImpostazioniAmministratore">
+   <children>
+      <VBox fx:id="PaginaPaneImpostazioniAmministrazione_vBox" styleClass="PaginaPaneImpostazioniAmministrazione_vBox" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Label fx:id="PaginaPaneImpostazioniAmministrazione_label" styleClass="PaginaPaneImpostazioniAmministrazione_label" text="Lista utenti registrati" />
+            <TableView fx:id="PaginaPaneImpostazioniAmministrazione_tabelView" >
+              <columns>
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
