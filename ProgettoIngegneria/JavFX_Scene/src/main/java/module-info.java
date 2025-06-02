@@ -2,6 +2,7 @@ module com.univr.javfx_scene {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires jdk.jdi;
 
 
     opens com.univr.javfx_scene to javafx.fxml;
