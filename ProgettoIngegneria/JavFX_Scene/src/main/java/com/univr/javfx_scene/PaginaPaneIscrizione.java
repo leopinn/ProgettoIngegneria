@@ -110,14 +110,8 @@ public class PaginaPaneIscrizione {
         // Se ritorna 1 è andato tutto a buon fine
         if(risultato==1){
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaLogin.fxml"));
-                Parent root = loader.load();
-
-                // Usa un nodo qualsiasi per ottenere lo stage
-                String fxml = "PaginaPaneLogin.fxml";
                 mainController.mostraLabelIscrizione();
-                Parent schermata = FXMLLoader.load(getClass().getResource(fxml));
-                paginaIscrizione_vBox.getChildren().setAll(schermata);
+                mainController.impostaSchermata();
             }catch (IOException e){
                 e.printStackTrace();
             }

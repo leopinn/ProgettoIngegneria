@@ -2,7 +2,9 @@ package com.univr.javfx_scene;
 
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
@@ -82,5 +84,9 @@ public class PaginaPaneImpostazioni implements Initializable {
         PaginaPaneImpostazioni_stackPane.setManaged(true);
 
         fadeIn.play();
+    }
+
+    public void mostraImpostazioniAmministratore() throws IOException {
+        mainController.PaginaPaneImpostazioniAmministratore();
     }
 }

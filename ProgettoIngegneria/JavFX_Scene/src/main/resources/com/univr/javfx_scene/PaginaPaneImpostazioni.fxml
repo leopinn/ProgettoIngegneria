@@ -26,7 +26,7 @@
             <TextField fx:id="PaginaImpostazioni_textEmail" />
             <Label styleClass="PaginaImpostazioni_label" text="Password:" />
             <PasswordField fx:id="PaginaImpostazioni_textPassword" />
-            <Label alignment="TOP_LEFT" styleClass="PaginaImpostazioni_label" text="Impostazioni amministratore" underline="true" />
+            <Label fx:id="PaginaPaneImpostazioni_labelAmministratore" alignment="TOP_LEFT" onMouseClicked="#mostraImpostazioniAmministratore" styleClass="PaginaImpostazioni_label" text="Impostazioni amministratore" underline="true" />
             <HBox fx:id="PaginaImpostazioni_hBox" alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" styleClass="PaginaImpostazioni_hBox">
                <children>
                   <Button fx:id="PaginaImpostazioni_bottoneAnnulla" mnemonicParsing="false" onAction="#annulla" text="Annulla" />

@@ -354,3 +354,19 @@ PasswordField {
     -fx-alignment: center;
     -fx-text-align: center;
 }
+
+/* ----------------------------------------------------------------------------------------------------------- PANE IMPOSTAZIONI AMMINISTRATORE ----------------------------------------------------------------- */
+
+.PaginaPaneImpostazioniAmministrazione_anchoraPane{
+    -fx-background-color: #1f1f1f;
+    -fx-background-radius: 10;
+}
+
+.PaginaPaneImpostazioniAmministrazione_label{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16;
+}
+
+.PaginaPaneImpostazioniAmministrazione_vBox{
+    -fx-spacing: 10;
+}

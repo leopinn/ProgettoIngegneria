@@ -74,4 +74,15 @@ public class PaginaPrincipale implements Initializable {
 
         PaginaPrincipale_borderPane.setCenter(registerPane);
     }
+
+    public void PaginaPaneImpostazioniAmministratore() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneImpostazioniAmministratore.fxml"));
+        Parent registerPane = loader.load();
+
+        // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
+        PaginaPaneImpostazioniAmministratore controller = loader.getController();
+        controller.setMainController(this);  // <<< passaggio chiave
+
+        PaginaPrincipale_borderPane.setCenter(registerPane);
+    }
 }
