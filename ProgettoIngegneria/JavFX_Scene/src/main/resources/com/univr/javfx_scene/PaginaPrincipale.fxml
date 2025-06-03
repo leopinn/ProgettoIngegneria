@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="PaginaPrincipale_borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="PaginaPrincipale_borderPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPrincipale">
+<BorderPane fx:id="PaginaPrincipale_borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" styleClass="PaginaPrincipale_borderPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPrincipale">
    <left>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </left>
@@ -18,27 +18,30 @@
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </bottom>
    <top>
-      <HBox fx:id="PaginaPrincipale_hBox" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox fx:id="PaginaPrincipale_hBox" alignment="TOP_RIGHT" prefHeight="100.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="PaginaPrincipale_bottoneHome" mnemonicParsing="false" onAction="#paginaPrincipale" styleClass="PaginaPrincipale_bottoneHome">
                <HBox.margin>
-                  <Insets left="10.0" top="10.0" />
+                  <Insets left="10.0" />
                </HBox.margin></Button>
             <Region fx:id="PaginaPrincipale_spacer" styleClass="PaginaPrincipale_spacer" HBox.hgrow="ALWAYS" />
           <Button fx:id="PaginaPrincipale_bottoneAccount" mnemonicParsing="false" styleClass="PaginaPrincipale_bottoneAccount">
                <HBox.margin>
-                  <Insets right="10.0" top="10.0" />
+                  <Insets />
                </HBox.margin></Button>
             <Button fx:id="PaginaPrincipale_bottoneUpload" mnemonicParsing="false" onAction="#upload" styleClass="PaginaPrincipale_bottoneUpload">
                <HBox.margin>
-                  <Insets right="10.0" top="10.0" />
+                  <Insets />
                </HBox.margin>
             </Button>
             <Button fx:id="PaginaPrincipale_bottoneImpostazioni" mnemonicParsing="false" onAction="#impostazioni" styleClass="PaginaPrincipale_bottoneImpostazioni">
                <HBox.margin>
-                  <Insets right="10.0" top="10.0" />
+                  <Insets />
                </HBox.margin></Button>
          </children>
+         <BorderPane.margin>
+            <Insets right="10.0" top="10.0" />
+         </BorderPane.margin>
       </HBox>
    </top>
 </BorderPane>

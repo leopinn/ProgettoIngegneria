@@ -6,8 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.*;
@@ -19,7 +18,6 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
         this.mainController = controller;
     }
     private  ObjSql objSql = ObjSql.oggettoSql();
-    private  TableView<UTENTI> tabellautenti = new TableView<>();
 
     @FXML
     private TableView<UTENTI> PaginaPaneImpostazioniAmministrazione_tabelView;
@@ -80,5 +78,69 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
 
         // Assegna i dati alla tabella
         PaginaPaneImpostazioniAmministrazione_tabelView.setItems(locListaUtenti);
+        PaginaPaneImpostazioniAmministrazione_tabelView.setRowFactory(tv -> {
+            TableRow<UTENTI> row = new TableRow<>();
+            ContextMenu contextMenu = new ContextMenu();
+
+            MenuItem autorizzaItem = new MenuItem("✔ Autorizza");
+            autorizzaItem.setOnAction(e -> {
+                UTENTI utente = row.getItem();
+                // Per evitare che l'amministratore possa auto autorizzarsi o sospendersi
+                if (utente != null) {
+                    if(Integer.parseInt(utente.getID_UTENTE())==PaginaPaneLogin.UTENTE_ID){
+                        mostraMessaggio("Attenzione!!","Impossibile modificare se stessi");
+                        return;
+                    }
+
+                    String locWhere = "WHERE ID_UTENTE="+utente.getID_UTENTE();
+
+                    Map<String, Object> rowUtente=objSql.leggi(String.format("SELECT * FROM UTENTI WHERE ID_UTENTE=%s", utente.getID_UTENTE()));
+                    if(rowUtente.isEmpty()) return;
+
+                    rowUtente.put("STATO", 1);
+                    objSql.aggiorna("UTENTI",locWhere, rowUtente);
+                    mostraMessaggio("Attenzione!!",String.format("Utente %s autorizzato con successo",utente.getNOME()));
+                    utente.setSTATO(rowUtente.get("STATO").toString());
+                }
+            });
+
+            MenuItem eliminaItem = new MenuItem("✘ Sospendi");
+            eliminaItem.setOnAction(e -> {
+                UTENTI utente = row.getItem();
+                if (utente != null) {
+                    if(Integer.parseInt(utente.getID_UTENTE())==PaginaPaneLogin.UTENTE_ID){
+                        mostraMessaggio("Attenzione!!","Impossibile modificare se stessi");
+                        return;
+                    }
+
+                    String locWhere = "WHERE ID_UTENTE="+utente.getID_UTENTE();
+
+                    Map<String, Object> rowUtente=objSql.leggi(String.format("SELECT * FROM UTENTI WHERE ID_UTENTE=%s", utente.getID_UTENTE()));
+                    if(rowUtente.isEmpty()) return;
+
+                    rowUtente.put("STATO", 2);
+                    objSql.aggiorna("UTENTI",locWhere, rowUtente);
+                    mostraMessaggio("Attenzione!!",String.format("Utente %s sospeso con successo",utente.getNOME()));
+                    utente.setSTATO(rowUtente.get("STATO").toString());
+                }
+            });
+
+            contextMenu.getItems().addAll(autorizzaItem, eliminaItem);
+
+            row.emptyProperty().addListener((obs, wasEmpty, isEmpty) -> {
+                row.setContextMenu(isEmpty ? null : contextMenu);
+            });
+
+            return row;
+        });
+    }
+
+    public void mostraMessaggio(String titolo, String messaggio) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titolo);
+        alert.setHeaderText(null);
+        alert.setContentText(messaggio);
+
+        alert.showAndWait();
     }
 }

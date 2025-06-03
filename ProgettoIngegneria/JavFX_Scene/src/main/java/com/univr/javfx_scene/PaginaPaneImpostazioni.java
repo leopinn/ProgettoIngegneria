@@ -29,6 +29,8 @@ public class PaginaPaneImpostazioni implements Initializable {
     private Label PaginaPaneImpostazioni_labelRichiestaAccount;
     @FXML
     private StackPane PaginaPaneImpostazioni_stackPane;
+    @FXML
+    private Label PaginaPaneImpostazioni_labelAmministratore;
 
     private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
 
@@ -40,6 +42,11 @@ public class PaginaPaneImpostazioni implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         PaginaImpostazioni_labelNomeUtente.setText(PaginaPaneLogin.UTENTE_NOME);
         PaginaImpostazioni_textEmail.setText(PaginaPaneLogin.UTENTE_EMAIL);
+
+        // Controllo se l'utente non è amministratore, nascondo le impostazioni
+        Map<String, Object> rowUtente=objSql.leggi(String.format("SELECT * FROM UTENTI WHERE ID_UTENTE=%s", PaginaPaneLogin.UTENTE_ID));
+        if(Integer.parseInt(rowUtente.get("RUOLO").toString())!=1)
+            PaginaPaneImpostazioni_labelAmministratore.setVisible(false);
     }
 
     public void salvaProfilo(){
