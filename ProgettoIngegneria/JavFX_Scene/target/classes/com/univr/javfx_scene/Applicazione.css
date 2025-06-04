@@ -283,10 +283,125 @@ PasswordField {
     -fx-padding: 10 10 10 10;
 }
 
+.PaginaPrincipale_sliderMusica {
+    -fx-padding: 0 0 20 0;
+    -fx-pref-height: 6;
+    -fx-background-color: transparent;
+    -fx-
+}
+
+.PaginaPrincipale_sliderMusica .track {
+    -fx-background-color: #3e3e3e; /* barra di sfondo */
+    -fx-background-radius: 3;
+    -fx-pref-height: 4;
+}
+
+.PaginaPrincipale_sliderMusica .thumb {
+    -fx-background-color: white; /* il cerchio (handle) */
+    -fx-background-radius: 8;
+    -fx-pref-width: 12;
+    -fx-pref-height: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 3, 0, 0, 1);
+    -fx-border-width: 1;
+}
+
+.PaginaPrincipale_sliderMusica .thumb:hover {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+    -fx-cursor: hand;
+}
+
+.PaginaPrincipale_sliderMusica .track:filled {
+    -fx-background-color: #6d24e1;
+    -fx-background-insets: 0;
+    -fx-background-radius: 3;
+}
+
+.PaginaPrincipale_buttonIndietro{
+    -fx-background-image: url("../../../immagini/iconaPrecedente.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 24 24;
+
+    -fx-background-color: transparent;
+
+    -fx-min-width: 60;
+    -fx-min-height: 60;
+    -fx-max-width: 60;
+    -fx-max-height: 60;
+
+    -fx-padding: 10 10 10 10;
+}
+
+.PaginaPrincipale_buttonAvanti{
+    -fx-background-image: url("../../../immagini/iconaSuccessivo.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 24 24;
+
+    -fx-background-color: transparent;
+
+    -fx-min-width: 60;
+    -fx-min-height: 60;
+    -fx-max-width: 60;
+    -fx-max-height: 60;
+
+    -fx-padding: 10 10 10 10;
+}
+
+.PaginaPrincipale_buttonPlay{
+    -fx-background-image: url("../../../immagini/iconaPlay.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10;
+    -fx-background-size: 24 24;
+
+    -fx-background-color: #fdfdfd;
+    -fx-border-color: #fdfdfd;
+
+    -fx-min-width: 40;
+    -fx-min-height: 40;
+    -fx-max-width: 40;
+    -fx-max-height: 40;
+
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 10 10 10 10;
+}
+
+.PaginaPrincipale_labelTitoloCanzone{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.PaginaPrincipale_labelAutoreCanzone{
+    -fx-text-fill: #cccccc;
+    -fx-font-size: 12px;
+}
+
+.PaginaPrincipale_hBoxLeft{
+    -fx-spacing: 10;
+
+    -fx-border-color: black;
+    -fx-border-width: 4;
+    -fx-border-radius: 10;
+    -fx-padding: 5;
+}
+
+.PaginaPrincipale_vBoxDati{
+    -fx-spacing: 5;
+}
+
 /* ----------------------------------------------------------------------------------------------------------- PANE PRINCIPALE ----------------------------------------------------------------- */
 .PaginaPrincipale_anchorPane{
     -fx-background-color: #1f1f1f;
     -fx-background-radius: 10;
+}
+
+.PaginaPanePrincipale_labelMusiche{
+    -fx-text-fill: #ffffff;
+    -fx-padding: 20 0 0 10;  /* top right bottom left */
+    -fx-font-size: 26;
 }
 
 /* ----------------------------------------------------------------------------------------------------------- PANE IMPOSTAZIONI ----------------------------------------------------------------- */

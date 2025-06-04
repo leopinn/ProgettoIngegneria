@@ -8,17 +8,28 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class PaginaPrincipale implements Initializable {
 
+    private  ObjSql objSql = ObjSql.oggettoSql();
+
     @FXML
     private BorderPane PaginaPrincipale_borderPane;
+    @FXML
+    private ImageView PaginaPrincipale_imageCopertina;
+    @FXML
+    private Label PaginaPrincipale_labelTitoloCanzone;
+    @FXML
+    private Label PaginaPrincipale_labelAutoreCanzone;
 
     private Stage stage;
     private Scene scene;
@@ -84,5 +95,25 @@ public class PaginaPrincipale implements Initializable {
         controller.setMainController(this);  // <<< passaggio chiave
 
         PaginaPrincipale_borderPane.setCenter(registerPane);
+    }
+
+    public void selezionaMusica(int parId){
+        impostaDatiCanzone(parId);
+    }
+
+    private void impostaDatiCanzone(int parId){
+        // Imposto la copertina
+        String locPath="/upload/copertine/"+parId+".jpg";
+        Image immagine = new Image(getClass().getResourceAsStream(locPath));
+
+        PaginaPrincipale_imageCopertina.setImage(immagine);
+
+        // Imposto titolo e autore
+        Map<String, Object> rowBrano = objSql.leggi(String.format("SELECT TITOLO, AUTORE FROM CANZONE WHERE ID_CANZONE=%s", parId));
+        PaginaPrincipale_labelTitoloCanzone.setText(rowBrano.get("TITOLO").toString());
+        PaginaPrincipale_labelTitoloCanzone.setVisible(true);
+
+        PaginaPrincipale_labelAutoreCanzone.setText(rowBrano.get("AUTORE").toString());
+        PaginaPrincipale_labelAutoreCanzone.setVisible(true);
     }
 }
