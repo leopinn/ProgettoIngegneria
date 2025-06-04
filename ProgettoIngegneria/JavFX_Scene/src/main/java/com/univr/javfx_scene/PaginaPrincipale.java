@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
@@ -103,8 +104,8 @@ public class PaginaPrincipale implements Initializable {
 
     private void impostaDatiCanzone(int parId){
         // Imposto la copertina
-        String locPath="/upload/copertine/"+parId+".jpg";
-        Image immagine = new Image(getClass().getResourceAsStream(locPath));
+        String locPath="upload/copertine/"+parId+".jpg";
+        Image immagine = new Image(new File(locPath).toURI().toString());
 
         PaginaPrincipale_imageCopertina.setImage(immagine);
 

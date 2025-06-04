@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +42,8 @@ public class PaginaPanePrincipale implements Initializable {
                 selezionaMusica(card.getId());
             });
 
-            String locPath="/upload/copertine/"+brano.get("ID_CANZONE")+".jpg";
-            Image immagine = new Image(getClass().getResourceAsStream(locPath));
+            String locPath="upload/copertine/"+brano.get("ID_CANZONE")+".jpg";
+            Image immagine = new Image(new File(locPath).toURI().toString());
             ImageView copertina = new ImageView(immagine);
             copertina.setFitWidth(120);
             copertina.setFitHeight(120);

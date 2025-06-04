@@ -287,7 +287,6 @@ PasswordField {
     -fx-padding: 0 0 20 0;
     -fx-pref-height: 6;
     -fx-background-color: transparent;
-    -fx-
 }
 
 .PaginaPrincipale_sliderMusica .track {
@@ -546,6 +545,84 @@ PasswordField {
 .PaginaPaneImpostazioniAmministrazione_tabelView .scroll-bar .track {
     -fx-background-color: #2a2a2a;
 }
+
+
+/* ----------------------------------------------------------------------------------------------------------- PANE UPLOAD ----------------------------------------------------------------- */
+
+.PaginaPaneUpload_anchorPane{
+    -fx-background-color: #1f1f1f;
+    -fx-background-radius: 10;
+}
+
+.PaginaPaneUpload_hBox{
+    -fx-spacing: 10;
+}
+
+.styleLabel{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16;
+    -fx-padding: 10 0 0 0;  /* top right bottom left */
+}
+
+.styleTextFieldYoutube{
+    -fx-text-fill: #0077ff;
+    -fx-font-size: 16;
+}
+
+.styleRose{
+    -fx-text-fill: #f70000;
+    -fx-font-size: 16;
+    -fx-padding: 10 0 0 0;  /* top right bottom left */
+}
+
+.PaginaPaneUpload_comboGenere {
+    -fx-background-color: #f2f2f2;
+    -fx-text-fill: #333;
+    -fx-font-size: 16;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+
+    -fx-pref-height: 30;
+    -fx-max-height: 30;
+    -fx-padding: 0 6 0 6;
+}
+
+.PaginaPaneUpload_comboGenere .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333;
+    -fx-font-size: 16;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.PaginaPaneUpload_comboGenere .arrow-button {
+    -fx-background-color: #f2f2f2;
+    -fx-background-radius: 0 4 4 0;
+    -fx-border-width: 0;
+}
+
+.PaginaPaneUpload_comboGenere .arrow {
+    -fx-background-color: #999;
+    -fx-padding: 0 4 0 0;
+}
+
+.PaginaPaneUpload_comboGenere .list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+.PaginaPaneUpload_comboGenere .list-view .list-cell:hover {
+    -fx-background-color: #e6e6e6;
+}
+
+.PaginaPaneUpload_comboGenere .list-view .list-cell:selected {
+    -fx-background-color: #dcdcdc;
+    -fx-text-fill: #000000;
+}
+
+
 
 /* ----------------------------------------------------------------------------------------------------------- GENERICI ----------------------------------------------------------------- */
 
