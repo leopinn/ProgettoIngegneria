@@ -73,11 +73,11 @@
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Button fx:id="PaginaPrincipale_buttonIndietro" mnemonicParsing="false" styleClass="PaginaPrincipale_buttonIndietro" />
-                        <Button fx:id="PaginaPrincipale_buttonPlay" mnemonicParsing="false" styleClass="PaginaPrincipale_buttonPlay" />
+                        <Button fx:id="PaginaPrincipale_buttonPlay" mnemonicParsing="false" onAction="#play" styleClass="PaginaPrincipale_buttonPlay" />
                         <Button fx:id="PaginaPrincipale_buttonAvanti" mnemonicParsing="false" styleClass="PaginaPrincipale_buttonAvanti" />
                      </children>
                   </HBox>
-                  <HBox fx:id="PaginaPrincipale_hBoxPlayer" prefHeight="58.0" prefWidth="600.0" styleClass="PaginaPrincipale_hBoxPlayer" alignment="TOP_CENTER">
+                  <HBox fx:id="PaginaPrincipale_hBoxPlayer" alignment="TOP_CENTER" prefHeight="58.0" prefWidth="600.0" styleClass="PaginaPrincipale_hBoxPlayer">
                      <children>
                         <Label fx:id="PaginaPrincipale_minutaggioIniziale" text="00:00" />
                         <Slider fx:id="PaginaPrincipale_sliderMusica" minHeight="40.0" minWidth="400.0" prefHeight="40.0" prefWidth="542.0" styleClass="PaginaPrincipale_sliderMusica" />

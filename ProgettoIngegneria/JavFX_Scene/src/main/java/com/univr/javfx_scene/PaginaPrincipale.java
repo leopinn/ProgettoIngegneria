@@ -167,7 +167,7 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_buttonPlay.setOnAction(event -> {
             stop();
         });
-        PaginaPrincipale_buttonPlay.setStyle("-fx-background-image: url(""\../../../immagini/iconaStop.png\");");
+        //PaginaPrincipale_buttonPlay.setStyle("-fx-background-image: url(""\../../../immagini/iconaStop.png\");");
         mediaPlayer.play();
     }
 
