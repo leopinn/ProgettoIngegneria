@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
@@ -35,16 +36,13 @@ public class PaginaPrincipale implements Initializable {
     private ImageView PaginaPrincipale_imageCopertina;
     @FXML
     private Label PaginaPrincipale_labelTitoloCanzone;
-    @FXML
-    private Label PaginaPrincipale_labelAutoreCanzone;
+    @FXML private Label PaginaPrincipale_labelAutoreCanzone,PaginaPrincipale_minutaggioIniziale, PaginaPrincipale_minutaggioFinale;
     @FXML
     private Parent commentiPane;
-    @FXML
-    private StackPane PaginaPrincipale_rightPane;
-    @FXML
-    private StackPane placeholderPane;
-    @FXML
-    private Slider PaginaPrincipale_sliderMusica;
+    @FXML private StackPane PaginaPrincipale_rightPane, placeholderPane;
+    @FXML private Slider PaginaPrincipale_sliderMusica;
+    @FXML private Button PaginaPrincipale_buttonPlay;
+
 
     public MediaPlayer mediaPlayer;
 
@@ -165,6 +163,21 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_rightPane.setManaged(true);
     }
 
+    public void play(){
+        PaginaPrincipale_buttonPlay.setOnAction(event -> {
+            stop();
+        });
+        PaginaPrincipale_buttonPlay.setStyle("-fx-background-image: url(""\../../../immagini/iconaStop.png\");");
+        mediaPlayer.play();
+    }
+
+    public void stop(){
+        PaginaPrincipale_buttonPlay.setOnAction(event -> {
+            play();
+        });
+        mediaPlayer.stop();
+    }
+
     public void riproduciCanzone(int parId){
         File file = new File("upload/musiche/"+parId+".mp3");
         if (!file.exists()) {
@@ -185,10 +198,14 @@ public class PaginaPrincipale implements Initializable {
             PaginaPrincipale_sliderMusica.setMax(durata.toMillis());
         });
 
+
         mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
             if (!PaginaPrincipale_sliderMusica.isValueChanging()) { // evita salti mentre l’utente trascina
                 PaginaPrincipale_sliderMusica.setValue(newTime.toMillis());
-
+                int locMinutes = (int) newTime.toMinutes();
+                int locSeconds = (int) (newTime.toSeconds() % 60);
+                PaginaPrincipale_minutaggioFinale.setText(String.format("%02d:%02d", (int) mediaPlayer.getMedia().getDuration().toMinutes(), (int) (mediaPlayer.getMedia().getDuration().toSeconds() % 60)));
+                PaginaPrincipale_minutaggioIniziale.setText(String.format("%02d:%02d", locMinutes, locSeconds));
             }
         });
 
