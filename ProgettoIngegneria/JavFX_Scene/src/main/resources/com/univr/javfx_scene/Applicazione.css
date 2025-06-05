@@ -426,6 +426,45 @@ PasswordField {
     -fx-font-size: 26;
 }
 
+.PaginaPrincipale_scrollPane {
+    -fx-background: #1f1f1f;
+    -fx-background-color: #1f1f1f;
+    -fx-border-color: transparent;
+}
+
+.PaginaPrincipale_scrollPane > .viewport {
+    -fx-background-color: #1f1f1f;
+}
+
+.PaginaPrincipale_scrollPane:vertical,
+.PaginaPrincipale_scrollPane:horizontal {
+    -fx-background-color: transparent;
+}
+
+.PaginaPrincipale_scrollPane .track {
+    -fx-background-color: #2a2a2a;
+    -fx-background-insets: 0;
+    -fx-background-radius: 5;
+}
+
+.PaginaPrincipale_scrollPane .thumb {
+    -fx-background-color: #555;
+    -fx-background-insets: 2;
+    -fx-background-radius: 5;
+}
+
+.PaginaPrincipale_scrollPane .thumb:hover {
+    -fx-background-color: #888;
+}
+
+.PaginaPrincipale_scrollPane .increment-button,
+.PaginaPrincipale_scrollPane .decrement-button {
+    -fx-background-color: #1f1f1f;
+    -fx-shape: null; /* Rimuove freccia */
+    -fx-padding: 0;
+    -fx-opacity: 0; /* In alternativa metti 0.2 per freccia appena visibile */
+}
+
 /* ----------------------------------------------------------------------------------------------------------- PANE IMPOSTAZIONI ----------------------------------------------------------------- */
 
 .scroll-pane {
