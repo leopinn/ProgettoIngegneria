@@ -58,7 +58,7 @@
                   <Label styleClass="styleLabel" text="Upload spartiti, test, doc, ecc." />
                   <VBox id="paneSpartiti" fx:id="PaginaPaneUpload_dragPdf" minHeight="100.0" minWidth="200.0" onDragDropped="#dropPdf" onDragOver="#dragFile" style="-fx-border-color: gray; -fx-border-style: dashed; fx-border-width: 2; -fx-alignment: center;">
                      <children>
-                        <Label fx:id="PaginaPaneUplaod_labelPdf" styleClass="styleLabel" text="Trascina qui il tuo file pdf" />
+                        <Label fx:id="PaginaPaneUplaod_labelPdf" styleClass="styleLabel" text="Trascina qui il tuo file" />
                      </children>
                   </VBox>
                   <Label styleClass="styleRose" text="Autore *" />
@@ -75,7 +75,7 @@
                   <Label styleClass="styleLabel" text="Upload copertina  jpg, png, ecc." />
                   <VBox id="paneCopertina" fx:id="PaginaPaneUpload_dragCopertina" minHeight="100.0" minWidth="200.0" onDragDropped="#dropCopertina" onDragOver="#dragFile" style="-fx-border-color: gray; -fx-border-style: dashed; fx-border-width: 2; -fx-alignment: center;">
                      <children>
-                        <Label fx:id="PaginaPaneUplaod_labelCopertina" styleClass="styleLabel" text="Trascina qui il tuo file jpg" />
+                        <Label fx:id="PaginaPaneUplaod_labelCopertina" styleClass="styleLabel" text="Trascina qui il tuo file audio" />
                      </children>
                   </VBox>
                   <Label styleClass="styleLabel" text="Link YouTube correlato" />

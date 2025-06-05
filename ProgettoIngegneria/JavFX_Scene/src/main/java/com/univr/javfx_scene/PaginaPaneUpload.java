@@ -11,7 +11,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 /** import java.lang.classfile.instruction.SwitchCase; **/
@@ -37,7 +36,7 @@ public class PaginaPaneUpload {
 
     @FXML private TextField PaginaPaneUpload_textTitolo, PaginaPaneUpload_textAutore, PaginaPaneUpload_textLink, PaginaPaneUpload_textAnno;
     @FXML private ComboBox<String> PaginaPaneUpload_comboGenere;
-    @FXML private Label PaginaPaneUplaod_labelMusica, PaginaPaneUplaod_labelCopertina, PaginaPaneUplaod_labelPdf, PaginaIscrizione_labelErrore;
+    @FXML private Label PaginaPaneUplaod_labelMusica, PaginaPaneUplaod_labelCopertina, PaginaPaneUplaod_labelPdf;
 
     public void setMainController(PaginaPrincipale controller) {
         this.mainController = controller;
@@ -79,7 +78,7 @@ public class PaginaPaneUpload {
             anno_composizione="";
         }
 
-        if(!fileMusica.exists() || !fileCopertina.exists()) return 3;
+        if(!fileMusica.exists() || !filePdf.exists() || !fileCopertina.exists()) return 3;
 
         return errore;
     }
@@ -222,21 +221,6 @@ public class PaginaPaneUpload {
             Files.copy(parFile.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
             System.out.println("File salvato: " + dest.getAbsolutePath());
             // procedi con il resto dell’inserimento (nome, cognome, ecc.)
-
-            PaginaPaneUpload_textTitolo.clear();
-            PaginaPaneUpload_textAutore.clear();
-            PaginaPaneUpload_textAnno.clear();
-            PaginaPaneUpload_textLink.clear();
-            PaginaPaneUpload_comboGenere.getSelectionModel().clearSelection();
-
-            PaginaPaneUplaod_labelMusica.setText("Trascina qui il tuo file audio");
-            PaginaPaneUplaod_labelPdf.setText("Trascina qui il tuo file pdf");
-            PaginaPaneUplaod_labelCopertina.setText("Trascina qui il tuo file jpg");
-
-            PaginaIscrizione_labelErrore.setText("Musica inserita con successo!");
-            PaginaIscrizione_labelErrore.setStyle("-fx-text-fill: green;");
-            PaginaIscrizione_labelErrore.setVisible(true);
-
         } catch (IOException e) {
             e.printStackTrace();
             // mostra errore all’utente
