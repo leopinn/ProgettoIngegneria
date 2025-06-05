@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.classfile.instruction.SwitchCase;
+/** import java.lang.classfile.instruction.SwitchCase; **/
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;

@@ -12,6 +12,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,11 @@ public class PaginaPanePrincipale implements Initializable {
             card.setPrefWidth(150);
             card.setId(Integer.toString((Integer) brano.get("ID_CANZONE")));   // In modo che ogni VBOX sia direttamente associata alla Canzone, mi servirà dopo per scegliere la musica e riprodurla
             card.setOnMouseClicked(event -> {
-                selezionaMusica(card.getId());
+                try {
+                    selezionaMusica(card.getId());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             });
 
             String locPath="upload/copertine/"+brano.get("ID_CANZONE")+".jpg";
@@ -64,7 +69,7 @@ public class PaginaPanePrincipale implements Initializable {
         }
     }
 
-    private void selezionaMusica(String parId){
+    private void selezionaMusica(String parId) throws IOException {
         mainController.selezionaMusica(Integer.parseInt(parId));
     }
 

@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.scene.layout.StackPane;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +32,12 @@ public class PaginaPrincipale implements Initializable {
     private Label PaginaPrincipale_labelTitoloCanzone;
     @FXML
     private Label PaginaPrincipale_labelAutoreCanzone;
+    @FXML
+    private Parent commentiPane;
+    @FXML
+    private StackPane PaginaPrincipale_rightPane;
+    @FXML
+    private StackPane placeholderPane;
 
     private Stage stage;
     private Scene scene;
@@ -64,6 +71,9 @@ public class PaginaPrincipale implements Initializable {
         PaginaPaneImpostazioni controller = loader.getController();
         controller.setMainController(this);  // <<< passaggio chiave
 
+        if (commentiPane != null) {
+            nascondiCommenti();
+        }
         PaginaPrincipale_borderPane.setCenter(registerPane);
     }
 
@@ -84,6 +94,10 @@ public class PaginaPrincipale implements Initializable {
         PaginaPaneUpload controller = loader.getController();
         controller.setMainController(this);  // <<< passaggio chiave
 
+        if (commentiPane != null) {
+            nascondiCommenti();
+        }
+
         PaginaPrincipale_borderPane.setCenter(registerPane);
     }
 
@@ -98,11 +112,11 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_borderPane.setCenter(registerPane);
     }
 
-    public void selezionaMusica(int parId){
+    public void selezionaMusica(int parId) throws IOException {
         impostaDatiCanzone(parId);
     }
 
-    private void impostaDatiCanzone(int parId){
+    private void impostaDatiCanzone(int parId) throws IOException {
         // Imposto la copertina
         String locPath="upload/copertine/"+parId+".jpg";
         Image immagine = new Image(new File(locPath).toURI().toString());
@@ -116,5 +130,28 @@ public class PaginaPrincipale implements Initializable {
 
         PaginaPrincipale_labelAutoreCanzone.setText(rowBrano.get("AUTORE").toString());
         PaginaPrincipale_labelAutoreCanzone.setVisible(true);
+
+        // Sezione commenti del brano
+        mostraCommenti(1, parId);
+    }
+
+    public void mostraCommenti(int parId, int id_canzone) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneCommenti.fxml"));
+        commentiPane = loader.load();
+
+        PaginaPaneCommenti controller = loader.getController();
+        controller.caricaCommenti(id_canzone);
+
+        PaginaPrincipale_rightPane.getChildren().setAll(commentiPane);
+        PaginaPrincipale_rightPane.setPrefWidth(250);
+        PaginaPrincipale_rightPane.setVisible(true);
+        PaginaPrincipale_rightPane.setManaged(true);
+    }
+
+    public void nascondiCommenti() {
+        PaginaPrincipale_rightPane.getChildren().setAll(placeholderPane);
+        PaginaPrincipale_rightPane.setPrefWidth(100);
+        PaginaPrincipale_rightPane.setVisible(true);
+        PaginaPrincipale_rightPane.setManaged(true);
     }
 }
