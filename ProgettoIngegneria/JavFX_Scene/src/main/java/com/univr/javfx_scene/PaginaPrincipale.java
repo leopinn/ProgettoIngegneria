@@ -43,7 +43,6 @@ public class PaginaPrincipale implements Initializable {
     @FXML private Slider PaginaPrincipale_sliderMusica;
     @FXML private Button PaginaPrincipale_buttonPlay;
 
-
     public MediaPlayer mediaPlayer;
 
     private Stage stage;
@@ -60,11 +59,11 @@ public class PaginaPrincipale implements Initializable {
     }
 
     public void paginaPrincipale() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPanePrincipale.fxml"));
-        Parent registerPane = loader.load();
+        FXMLLoader loaderPrincipale = new FXMLLoader(getClass().getResource("PaginaPanePrincipale.fxml"));
+        Parent registerPane = loaderPrincipale.load();
 
         // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
-        PaginaPanePrincipale controller = loader.getController();
+        PaginaPanePrincipale controller = loaderPrincipale.getController();
         controller.setMainController(this);  // <<< passaggio chiave
 
         PaginaPrincipale_borderPane.setCenter(registerPane);
@@ -144,38 +143,30 @@ public class PaginaPrincipale implements Initializable {
     }
 
     public void mostraCommenti(int parId, int id_canzone) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneCommenti.fxml"));
-        commentiPane = loader.load();
+        FXMLLoader loaderCommenti = new FXMLLoader(getClass().getResource("PaginaPaneCommenti.fxml"));
+        Parent registerPane = loaderCommenti.load();
 
-        PaginaPaneCommenti controller = loader.getController();
+        PaginaPaneCommenti controller = loaderCommenti.getController();
         controller.caricaCommenti(id_canzone);
 
-        PaginaPrincipale_rightPane.getChildren().setAll(commentiPane);
-        PaginaPrincipale_rightPane.setPrefWidth(250);
-        PaginaPrincipale_rightPane.setVisible(true);
-        PaginaPrincipale_rightPane.setManaged(true);
+        PaginaPrincipale_borderPane.setRight(registerPane);
     }
 
     public void nascondiCommenti() {
-        PaginaPrincipale_rightPane.getChildren().setAll(placeholderPane);
-        PaginaPrincipale_rightPane.setPrefWidth(100);
-        PaginaPrincipale_rightPane.setVisible(true);
-        PaginaPrincipale_rightPane.setManaged(true);
+        PaginaPrincipale_borderPane.setRight(null);
     }
 
-    public void play(){
-        PaginaPrincipale_buttonPlay.setOnAction(event -> {
-            stop();
-        });
-        PaginaPrincipale_buttonPlay.setStyle("-fx-background-image: url(""\../../../immagini/iconaStop.png\");");
-        mediaPlayer.play();
-    }
-
-    public void stop(){
-        PaginaPrincipale_buttonPlay.setOnAction(event -> {
-            play();
-        });
-        mediaPlayer.stop();
+    public void playStop(){
+        // Controlla se è in esecuzione
+        if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+            PaginaPrincipale_buttonPlay.getStyleClass().remove("PaginaPrincipale_buttonStop");
+            PaginaPrincipale_buttonPlay.getStyleClass().add("PaginaPrincipale_buttonPlay");
+            mediaPlayer.pause();
+        } else {
+            PaginaPrincipale_buttonPlay.getStyleClass().remove("PaginaPrincipale_buttonPlay");
+            PaginaPrincipale_buttonPlay.getStyleClass().add("PaginaPrincipale_buttonStop");
+            mediaPlayer.play();
+        }
     }
 
     public void riproduciCanzone(int parId){
@@ -210,5 +201,8 @@ public class PaginaPrincipale implements Initializable {
         });
 
         mediaPlayer.play();
+
+        PaginaPrincipale_buttonPlay.getStyleClass().remove("PaginaPrincipale_buttonPlay");
+        PaginaPrincipale_buttonPlay.getStyleClass().add("PaginaPrincipale_buttonStop");
     }
 }

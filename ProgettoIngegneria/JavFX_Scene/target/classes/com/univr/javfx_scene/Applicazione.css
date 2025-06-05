@@ -311,7 +311,7 @@ PasswordField {
 }
 
 .PaginaPrincipale_sliderMusica .track:filled {
-    -fx-background-color: #6d24e1;
+    -fx-background-color: white;
     -fx-background-insets: 0;
     -fx-background-radius: 3;
 }
@@ -352,6 +352,25 @@ PasswordField {
     -fx-background-image: url("../../../immagini/iconaPlay.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: 10;
+    -fx-background-size: 24 24;
+
+    -fx-background-color: #fdfdfd;
+    -fx-border-color: #fdfdfd;
+
+    -fx-min-width: 40;
+    -fx-min-height: 40;
+    -fx-max-width: 40;
+    -fx-max-height: 40;
+
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 10 10 10 10;
+}
+
+.PaginaPrincipale_buttonStop{
+    -fx-background-image: url("../../../immagini/iconaStop.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
     -fx-background-size: 24 24;
 
     -fx-background-color: #fdfdfd;
