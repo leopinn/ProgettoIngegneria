@@ -47,6 +47,7 @@ public class PaginaPaneCommenti {
             return;
         }
 
+        // Prepara commenti
         for (Map<String, Object> commento : commenti) {
             VBox commentoBox = new VBox();
             commentoBox.setSpacing(2);
