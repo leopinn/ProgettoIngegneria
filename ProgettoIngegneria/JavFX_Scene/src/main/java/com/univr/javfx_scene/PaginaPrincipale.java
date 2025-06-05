@@ -207,4 +207,13 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_buttonPlay.getStyleClass().remove("PaginaPrincipale_buttonPlay");
         PaginaPrincipale_buttonPlay.getStyleClass().add("PaginaPrincipale_buttonStop");
     }
+
+    public void sliderPressed(){
+        mediaPlayer.pause();
+    }
+
+    public void sliderReleased(){
+        mediaPlayer.seek(Duration.millis(PaginaPrincipale_sliderMusica.getValue()));
+        mediaPlayer.play();
+    }
 }

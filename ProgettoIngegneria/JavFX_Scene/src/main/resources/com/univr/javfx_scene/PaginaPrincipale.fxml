@@ -10,7 +10,9 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="PaginaPrincipale_borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="697.0" minWidth="1280.0" prefHeight="697.0" prefWidth="1280.0" styleClass="PaginaPrincipale_borderPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPrincipale">
+<BorderPane fx:id="PaginaPrincipale_borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="697.0" minWidth="1280.0" prefHeight="697.0"
+            prefWidth="1280.0" styleClass="PaginaPrincipale_borderPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPrincipale">
    <left>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </left>
@@ -69,7 +71,7 @@
                   <HBox fx:id="PaginaPrincipale_hBoxPlayer" alignment="TOP_CENTER" maxWidth="1000" minHeight="50" minWidth="300" styleClass="PaginaPrincipale_hBoxPlayer">
                      <children>
                         <Label fx:id="PaginaPrincipale_minutaggioIniziale" alignment="CENTER_RIGHT" prefWidth="40" text="00:00" />
-                        <Slider fx:id="PaginaPrincipale_sliderMusica" styleClass="PaginaPrincipale_sliderMusica" HBox.hgrow="ALWAYS" />
+                        <Slider fx:id="PaginaPrincipale_sliderMusica" onMousePressed="#sliderPressed" onMouseReleased="#sliderReleased" styleClass="PaginaPrincipale_sliderMusica" HBox.hgrow="ALWAYS" />
                         <Label fx:id="PaginaPrincipale_minutaggioFinale" alignment="CENTER_RIGHT" prefWidth="40" text="00:00" />
                      </children>
                   </HBox>
