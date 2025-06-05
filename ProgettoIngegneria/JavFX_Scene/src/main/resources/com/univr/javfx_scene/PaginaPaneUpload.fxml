@@ -22,7 +22,7 @@
                    <VBox fx:id="PaginaPaneUpload_dragCanzone" minHeight="100.0" minWidth="200.0" onDragDropped="#dropCanzone" onDragOver="#dragFile" style="-fx-border-color: gray; -fx-border-style: dashed; -fx-border-width: 2; -fx-alignment: center;">
 
                    <children>
-                        <Label fx:id="PaginaPaneUplaod_labelMusica" styleClass="styleLabel" text="Trascina qui il tuo file audio" />
+                        <Label fx:id="PaginaPaneUplaod_labelMusica" styleClass="styleLabel" text="Trascina qui il tuo file" />
                      </children>
                      <cursor>
                         <Cursor fx:constant="CLOSED_HAND" />
@@ -75,20 +75,25 @@
                   <Label styleClass="styleLabel" text="Upload copertina  jpg, png, ecc." />
                   <VBox id="paneCopertina" fx:id="PaginaPaneUpload_dragCopertina" minHeight="100.0" minWidth="200.0" onDragDropped="#dropCopertina" onDragOver="#dragFile" style="-fx-border-color: gray; -fx-border-style: dashed; fx-border-width: 2; -fx-alignment: center;">
                      <children>
-                        <Label fx:id="PaginaPaneUplaod_labelCopertina" styleClass="styleLabel" text="Trascina qui il tuo file audio" />
+                        <Label fx:id="PaginaPaneUplaod_labelCopertina" styleClass="styleLabel" text="Trascina qui il tuo file" />
                      </children>
                   </VBox>
                   <Label styleClass="styleLabel" text="Link YouTube correlato" />
                   <TextField fx:id="PaginaPaneUpload_textLink" promptText="Link YouTube" styleClass="styleTextFieldYoutube" />
                   <VBox alignment="BOTTOM_RIGHT" prefHeight="103.0" prefWidth="194.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Label fx:id="PaginaIscrizione_labelErrore" styleClass="PaginaLogin_labelErrore" text="Errore generico" underline="true" visible="false" />
-                        <Button mnemonicParsing="false" onAction="#richiediInserimentoCanzone" prefHeight="25.0" prefWidth="44.0" text="Salva" />
+                        <Label fx:id="PaginaIscrizione_labelErrore" styleClass="PaginaLogin_labelErrore" text="Canzone caricata con successo!" underline="true" visible="false" />
                      </children>
                      <padding>
                         <Insets right="5.0" />
                      </padding>
                   </VBox>
+                  <HBox fx:id="PaginaImpostazioni_hBox" alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" styleClass="PaginaImpostazioni_hBox">
+                     <children>
+                        <Button fx:id="PaginaImpostazioni_bottoneAnnulla" mnemonicParsing="false" onAction="#annulla" text="Annulla" />
+                        <Button fx:id="PaginaImpostazioni_bottoneSalva" mnemonicParsing="false" onAction="#richiediInserimentoCanzone" styleClass="PaginaImpostazioni_bottoneSalva" text="Salva" />
+                     </children>
+                  </HBox>
                </children>
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
