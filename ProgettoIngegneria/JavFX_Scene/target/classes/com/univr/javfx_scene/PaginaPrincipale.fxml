@@ -8,19 +8,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="PaginaPrincipale_borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="697.0" minWidth="1280.0" prefHeight="697.0" prefWidth="1280.0" styleClass="PaginaPrincipale_borderPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPrincipale">
    <left>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </left>
-   <right>
-      <StackPane fx:id="PaginaPrincipale_rightPane" BorderPane.alignment="CENTER" />
-      <padding>
-         <Insets bottom="10" left="10" right="10" top="10" />
-      </padding>
-   </right>
    <top>
       <HBox fx:id="PaginaPrincipale_hBox" alignment="CENTER" prefHeight="100.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
@@ -64,7 +57,7 @@
             </HBox>
          </left>
          <center>
-            <VBox prefHeight="150.0" prefWidth="356.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="150.0" prefWidth="356.0" BorderPane.alignment="CENTER" alignment="CENTER">
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
@@ -73,11 +66,11 @@
                         <Button fx:id="PaginaPrincipale_buttonAvanti" mnemonicParsing="false" styleClass="PaginaPrincipale_buttonAvanti" />
                      </children>
                   </HBox>
-                  <HBox fx:id="PaginaPrincipale_hBoxPlayer" alignment="TOP_CENTER" prefHeight="58.0" prefWidth="600.0" styleClass="PaginaPrincipale_hBoxPlayer">
+                  <HBox fx:id="PaginaPrincipale_hBoxPlayer" alignment="TOP_CENTER" minHeight="50" minWidth="300" maxWidth="1000" styleClass="PaginaPrincipale_hBoxPlayer">
                      <children>
-                        <Label fx:id="PaginaPrincipale_minutaggioIniziale" text="00:00" />
-                        <Slider fx:id="PaginaPrincipale_sliderMusica" minHeight="30.0" minWidth="400.0" styleClass="PaginaPrincipale_sliderMusica" />
-                        <Label fx:id="PaginaPrincipale_minutaggioFinale" text="00:00" />
+                        <Label fx:id="PaginaPrincipale_minutaggioIniziale" alignment="CENTER_RIGHT" prefWidth="40" text="00:00" />
+                        <Slider fx:id="PaginaPrincipale_sliderMusica" styleClass="PaginaPrincipale_sliderMusica" HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="PaginaPrincipale_minutaggioFinale" alignment="CENTER_RIGHT" prefWidth="40" text="00:00" />
                      </children>
                   </HBox>
                </children>
@@ -88,4 +81,7 @@
          </right>
       </BorderPane>
    </bottom>
+   <right>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+   </right>
 </BorderPane>
