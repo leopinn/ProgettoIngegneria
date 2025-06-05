@@ -57,7 +57,7 @@
             </HBox>
          </left>
          <center>
-            <VBox prefHeight="150.0" prefWidth="356.0" BorderPane.alignment="CENTER" alignment="CENTER">
+            <VBox alignment="CENTER" prefHeight="150.0" prefWidth="356.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
@@ -66,10 +66,10 @@
                         <Button fx:id="PaginaPrincipale_buttonAvanti" mnemonicParsing="false" styleClass="PaginaPrincipale_buttonAvanti" />
                      </children>
                   </HBox>
-                  <HBox fx:id="PaginaPrincipale_hBoxPlayer" alignment="TOP_CENTER" minHeight="50" minWidth="300" maxWidth="1000" styleClass="PaginaPrincipale_hBoxPlayer">
+                  <HBox fx:id="PaginaPrincipale_hBoxPlayer" alignment="TOP_CENTER" maxWidth="1000" minHeight="50" minWidth="300" styleClass="PaginaPrincipale_hBoxPlayer">
                      <children>
                         <Label fx:id="PaginaPrincipale_minutaggioIniziale" alignment="CENTER_RIGHT" prefWidth="40" text="00:00" />
-                        <Slider fx:id="PaginaPrincipale_sliderMusica" styleClass="PaginaPrincipale_sliderMusica" HBox.hgrow="ALWAYS"/>
+                        <Slider fx:id="PaginaPrincipale_sliderMusica" styleClass="PaginaPrincipale_sliderMusica" HBox.hgrow="ALWAYS" />
                         <Label fx:id="PaginaPrincipale_minutaggioFinale" alignment="CENTER_RIGHT" prefWidth="40" text="00:00" />
                      </children>
                   </HBox>
@@ -82,6 +82,9 @@
       </BorderPane>
    </bottom>
    <right>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets left="50.0" />
+         </BorderPane.margin></VBox>
    </right>
 </BorderPane>

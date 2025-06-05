@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -150,6 +151,7 @@ public class PaginaPrincipale implements Initializable {
         controller.caricaCommenti(id_canzone);
 
         PaginaPrincipale_borderPane.setRight(registerPane);
+        BorderPane.setMargin(registerPane, new Insets(0, 10, 0, 10)); // top, right, bottom, left
     }
 
     public void nascondiCommenti() {
