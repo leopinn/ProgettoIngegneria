@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.geometry.Insets?>
 
 <BorderPane fx:id="PaginaPrincipale_borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" styleClass="PaginaPrincipale_borderPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPrincipale">
    <left>
@@ -23,7 +22,7 @@
          </children>
       </StackPane>
       <padding>
-         <Insets top="10" right="10" bottom="10" left="10" />
+         <Insets bottom="10" left="10" right="10" top="10" />
       </padding>
    </right>
    <top>
@@ -56,10 +55,10 @@
    <bottom>
       <BorderPane prefHeight="100.0" BorderPane.alignment="CENTER">
          <left>
-            <HBox fx:id="PaginaPrincipale_hBoxLeft" styleClass="PaginaPrincipale_hBoxLeft" prefHeight="195.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+            <HBox fx:id="PaginaPrincipale_hBoxLeft" prefHeight="118.0" prefWidth="271.0" styleClass="PaginaPrincipale_hBoxLeft" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fx:id="PaginaPrincipale_imageCopertina" styleClass="PaginaPrincipale_imageCopertina" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true"/>
-                  <VBox fx:id="PaginaPrincipale_vBoxDati" styleClass="PaginaPrincipale_vBoxDati" prefHeight="200.0" prefWidth="100.0" alignment="CENTER_LEFT">
+                  <ImageView fx:id="PaginaPrincipale_imageCopertina" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="PaginaPrincipale_imageCopertina" />
+                  <VBox fx:id="PaginaPrincipale_vBoxDati" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" styleClass="PaginaPrincipale_vBoxDati">
                      <children>
                         <Label fx:id="PaginaPrincipale_labelTitoloCanzone" styleClass="PaginaPrincipale_labelTitoloCanzone" text="Titolo" visible="false" />
                         <Label fx:id="PaginaPrincipale_labelAutoreCanzone" styleClass="PaginaPrincipale_labelAutoreCanzone" text="Autore" visible="false" />
@@ -78,12 +77,18 @@
                         <Button fx:id="PaginaPrincipale_buttonAvanti" mnemonicParsing="false" styleClass="PaginaPrincipale_buttonAvanti" />
                      </children>
                   </HBox>
-                  <Slider fx:id="PaginaPrincipale_sliderMusica" styleClass="PaginaPrincipale_sliderMusica" />
+                  <HBox fx:id="PaginaPrincipale_hBoxPlayer" prefHeight="58.0" prefWidth="600.0" styleClass="PaginaPrincipale_hBoxPlayer" alignment="TOP_CENTER">
+                     <children>
+                        <Label fx:id="PaginaPrincipale_minutaggioIniziale" text="00:00" />
+                        <Slider fx:id="PaginaPrincipale_sliderMusica" minHeight="40.0" minWidth="400.0" prefHeight="40.0" prefWidth="542.0" styleClass="PaginaPrincipale_sliderMusica" />
+                        <Label fx:id="PaginaPrincipale_minutaggioFinale" text="00:00" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </center>
          <right>
-            <HBox prefHeight="100.0" prefWidth="400.0" BorderPane.alignment="CENTER" />
+            <HBox prefHeight="118.0" prefWidth="304.0" BorderPane.alignment="CENTER" />
          </right>
       </BorderPane>
    </bottom>

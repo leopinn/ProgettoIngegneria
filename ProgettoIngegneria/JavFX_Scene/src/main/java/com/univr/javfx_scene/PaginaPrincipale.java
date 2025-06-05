@@ -8,11 +8,16 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.layout.StackPane;
+
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +43,10 @@ public class PaginaPrincipale implements Initializable {
     private StackPane PaginaPrincipale_rightPane;
     @FXML
     private StackPane placeholderPane;
+    @FXML
+    private Slider PaginaPrincipale_sliderMusica;
+
+    public MediaPlayer mediaPlayer;
 
     private Stage stage;
     private Scene scene;
@@ -114,6 +123,7 @@ public class PaginaPrincipale implements Initializable {
 
     public void selezionaMusica(int parId) throws IOException {
         impostaDatiCanzone(parId);
+        riproduciCanzone(parId);
     }
 
     private void impostaDatiCanzone(int parId) throws IOException {
@@ -153,5 +163,35 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_rightPane.setPrefWidth(100);
         PaginaPrincipale_rightPane.setVisible(true);
         PaginaPrincipale_rightPane.setManaged(true);
+    }
+
+    public void riproduciCanzone(int parId){
+        File file = new File("upload/musiche/"+parId+".mp3");
+        if (!file.exists()) {
+            System.out.println("File audio non trovato!");
+            return;
+        }
+        String locPath = file.toURI().toString();
+        Media media = new Media(locPath);
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.dispose(); // Libera risorse native
+        }
+
+        mediaPlayer = new MediaPlayer(media);
+
+        mediaPlayer.setOnReady(() -> {
+            Duration durata = mediaPlayer.getMedia().getDuration();
+            PaginaPrincipale_sliderMusica.setMax(durata.toMillis());
+        });
+
+        mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
+            if (!PaginaPrincipale_sliderMusica.isValueChanging()) { // evita salti mentre l’utente trascina
+                PaginaPrincipale_sliderMusica.setValue(newTime.toMillis());
+
+            }
+        });
+
+        mediaPlayer.play();
     }
 }

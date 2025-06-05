@@ -391,6 +391,10 @@ PasswordField {
     -fx-spacing: 5;
 }
 
+.PaginaPrincipale_hBoxPlayer{
+    -fx-spacing: 10;
+}
+
 /* ----------------------------------------------------------------------------------------------------------- PANE PRINCIPALE ----------------------------------------------------------------- */
 .PaginaPrincipale_anchorPane{
     -fx-background-color: #1f1f1f;

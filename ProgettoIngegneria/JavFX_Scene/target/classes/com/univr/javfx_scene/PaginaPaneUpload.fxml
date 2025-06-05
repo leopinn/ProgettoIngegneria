@@ -36,6 +36,7 @@
                        <FXCollections fx:factory="observableArrayList">
                            <String fx:value="Pop" />
                            <String fx:value="Rock" />
+                           <String fx:value="Trap" />
                            <String fx:value="Jazz" />
                            <String fx:value="Hip Hop" />
                            <String fx:value="Classica" />
