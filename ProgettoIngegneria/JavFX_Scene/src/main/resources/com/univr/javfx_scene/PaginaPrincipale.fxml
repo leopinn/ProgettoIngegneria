@@ -73,6 +73,11 @@
                         <Label fx:id="PaginaPrincipale_minutaggioFinale" alignment="CENTER_RIGHT" prefWidth="40" text="00:00" />
                      </children>
                   </HBox>
+                  <HBox fx:id="PaginaPrincipale_hBoxVolume" alignment="TOP_CENTER" maxWidth="1000" minHeight="50" minWidth="300" styleClass="PaginaPrincipale_hBoxPlayer">
+                     <children>
+                        <Slider fx:id="PaginaPrincipale_sliderVolume" onMouseReleased="#sliderMusicaReleased" styleClass="PaginaPrincipale_sliderMusica" maxWidth="100" value="100" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </center>
