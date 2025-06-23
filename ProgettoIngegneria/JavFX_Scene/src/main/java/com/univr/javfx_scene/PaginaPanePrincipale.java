@@ -104,13 +104,11 @@ public class PaginaPanePrincipale implements Initializable {
         }
     }
 
-
     private void selezionaMusica(String parId) throws IOException {
         mainController.selezionaMusica(Integer.parseInt(parId));
     }
 
-
-    private void mostraPopupDownload(String messaggio) {
+    private void mostraPopup(String messaggio) {
         Label contenuto = new Label(messaggio);
         contenuto.setStyle("""
         -fx-background-color: #28a745;
@@ -211,15 +209,14 @@ public class PaginaPanePrincipale implements Initializable {
             }
 
             // Mostra notifica popup di conferma
-            mostraPopupDownload("Download completato: " + titoloBrano);
+            mostraPopup("Download completato: " + titoloBrano);
 
         } catch (IOException e) {
             // Errore durante la copia dei file
             e.printStackTrace();
-            mostraPopupDownload("Errore durante il download di: " + titoloBrano);
+            mostraPopup("Errore durante il download di: " + titoloBrano);
         }
     }
-
 
     /**
      * Copia un file dalla posizione sorgente alla destinazione scelta dall'utente.
