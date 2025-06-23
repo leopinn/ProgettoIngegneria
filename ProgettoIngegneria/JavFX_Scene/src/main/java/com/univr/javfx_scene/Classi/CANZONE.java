@@ -11,8 +11,11 @@ public class CANZONE {
     private final String PERCORSO_MUSICA;
     private final String PERCORSO_PDF;
     private final String PERCORSO_COPERTINA;
+    private final String UTENTE_INS;
+    private final int ID_UTENTE;
 
-    public CANZONE(int idCanzone, String titolo, String autore, String genere, int annoComposizione, String linkYoutube, String percorsoMusica , String percorsoPdf, String percorsoCopertina) {
+    public CANZONE(int idCanzone, String titolo, String autore, String genere, int annoComposizione, String linkYoutube, String percorsoMusica , String percorsoPdf, String percorsoCopertina,
+                   String utenteIns, int idUtente) {
         this.ID_CANZONE = idCanzone;
         this.TITOLO = titolo;
         this.AUTORE = autore;
@@ -22,6 +25,16 @@ public class CANZONE {
         this.PERCORSO_MUSICA = percorsoMusica;
         this.PERCORSO_PDF = percorsoPdf;
         this.PERCORSO_COPERTINA = percorsoCopertina;
+        this.UTENTE_INS = utenteIns;
+        this.ID_UTENTE = idUtente;
+    }
+
+    public String getUTENTE_INS() {
+        return UTENTE_INS;
+    }
+
+    public int getID_UTENTE() {
+        return ID_UTENTE;
     }
 
     public String getPERCORSO_COPERTINA() {

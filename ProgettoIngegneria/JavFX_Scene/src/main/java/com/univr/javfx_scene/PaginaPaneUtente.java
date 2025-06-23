@@ -22,25 +22,19 @@ public class PaginaPaneUtente implements Initializable {
     }
 
     private  ObjSql objSql = ObjSql.oggettoSql();
+    private List<Map<String, Object>> locListaCanzoni;
 
     @FXML private TableView<CANZONE> PaginaPaneUtente_tabelView;
     @FXML private Label PaginaPaneUtente_label;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        popolaLista();
+    }
+
+    private void popolaLista() {
         // All'avvio carico tutte le musiche dell'utente (o tutte le musiche in generale se si tratta di un amministratore
-        List<Map<String, Object>> locListaCanzoni;
-        String locQuery="";
-
-        if(PaginaPaneLogin.UTENTE_NOME.equals("adm")) {
-            locQuery = "SELECT * FROM CANZONE";
-            PaginaPaneUtente_label.setText("Brani caricati sulla piattaforma");
-
-        } else {    // Le canzoni caricate dall'utente corrente
-            locQuery = "SELECT * FROM CANZONE WHERE ID_UTENTE = " + PaginaPaneLogin.ID_UTENTE;
-        }
-
-        locListaCanzoni= objSql.leggiLista(locQuery);
+        leggiCanzoni();
         if(locListaCanzoni.isEmpty()) return; // Se un utente non avesse canzoni dove lui è l'autore
 
         // Creo le colonne
@@ -71,7 +65,13 @@ public class PaginaPaneUtente implements Initializable {
         TableColumn<CANZONE, String> colCopertina = new TableColumn<>("PERCORSO_COPERTINA");
         colCopertina.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getPERCORSO_COPERTINA()));
 
-        PaginaPaneUtente_tabelView.getColumns().addAll(colId, colTitolo, colAutore, colGenere, colAnno, colYoutube, colMusica, colPDF, colCopertina);
+        TableColumn<CANZONE, String> colutenteIns = new TableColumn<>("UTENTE_INS");
+        colutenteIns.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUTENTE_INS()));
+
+        TableColumn<CANZONE, Integer> colIdUtente = new TableColumn<>("ID_UTENTE");
+        colIdUtente.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID_UTENTE()));
+
+        PaginaPaneUtente_tabelView.getColumns().addAll(colId, colTitolo, colAutore, colGenere, colAnno, colYoutube, colMusica, colPDF, colCopertina, colutenteIns, colIdUtente);
 
         // Dati da mostrare
         ObservableList<CANZONE> locListaCanzoniObservable = FXCollections.observableArrayList();
@@ -85,7 +85,9 @@ public class PaginaPaneUtente implements Initializable {
                     String.valueOf(riga.get("LINK_YOUTUBE")),
                     String.valueOf(riga.get("PERCORSO_MUSICA")),
                     String.valueOf(riga.get("PERCORSO_PDF")),
-                    String.valueOf(riga.get("PERCORSO_COPERTINA"))
+                    String.valueOf(riga.get("PERCORSO_COPERTINA")),
+                    String.valueOf(riga.get("UTENTE_INS")),
+                    Integer.parseInt(riga.get("ID_UTENTE").toString())
             );
             locListaCanzoniObservable.add(canzone);
         }
@@ -100,8 +102,9 @@ public class PaginaPaneUtente implements Initializable {
             MenuItem itemRimuoviCanzone = new MenuItem("✘ Rimuovi");
             itemRimuoviCanzone.setOnAction(e -> {
                 CANZONE canzone = row.getItem();
-                    String locWhere = " ID_CANZONE="+canzone.getID_CANZONE();
-                    objSql.cancella("CANZONE", locWhere);
+                String locWhere = " ID_CANZONE="+canzone.getID_CANZONE();
+                objSql.cancella("CANZONE", locWhere);
+                popolaLista();
             });
 
 
@@ -114,15 +117,17 @@ public class PaginaPaneUtente implements Initializable {
         });
     }
 
-    public void mostraMessaggio(String titolo, String messaggio) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(titolo);
-        alert.setHeaderText(null);
-        alert.setContentText(messaggio);
+    private void leggiCanzoni(){
+        String locQuery="";
 
-        alert.showAndWait();
+        if(PaginaPaneLogin.UTENTE_NOME.equals("adm")) {
+            locQuery = "SELECT * FROM CANZONE";
+            PaginaPaneUtente_label.setText("Brani caricati sulla piattaforma");
+
+        } else {    // Le canzoni caricate dall'utente corrente
+            locQuery = "SELECT * FROM CANZONE WHERE ID_UTENTE = " + PaginaPaneLogin.ID_UTENTE;
+        }
+
+        locListaCanzoni= objSql.leggiLista(locQuery);
     }
-
-
-
 }
