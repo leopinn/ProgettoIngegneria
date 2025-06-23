@@ -32,15 +32,11 @@ public class PaginaPrincipale implements Initializable {
 
     private  ObjSql objSql = ObjSql.oggettoSql();
 
-    @FXML
-    private BorderPane PaginaPrincipale_borderPane;
-    @FXML
-    private ImageView PaginaPrincipale_imageCopertina;
-    @FXML
-    private Label PaginaPrincipale_labelTitoloCanzone;
+    @FXML private BorderPane PaginaPrincipale_borderPane;
+    @FXML private ImageView PaginaPrincipale_imageCopertina;
+    @FXML private Label PaginaPrincipale_labelTitoloCanzone;
     @FXML private Label PaginaPrincipale_labelAutoreCanzone,PaginaPrincipale_minutaggioIniziale, PaginaPrincipale_minutaggioFinale;
-    @FXML
-    private Parent commentiPane;
+    @FXML private Parent commentiPane;
     @FXML private StackPane PaginaPrincipale_rightPane, placeholderPane;
     @FXML private Slider PaginaPrincipale_sliderMusica;
     @FXML private Slider PaginaPrincipale_sliderVolume;

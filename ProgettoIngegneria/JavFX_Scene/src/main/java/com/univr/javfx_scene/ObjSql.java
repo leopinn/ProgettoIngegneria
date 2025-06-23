@@ -96,6 +96,17 @@ public class ObjSql {
         }
     }
 
+    // Per cancellare una row di dati
+    public void cancella(String parTabella, String parChiave){
+        String locQuery="DELETE FROM " + parTabella + " WHERE " + parChiave;
+        try (PreparedStatement statement = connection.prepareStatement(locQuery)) {
+            statement.executeUpdate();
+            logger.info(locQuery+"\n->eseguita con successo!");
+        } catch (SQLException e) {
+            logger.info(e.toString());
+        }
+    }
+
     // Per ritornare una row di dati
     public Map<String, Object> leggi(String par_query){
         Map<String, Object> row=null;

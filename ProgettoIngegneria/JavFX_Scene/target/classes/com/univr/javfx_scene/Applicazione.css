@@ -554,7 +554,7 @@ PasswordField {
 
 .PaginaPaneImpostazioniAmministrazione_label{
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16;
+    -fx-font-size: 26;
 }
 
 .PaginaPaneImpostazioniAmministrazione_vBox{
@@ -774,11 +774,12 @@ PasswordField {
     -fx-text-fill: #f9f9f9;
 }
 
-.commentInput {
+.commentoTextArea {
     -fx-background-color: #2c2c2c;
     -fx-text-fill: #f9f9f9;
     -fx-font-family: "Gotham-Medium";
-    -fx-font-size: 14;
+    -fx-font-size: 16;
+    -fx-line-spacing: 5;
     -fx-padding: 6;
     -fx-background-radius: 6;
     -fx-border-color: #6d24e1;
@@ -795,4 +796,8 @@ PasswordField {
 }
 .commentButton:hover {
     -fx-background-color: #5a1dbb;
+}
+
+.PaginaPaneCommenti_bottoneAnnullaInvio{
+    -fx-background-color: #E5484D;
 }
