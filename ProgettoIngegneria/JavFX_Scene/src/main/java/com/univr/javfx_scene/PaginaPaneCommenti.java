@@ -1,11 +1,16 @@
 package com.univr.javfx_scene;
 
+import com.univr.javfx_scene.Classi.UTENTI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +18,13 @@ import java.util.Map;
 public class PaginaPaneCommenti {
     private static ObjSql objSql = ObjSql.oggettoSql();
     private int ID_CANZONE;
+    private List<Map<String, Object>> listaCommenti;    // Messa pubblica per averla disponibile in tutta la gestione commenti
+    private Map<String, Object> rowCommento;            // Il commento attualmente selezionato
 
-    @FXML
-    private VBox commentiContainer;
-    @FXML
-    private TextArea commentoTextArea;
+    public int tipoCommento=0;      // 0=commento a se stante, 1=risposta ad un commento esistente
+
+    @FXML private VBox commentiContainer;
+    @FXML private TextArea commentoTextArea;
 
     @FXML
     public void inviaCommento(ActionEvent event) {
@@ -25,45 +32,149 @@ public class PaginaPaneCommenti {
         String testo = commentoTextArea.getText();
         int utente = PaginaPaneLogin.UTENTE_ID;
 
-        Map<String, Object> rowCommento = new LinkedHashMap<>();
-        rowCommento.put("ID_CANZONE", ID_CANZONE);
-        rowCommento.put("ID_UTENTE", utente);
-        rowCommento.put("TESTO", testo);
 
-        objSql.inserisci("COMMENTI", rowCommento);
+        Map<String, Object> locRowCommento = new LinkedHashMap<>();
+        locRowCommento.put("ID_CANZONE", ID_CANZONE);
+        locRowCommento.put("ID_UTENTE", utente);
+        locRowCommento.put("TESTO", testo);
+
+        if(tipoCommento==1){
+            locRowCommento.put("ID_PADRE", rowCommento.get("ID_PADRE"));
+            tipoCommento=0;     // Lo ripristino immediatamente per non avere sorprese
+        }
+
+        objSql.inserisci("COMMENTI", locRowCommento);
         caricaCommenti(ID_CANZONE);
+        commentoTextArea.setText("");
+    }
+
+    public void annullaCommento(){
+        tipoCommento=0;
         commentoTextArea.setText("");
     }
 
     // Carica i commenti presenti nel db per quella canzone
     public void caricaCommenti(int id_canzone) {
         ID_CANZONE = id_canzone;
-
         commentiContainer.getChildren().clear();
 
-        // Select commenti
-        List<Map<String, Object>> commenti=  objSql.leggiLista("SELECT NOME, COGNOME, TESTO FROM COMMENTI INNER JOIN UTENTI ON COMMENTI.ID_UTENTE = UTENTI.ID_UTENTE WHERE ID_CANZONE = " + id_canzone);
+        // Carica tutti i commenti della canzone
+        listaCommenti = objSql.leggiLista("SELECT ID_COMMENTO,ID_CANZONE, UTENTI.ID_UTENTE, ID_PADRE, TESTO, RANGE_INIZIO, RANGE_FINE, UTENTI.NOME, UTENTI.COGNOME "+
+                "FROM COMMENTI "+
+                "INNER JOIN UTENTI ON UTENTI.ID_UTENTE=COMMENTI.ID_UTENTE "+
+                "WHERE ID_CANZONE = " + id_canzone + " ORDER BY ID_COMMENTO ASC");
 
-        if(commenti == null) {
-            return;
-        }
+        if (listaCommenti == null) return;
 
-        // Prepara commenti
-        for (Map<String, Object> commento : commenti) {
-            VBox commentoBox = new VBox();
-            commentoBox.setSpacing(2);
-            commentoBox.getStyleClass().add("commento");
+        // Filtra i commenti principali (padri) con ID_PADRE = null
+        for (Map<String, Object> commento : listaCommenti) {
+            if (commento.get("ID_PADRE") != null) continue; // solo padri
 
-            String autore = commento.get("NOME").toString() + " " + commento.get("COGNOME").toString();
-            Label autoreLabel = new Label(autore);
-            autoreLabel.setStyle("-fx-text-fill: #6d24e1; -fx-font-weight: bold; -fx-padding: 0 0 4 0;");
-
-            Label testoLabel = new Label(commento.get("TESTO").toString());
-            testoLabel.setWrapText(true);
-
-            commentoBox.getChildren().addAll(autoreLabel, testoLabel);
-
+            VBox commentoBox = creaVBoxCommento(commento, false);
             commentiContainer.getChildren().add(commentoBox);
+
+            // Carica le risposte (figli)
+            for (Map<String, Object> risposta : listaCommenti) {
+                Object idPadre = risposta.get("ID_PADRE");
+                if (idPadre != null && idPadre.equals(commento.get("ID_COMMENTO"))) {
+                    VBox rispostaBox = creaVBoxCommento(risposta, true);
+                    commentiContainer.getChildren().add(rispostaBox);
+                }
+            }
         }
+    }
+
+
+    private VBox creaVBoxCommento(Map<String, Object> commento, boolean isFiglio) {
+        VBox box = new VBox();
+        box.setSpacing(2);
+        box.getStyleClass().add("commento");
+
+        String autore = commento.get("NOME").toString() + " " + commento.get("COGNOME").toString();
+        Label autoreLabel = new Label(autore);
+        autoreLabel.setStyle("-fx-text-fill: #6d24e1; -fx-font-weight: bold; -fx-font-size: 16; -fx-padding: 0 0 4 0;");
+
+        Label testoLabel = new Label(commento.get("TESTO").toString());
+        testoLabel.setWrapText(true);
+        testoLabel.setMaxWidth(400);
+        testoLabel.setStyle("-fx-font-size: 14; -fx-line-spacing: 5;");
+
+        Label testoRispondi = new Label("Rispondi");
+        testoRispondi.setStyle("-fx-text-fill: #6d24e1; -fx-underline: true; -fx-font-size: 12; -fx-padding: 4 0 4 0;");
+        testoRispondi.setOnMouseClicked(event -> {
+            rispondiCommento((Integer) commento.get("ID_COMMENTO"));
+        });
+
+        HBox rispondiBox = new HBox(testoRispondi);
+        rispondiBox.setAlignment(Pos.CENTER_RIGHT);
+
+        box.getChildren().addAll(autoreLabel, testoLabel, rispondiBox);
+
+        if (isFiglio) {
+            // Applica stile e margine per farla apparire più stretta e allineata a destra
+            box.setMaxWidth(400); // più stretta
+            box.setStyle("-fx-background-color: #292929; -fx-padding: 6 12 6 12; -fx-background-radius: 8;");
+            VBox.setMargin(box, new Insets(0, 0, 3, 60)); // margine sinistro per "indentare" a destra
+        } else {
+            box.setMaxWidth(Double.MAX_VALUE); // padre prende tutta la larghezza disponibile
+            VBox.setMargin(box, new Insets(0, 0, 3, 0)); // spaziatura tra i commenti
+        }
+
+        if (commento.get("ID_UTENTE").equals(PaginaPaneLogin.UTENTE_ID) || PaginaPaneLogin.UTENTE_NOME.equals("adm")) {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem eliminaCommento = new MenuItem("✘ Elimina commento");
+            eliminaCommento.setId(commento.get("ID_COMMENTO").toString());
+            eliminaCommento.setOnAction(event -> {
+                cancellaCommentoSelezionato(eliminaCommento.getId());
+            });
+            contextMenu.getItems().add(eliminaCommento);
+
+            box.setOnContextMenuRequested(event -> {
+                contextMenu.show(box, event.getScreenX(), event.getScreenY());
+            });
+        }
+
+        return box;
+    }
+
+    private void cancellaCommentoSelezionato(String idCommento) {
+        objSql.cancella("COMMENTI","ID_COMMENTO="+idCommento);
+        caricaCommenti(ID_CANZONE);
+    }
+
+
+    public void rispondiCommento(int idCommento){
+        // Controlliamo se il commento figlio è già collegato ad un figlio padre
+        int idCommentoPadre;
+        for(Map<String, Object> rowC : listaCommenti){
+            if(rowC.get("ID_COMMENTO").equals(idCommento)) {
+                rowCommento = rowC;
+                break;
+            }
+        }
+
+        // Controllo se qualcosa andasse storto
+        if(rowCommento == null) return;
+
+
+        // Mi ricavo l'id papà
+        try{
+            idCommentoPadre = Integer.parseInt(rowCommento.get("ID_PADRE").toString());
+        }
+        catch(NullPointerException e){
+            idCommentoPadre = Integer.parseInt(rowCommento.get("ID_COMMENTO").toString());
+        }
+
+        rowCommento.put("ID_PADRE", idCommentoPadre);
+
+        // preparo il tipo di commento = 1
+        tipoCommento=1;
+
+        // Sposto il mouse nella text area
+        commentoTextArea.requestFocus();
+        commentoTextArea.positionCaret(commentoTextArea.getText().length());
+
+
+
     }
 }
