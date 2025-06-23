@@ -45,11 +45,14 @@ public class PaginaPaneCommenti {
 
         objSql.inserisci("COMMENTI", locRowCommento);
         caricaCommenti(ID_CANZONE);
+        impostaTextArea(tipoCommento);
         commentoTextArea.setText("");
     }
 
     public void annullaCommento(){
         tipoCommento=0;
+        // Cambio il bordo per far capire che si riferisce ad una risposta di un commento
+        impostaTextArea(tipoCommento);
         commentoTextArea.setText("");
     }
 
@@ -100,7 +103,7 @@ public class PaginaPaneCommenti {
         testoLabel.setStyle("-fx-font-size: 14; -fx-line-spacing: 5;");
 
         Label testoRispondi = new Label("Rispondi");
-        testoRispondi.setStyle("-fx-text-fill: #6d24e1; -fx-underline: true; -fx-font-size: 12; -fx-padding: 4 0 4 0;");
+        testoRispondi.setStyle("-fx-text-fill: #4A90E2 ; -fx-underline: true; -fx-font-size: 12; -fx-padding: 4 0 4 0;");
         testoRispondi.setOnMouseClicked(event -> {
             rispondiCommento((Integer) commento.get("ID_COMMENTO"));
         });
@@ -170,11 +173,29 @@ public class PaginaPaneCommenti {
         // preparo il tipo di commento = 1
         tipoCommento=1;
 
+        // Cambio il bordo per far capire che si riferisce ad una risposta di un commento
+        impostaTextArea(tipoCommento);
+
         // Sposto il mouse nella text area
         commentoTextArea.requestFocus();
         commentoTextArea.positionCaret(commentoTextArea.getText().length());
+        }
 
-
-
+        private void impostaTextArea(int parValore){
+        String locCampiPersonalizzati;
+        if(parValore == 0) {
+            locCampiPersonalizzati= "    -fx-border-color: #6d24e1;";
+        }else{  // Se è una risposta
+            locCampiPersonalizzati= "    -fx-border-color: #4A90E2;";
+        }
+            commentoTextArea.setStyle("  -fx-background-color: #2c2c2c;\n" +
+                    "    -fx-text-fill: #f9f9f9;\n" +
+                    "    -fx-font-family: \"Gotham-Medium\";\n" +
+                    "    -fx-font-size: 16;\n" +
+                    "    -fx-line-spacing: 5;\n" +
+                    "    -fx-padding: 6;\n" +
+                    "    -fx-background-radius: 6;\n" +
+                    "    -fx-border-radius: 6;" +
+                    locCampiPersonalizzati);
     }
 }
