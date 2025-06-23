@@ -5,11 +5,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +27,7 @@ public class PaginaPanePrincipale implements Initializable {
 
     @FXML
     private TilePane PaginaPanePrincipale_grigliaMusiche;
+    @FXML private ScrollPane PaginaPrincipale_scrollPane;
 
     public void setMainController(PaginaPrincipale controller) {
         this.mainController = controller;
@@ -32,12 +35,20 @@ public class PaginaPanePrincipale implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        PaginaPanePrincipale_grigliaMusiche.prefWidthProperty().bind(PaginaPrincipale_scrollPane.widthProperty());
+
         List<Map<String, Object>> listaBrani = objSql.leggiLista("SELECT * FROM CANZONE");
         for (Map<String, Object> brano : listaBrani) {
             VBox card = new VBox(10);
             card.setAlignment(Pos.CENTER);
-            card.setStyle("-fx-background-color: transparent; -fx-padding: 10; -fx-background-radius: 10;");
+            card.setStyle("""
+    -fx-background-color: #1e1e1e;
+    -fx-background-radius: 15;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);
+    """);
             card.setPrefWidth(150);
+            card.setPrefHeight(150);
             card.setId(Integer.toString((Integer) brano.get("ID_CANZONE")));   // In modo che ogni VBOX sia direttamente associata alla Canzone, mi servirà dopo per scegliere la musica e riprodurla
             card.setOnMouseClicked(event -> {
                 try {
@@ -52,7 +63,7 @@ public class PaginaPanePrincipale implements Initializable {
             ImageView copertina = new ImageView(immagine);
             copertina.setFitWidth(120);
             copertina.setFitHeight(120);
-            copertina.setPreserveRatio(true);
+            copertina.setPreserveRatio(true); // se vuoi una forma esatta 120x120
 
             Label titolo = new Label((String) brano.get("TITOLO"));
             titolo.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;");

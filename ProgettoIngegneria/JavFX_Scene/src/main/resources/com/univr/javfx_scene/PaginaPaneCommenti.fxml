@@ -16,8 +16,8 @@
         <VBox fx:id="PaginaPaneCommenti_vBox" maxHeight="Infinity" prefWidth="350.0" styleClass="PaginaPaneCommenti_vBox"
               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Label styleClass="styleLabel" text="Commenti" />
-                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                <Label fx:id="PaginaPaneCommenti_label" styleClass="PaginaPanePrincipale_labelMusiche" text="Commenti" />
+                <ScrollPane styleClass="PaginaPrincipale_scrollPane" fitToWidth="true" VBox.vgrow="ALWAYS">
                     <content>
                         <VBox fx:id="commentiContainer" spacing="5.0" styleClass="commentiContainer"
                               prefWidth="1.0" VBox.vgrow="ALWAYS"/>

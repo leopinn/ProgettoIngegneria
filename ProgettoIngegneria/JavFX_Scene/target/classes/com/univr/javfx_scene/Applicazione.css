@@ -211,18 +211,18 @@ PasswordField {
     -fx-background-image: url("../../../immagini/iconaImpostazioni.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-size: 42 42; /* larghezza altezza */
+    -fx-background-size: 36 36;
 
     -fx-background-color: #1f1f1f;
     -fx-border-color: #1f1f1f;
 
-    -fx-min-width: 60;
-    -fx-min-height: 60;
-    -fx-max-width: 60;
-    -fx-max-height: 60;
+    -fx-min-width: 50;
+    -fx-min-height: 50;
+    -fx-max-width: 50;
+    -fx-max-height: 50;
 
-    -fx-background-radius: 30; /* metà della dimensione = cerchio */
-    -fx-border-radius: 30;
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
     -fx-padding: 10 10 10 10;
 }
 
@@ -230,18 +230,18 @@ PasswordField {
     -fx-background-image: url("../../../immagini/iconaUpload.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-size: 42 42;
+    -fx-background-size: 30 30;
 
     -fx-background-color: #1f1f1f;
     -fx-border-color: #1f1f1f;
 
-    -fx-min-width: 60;
-    -fx-min-height: 60;
-    -fx-max-width: 60;
-    -fx-max-height: 60;
+    -fx-min-width: 50;
+    -fx-min-height: 50;
+    -fx-max-width: 50;
+    -fx-max-height: 50;
 
-    -fx-background-radius: 30;
-    -fx-border-radius: 30;
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
     -fx-padding: 10 10 10 10;
 }
 
@@ -249,18 +249,18 @@ PasswordField {
     -fx-background-image: url("../../../immagini/iconaHome.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-size: 36 36;
+    -fx-background-size: 30 30;
 
     -fx-background-color: #1f1f1f;
     -fx-border-color: #1f1f1f;
 
-    -fx-min-width: 60;
-    -fx-min-height: 60;
-    -fx-max-width: 60;
-    -fx-max-height: 60;
+    -fx-min-width: 50;
+    -fx-min-height: 50;
+    -fx-max-width: 50;
+    -fx-max-height: 50;
 
-    -fx-background-radius: 30;
-    -fx-border-radius: 30;
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
     -fx-padding: 10 10 10 10;
 }
 
@@ -268,18 +268,18 @@ PasswordField {
     -fx-background-image: url("../../../immagini/iconaAccount.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-size: 36 36;
+    -fx-background-size: 30 30;
 
     -fx-background-color: #1f1f1f;
     -fx-border-color: #1f1f1f;
 
-    -fx-min-width: 60;
-    -fx-min-height: 60;
-    -fx-max-width: 60;
-    -fx-max-height: 60;
+    -fx-min-width: 50;
+    -fx-min-height: 50;
+    -fx-max-width: 50;
+    -fx-max-height: 50;
 
-    -fx-background-radius: 30;
-    -fx-border-radius: 30;
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
     -fx-padding: 10 10 10 10;
 }
 
@@ -412,6 +412,20 @@ PasswordField {
 
 .PaginaPrincipale_hBoxPlayer{
     -fx-spacing: 10;
+}
+
+.PaginaPrincipale_bottoneSuono{
+    -fx-background-image: url("../../../immagini/iconaSuono.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 20 20; /* larghezza altezza */
+
+    -fx-background-color: transparent;
+
+    -fx-min-width: 20;
+    -fx-min-height: 20;
+    -fx-max-width: 20;
+    -fx-max-height: 20;
 }
 
 /* ----------------------------------------------------------------------------------------------------------- PANE PRINCIPALE ----------------------------------------------------------------- */

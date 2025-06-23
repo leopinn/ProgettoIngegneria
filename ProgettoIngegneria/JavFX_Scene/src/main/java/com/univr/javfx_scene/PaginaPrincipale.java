@@ -14,6 +14,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.layout.StackPane;
 
@@ -136,6 +137,12 @@ public class PaginaPrincipale implements Initializable {
         Image immagine = new Image(new File(locPath).toURI().toString());
 
         PaginaPrincipale_imageCopertina.setImage(immagine);
+
+        // Imposto bordi tondeggianti
+        Rectangle clip = new Rectangle(60, 60);
+        clip.setArcWidth(10); // + grande = più arrotondato
+        clip.setArcHeight(10);
+        PaginaPrincipale_imageCopertina.setClip(clip);
 
         // Imposto titolo e autore
         Map<String, Object> rowBrano = objSql.leggi(String.format("SELECT TITOLO, AUTORE FROM CANZONE WHERE ID_CANZONE=%s", parId));
