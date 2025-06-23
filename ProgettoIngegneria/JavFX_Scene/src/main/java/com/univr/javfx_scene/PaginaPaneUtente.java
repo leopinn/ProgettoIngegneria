@@ -36,8 +36,8 @@ public class PaginaPaneUtente implements Initializable {
             locQuery = "SELECT * FROM CANZONE";
             PaginaPaneUtente_label.setText("Brani caricati sulla piattaforma");
 
-        } else {
-            locQuery = "SELECT * FROM CANZONE WHERE AUTORE = '" + PaginaPaneLogin.UTENTE_NOME + "'";
+        } else {    // Le canzoni caricate dall'utente corrente
+            locQuery = "SELECT * FROM CANZONE WHERE ID_UTENTE = " + PaginaPaneLogin.ID_UTENTE;
         }
 
         locListaCanzoni= objSql.leggiLista(locQuery);

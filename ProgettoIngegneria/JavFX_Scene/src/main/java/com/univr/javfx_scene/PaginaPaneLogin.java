@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class PaginaPaneLogin {
     // Dichiarazione variabili pubbliche
-    public static int UTENTE_ID;
+    public static int ID_UTENTE;
     public static String UTENTE_NOME;
     public static String UTENTE_EMAIL;
 
@@ -81,7 +81,7 @@ public class PaginaPaneLogin {
         // Se è andato tutto a buon fine, salvo in variabili globali ID_UTENTE e NOME
         int loc_chiave = (int) loc_row.get("ID_UTENTE");
         String loc_username = (String) loc_row.get("NOME");
-        UTENTE_ID=loc_chiave;
+        ID_UTENTE=loc_chiave;
         UTENTE_NOME=loc_username;
         UTENTE_EMAIL = (String) loc_row.get("EMAIL");
 

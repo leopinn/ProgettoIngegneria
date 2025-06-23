@@ -87,7 +87,7 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
                 UTENTI utente = row.getItem();
                 // Per evitare che l'amministratore possa auto autorizzarsi o sospendersi
                 if (utente != null) {
-                    if(Integer.parseInt(utente.getID_UTENTE())==PaginaPaneLogin.UTENTE_ID){
+                    if(Integer.parseInt(utente.getID_UTENTE())==PaginaPaneLogin.ID_UTENTE){
                         mostraMessaggio("Attenzione!!","Impossibile modificare se stessi");
                         return;
                     }
@@ -108,7 +108,7 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
             eliminaItem.setOnAction(e -> {
                 UTENTI utente = row.getItem();
                 if (utente != null) {
-                    if(Integer.parseInt(utente.getID_UTENTE())==PaginaPaneLogin.UTENTE_ID){
+                    if(Integer.parseInt(utente.getID_UTENTE())==PaginaPaneLogin.ID_UTENTE){
                         mostraMessaggio("Attenzione!!","Impossibile modificare se stessi");
                         return;
                     }

@@ -91,6 +91,8 @@ public class PaginaPaneUpload {
         rowCanzone.put("GENERE", genere);
         rowCanzone.put("ANNO_COMPOSIZIONE", anno_composizione);
         rowCanzone.put("LINK_YOUTUBE", link_youtube);
+        rowCanzone.put("ID_UTENTE", PaginaPaneLogin.ID_UTENTE);
+        rowCanzone.put("UTENTE_INS", PaginaPaneLogin.UTENTE_NOME);
 
         ObjSql objSql = ObjSql.oggettoSql();
         int risultato=objSql.inserisci("CANZONE", rowCanzone);
@@ -103,12 +105,6 @@ public class PaginaPaneUpload {
 
         // Se ritorna 1 è andato tutto a buon fine
         if(risultato==1){
-           /* try {
-                mainController.mostraLabelIscrizione();
-               mainController.impostaSchermata();
-            }catch (IOException e){
-                e.printStackTrace();
-            }*/
             // Adesso leggo la chiave della canzone e sposto le canzoni
             rowCanzone = objSql.leggi("SELECT ID_CANZONE FROM CANZONE ORDER BY ID_CANZONE DESC LIMIT 1");
             String locChiave= rowCanzone.get("ID_CANZONE").toString();

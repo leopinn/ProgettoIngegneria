@@ -33,7 +33,7 @@ public class PaginaPaneCommenti {
 
         if (testo.trim().isEmpty()) {return;}
 
-        int utente = PaginaPaneLogin.UTENTE_ID;
+        int utente = PaginaPaneLogin.ID_UTENTE;
 
 
         Map<String, Object> locRowCommento = new LinkedHashMap<>();
@@ -126,7 +126,7 @@ public class PaginaPaneCommenti {
             VBox.setMargin(box, new Insets(0, 0, 3, 0)); // spaziatura tra i commenti
         }
 
-        if (commento.get("ID_UTENTE").equals(PaginaPaneLogin.UTENTE_ID) || PaginaPaneLogin.UTENTE_NOME.equals("adm")) {
+        if (commento.get("ID_UTENTE").equals(PaginaPaneLogin.ID_UTENTE) || PaginaPaneLogin.UTENTE_NOME.equals("adm")) {
             ContextMenu contextMenu = new ContextMenu();
             MenuItem eliminaCommento = new MenuItem("✘ Elimina commento");
             eliminaCommento.setId(commento.get("ID_COMMENTO").toString());
