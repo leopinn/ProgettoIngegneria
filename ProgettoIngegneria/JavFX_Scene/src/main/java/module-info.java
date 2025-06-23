@@ -5,6 +5,7 @@ module com.univr.javfx_scene {
     requires java.sql;
     requires jdk.jdi;
     requires java.desktop;
+    requires javafx.web;
 
 
     opens com.univr.javfx_scene to javafx.fxml;

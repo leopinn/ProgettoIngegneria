@@ -32,6 +32,7 @@ public class PaginaPaneCommenti {
 
         objSql.inserisci("COMMENTI", rowCommento);
         caricaCommenti(ID_CANZONE);
+        commentoTextArea.setText("");
     }
 
     // Carica i commenti presenti nel db per quella canzone

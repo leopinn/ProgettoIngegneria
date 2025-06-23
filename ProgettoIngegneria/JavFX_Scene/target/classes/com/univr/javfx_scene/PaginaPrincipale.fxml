@@ -10,11 +10,9 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="PaginaPrincipale_borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="697.0" minWidth="1280.0" prefHeight="697.0"
-            prefWidth="1280.0" styleClass="PaginaPrincipale_borderPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPrincipale">
+<BorderPane fx:id="PaginaPrincipale_borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" styleClass="PaginaPrincipale_borderPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPrincipale">
    <left>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+      <VBox minWidth="100.0" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </left>
    <top>
       <HBox fx:id="PaginaPrincipale_hBox" alignment="CENTER" prefHeight="100.0" spacing="10.0" BorderPane.alignment="CENTER">
@@ -44,12 +42,12 @@
       </HBox>
    </top>
    <bottom>
-      <BorderPane prefHeight="100.0" BorderPane.alignment="CENTER">
+      <BorderPane minHeight="100.0" prefHeight="100.0" BorderPane.alignment="CENTER">
          <left>
-            <HBox fx:id="PaginaPrincipale_hBoxLeft" prefHeight="118.0" prefWidth="271.0" styleClass="PaginaPrincipale_hBoxLeft" BorderPane.alignment="CENTER">
+            <HBox fx:id="PaginaPrincipale_hBoxLeft" alignment="CENTER" minHeight="100.0" prefHeight="100.0" styleClass="PaginaPrincipale_hBoxLeft">
                <children>
-                  <ImageView fx:id="PaginaPrincipale_imageCopertina" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="PaginaPrincipale_imageCopertina" />
-                  <VBox fx:id="PaginaPrincipale_vBoxDati" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" styleClass="PaginaPrincipale_vBoxDati">
+                  <ImageView fx:id="PaginaPrincipale_imageCopertina" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="PaginaPrincipale_imageCopertina" />
+                  <VBox fx:id="PaginaPrincipale_vBoxDati" alignment="CENTER_LEFT" prefWidth="100.0" styleClass="PaginaPrincipale_vBoxDati">
                      <children>
                         <Label fx:id="PaginaPrincipale_labelTitoloCanzone" styleClass="PaginaPrincipale_labelTitoloCanzone" text="Titolo" visible="false" />
                         <Label fx:id="PaginaPrincipale_labelAutoreCanzone" styleClass="PaginaPrincipale_labelAutoreCanzone" text="Autore" visible="false" />
@@ -68,7 +66,7 @@
                         <Button fx:id="PaginaPrincipale_buttonAvanti" mnemonicParsing="false" styleClass="PaginaPrincipale_buttonAvanti" />
                      </children>
                   </HBox>
-                  <HBox fx:id="PaginaPrincipale_hBoxPlayer" alignment="TOP_CENTER" maxWidth="1000" minHeight="50" minWidth="300" styleClass="PaginaPrincipale_hBoxPlayer">
+                  <HBox fx:id="PaginaPrincipale_hBoxPlayer" alignment="TOP_CENTER" maxWidth="1000" minHeight="30.0" minWidth="300.0" styleClass="PaginaPrincipale_hBoxPlayer">
                      <children>
                         <Label fx:id="PaginaPrincipale_minutaggioIniziale" alignment="CENTER_RIGHT" prefWidth="40" text="00:00" />
                         <Slider fx:id="PaginaPrincipale_sliderMusica" onMousePressed="#sliderPressed" onMouseReleased="#sliderReleased" styleClass="PaginaPrincipale_sliderMusica" HBox.hgrow="ALWAYS" />
@@ -79,12 +77,29 @@
             </VBox>
          </center>
          <right>
-            <HBox prefHeight="118.0" prefWidth="304.0" BorderPane.alignment="CENTER" />
+            <HBox prefHeight="118.0" prefWidth="304.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox fx:id="PaginaPrincipale_hBoxVolume" alignment="CENTER" maxWidth="1000" minHeight="50" minWidth="300" styleClass="PaginaPrincipale_hBoxPlayer">
+                     <children>
+                        <Button fx:id="PaginaPrincipale_bottoneSuono" mnemonicParsing="false" styleClass="PaginaPrincipale_bottoneSuono">
+                           <HBox.margin>
+                              <Insets bottom="18.0" />
+                           </HBox.margin></Button>
+                        <Slider fx:id="PaginaPrincipale_sliderVolume" onMouseReleased="#sliderMusicaReleased" prefHeight="0.0" prefWidth="120.0" styleClass="PaginaPrincipale_sliderMusica" value="100" />
+                     </children>
+                     <HBox.margin>
+                        <Insets top="20.0" />
+                     </HBox.margin>
+                  </HBox>
+               </children></HBox>
          </right>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </BorderPane>
    </bottom>
    <right>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox minWidth="100.0" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets left="50.0" />
          </BorderPane.margin></VBox>

@@ -14,6 +14,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.layout.StackPane;
 
@@ -42,6 +43,7 @@ public class PaginaPrincipale implements Initializable {
     private Parent commentiPane;
     @FXML private StackPane PaginaPrincipale_rightPane, placeholderPane;
     @FXML private Slider PaginaPrincipale_sliderMusica;
+    @FXML private Slider PaginaPrincipale_sliderVolume;
     @FXML private Button PaginaPrincipale_buttonPlay;
 
     public MediaPlayer mediaPlayer;
@@ -54,6 +56,11 @@ public class PaginaPrincipale implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             paginaPrincipale();
+
+            // Modifica del volume in tempo reale
+            PaginaPrincipale_sliderVolume.valueProperty().addListener((obs, oldVal, newVal) -> {
+                mediaPlayer.setVolume(newVal.doubleValue() / 100.0);
+            });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -131,6 +138,12 @@ public class PaginaPrincipale implements Initializable {
 
         PaginaPrincipale_imageCopertina.setImage(immagine);
 
+        // Imposto bordi tondeggianti
+        Rectangle clip = new Rectangle(60, 60);
+        clip.setArcWidth(10); // + grande = più arrotondato
+        clip.setArcHeight(10);
+        PaginaPrincipale_imageCopertina.setClip(clip);
+
         // Imposto titolo e autore
         Map<String, Object> rowBrano = objSql.leggi(String.format("SELECT TITOLO, AUTORE FROM CANZONE WHERE ID_CANZONE=%s", parId));
         PaginaPrincipale_labelTitoloCanzone.setText(rowBrano.get("TITOLO").toString());
@@ -141,6 +154,21 @@ public class PaginaPrincipale implements Initializable {
 
         // Sezione commenti del brano
         mostraCommenti(1, parId);
+
+        // Sezione video del brano
+        mostraVideo(1, parId);
+
+    }
+
+    public void mostraVideo(int parId, int id_canzone) throws IOException {
+        FXMLLoader loaderVideo = new FXMLLoader(getClass().getResource("PaginaPaneVideo.fxml"));
+        Parent registerPaneVideo = loaderVideo.load();
+
+        PaginaPaneVideo controllerVideo = loaderVideo.getController();
+        controllerVideo.caricaVideo(id_canzone);
+
+        PaginaPrincipale_borderPane.setLeft(registerPaneVideo);
+        BorderPane.setMargin(registerPaneVideo, new Insets(0, 10, 0, 10));
     }
 
     public void mostraCommenti(int parId, int id_canzone) throws IOException {
@@ -216,4 +244,10 @@ public class PaginaPrincipale implements Initializable {
         mediaPlayer.seek(Duration.millis(PaginaPrincipale_sliderMusica.getValue()));
         mediaPlayer.play();
     }
+
+    // Imposta il volume della musica
+    public void sliderMusicaReleased(){
+        mediaPlayer.setVolume(PaginaPrincipale_sliderVolume.getValue() / 100); // diviso 100 perchè il volume del player va da 0.0 a 1.0
+    }
+
 }
