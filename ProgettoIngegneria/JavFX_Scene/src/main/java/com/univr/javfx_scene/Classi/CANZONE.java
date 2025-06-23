@@ -3,6 +3,7 @@ package com.univr.javfx_scene.Classi;
 public class CANZONE {
 
     private final int ID_CANZONE;
+    private final String TITOLO;
     private final String AUTORE;
     private final String GENERE;
     private final int ANNO_COMPOSIZIONE;
@@ -13,6 +14,7 @@ public class CANZONE {
 
     public CANZONE(int idCanzone, String titolo, String autore, String genere, int annoComposizione, String linkYoutube, String percorsoMusica , String percorsoPdf, String percorsoCopertina) {
         this.ID_CANZONE = idCanzone;
+        this.TITOLO = titolo;
         this.AUTORE = autore;
         this.GENERE = genere;
         this.ANNO_COMPOSIZIONE = annoComposizione;
@@ -48,6 +50,10 @@ public class CANZONE {
 
     public String getAUTORE() {
         return AUTORE;
+    }
+
+    public String getTITOLO() {
+        return TITOLO;
     }
 
     public int getID_CANZONE() {

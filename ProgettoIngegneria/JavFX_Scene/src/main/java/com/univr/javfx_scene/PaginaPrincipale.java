@@ -37,7 +37,6 @@ public class PaginaPrincipale implements Initializable {
     @FXML private Label PaginaPrincipale_labelTitoloCanzone;
     @FXML private Label PaginaPrincipale_labelAutoreCanzone,PaginaPrincipale_minutaggioIniziale, PaginaPrincipale_minutaggioFinale;
     @FXML private Parent commentiPane;
-    @FXML private StackPane PaginaPrincipale_rightPane, placeholderPane;
     @FXML private Slider PaginaPrincipale_sliderMusica;
     @FXML private Slider PaginaPrincipale_sliderVolume;
     @FXML private Button PaginaPrincipale_buttonPlay;
@@ -68,6 +67,17 @@ public class PaginaPrincipale implements Initializable {
 
         // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
         PaginaPanePrincipale controller = loaderPrincipale.getController();
+        controller.setMainController(this);  // <<< passaggio chiave
+
+        PaginaPrincipale_borderPane.setCenter(registerPane);
+    }
+
+    public void paginaUtente() throws IOException {
+        FXMLLoader loaderPrincipale = new FXMLLoader(getClass().getResource("PaginaPaneUtente.fxml"));
+        Parent registerPane = loaderPrincipale.load();
+
+        // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
+        PaginaPaneUtente controller = loaderPrincipale.getController();
         controller.setMainController(this);  // <<< passaggio chiave
 
         PaginaPrincipale_borderPane.setCenter(registerPane);
