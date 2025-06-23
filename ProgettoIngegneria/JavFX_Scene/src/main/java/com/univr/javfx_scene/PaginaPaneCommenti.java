@@ -30,6 +30,9 @@ public class PaginaPaneCommenti {
     public void inviaCommento(ActionEvent event) {
         // codice da eseguire quando si clicca "Invia"
         String testo = commentoTextArea.getText();
+
+        if (testo.trim().isEmpty()) {return;}
+
         int utente = PaginaPaneLogin.UTENTE_ID;
 
 
