@@ -27,7 +27,7 @@ public class PaginaPaneUpload {
     private  ObjSql objSql = ObjSql.oggettoSql();
     private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
     private String destFile="upload/musiche";
-    private String autore, ripetiAutore, titolo, ripetiTitolo, link_youtube, anno_composizione, genere;
+    private String autore, titolo, link_youtube, anno_composizione, genere;
     private int ID_CANZONE;
 
     // Variabili temporanee per musica, copertina e pdf
@@ -148,7 +148,7 @@ public class PaginaPaneUpload {
         Dragboard db = event.getDragboard();
         if (db.hasFiles()) {
             File file = db.getFiles().get(0);
-            if (file.getName().toLowerCase().endsWith(".mp3")) {
+            if (file.getName().toLowerCase().endsWith(".mp3") || file.getName().toLowerCase().endsWith(".mp4") || file.getName().toLowerCase().endsWith(".midi")) {
                 fileMusica = file; // memorizziamo il file
                 System.out.println("File caricato: " + file.getName());
 
@@ -164,7 +164,7 @@ public class PaginaPaneUpload {
         Dragboard db = event.getDragboard();
         if (db.hasFiles()) {
             File file = db.getFiles().get(0);
-            if (file.getName().toLowerCase().endsWith(".jpg")) {
+            if (file.getName().toLowerCase().endsWith(".jpg") || file.getName().toLowerCase().endsWith(".jpeg") || file.getName().toLowerCase().endsWith(".png")) {
                 fileCopertina = file; // memorizziamo il file
                 System.out.println("File caricato: " + file.getName());
 
@@ -180,7 +180,7 @@ public class PaginaPaneUpload {
         Dragboard db = event.getDragboard();
         if (db.hasFiles()) {
             File file = db.getFiles().get(0);
-            if (file.getName().toLowerCase().endsWith(".pdf")) {
+            if (file.getName().toLowerCase().endsWith(".pdf")||file.getName().toLowerCase().endsWith(".txt")||file.getName().toLowerCase().endsWith(".doc")||file.getName().toLowerCase().endsWith(".docx")) {
                 filePdf= file; // memorizziamo il file
                 System.out.println("File caricato: " + file.getName());
 
