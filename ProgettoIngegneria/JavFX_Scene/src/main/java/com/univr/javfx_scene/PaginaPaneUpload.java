@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Popup;
 import javafx.stage.Window;
 import javafx.util.Duration;
@@ -205,6 +206,8 @@ public class PaginaPaneUpload {
         rowCanzone.put("LINK_YOUTUBE", link_youtube);
         rowCanzone.put("RUOLO", ruolo);
         rowCanzone.put("STRUMENTI", strumenti);
+        rowCanzone.put("UTENTE_INS", PaginaPaneLogin.UTENTE_NOME);
+        rowCanzone.put("ID_UTENTE", PaginaPaneLogin.ID_UTENTE);
 
         ObjSql objSql = ObjSql.oggettoSql();
         int risultato = objSql.inserisci("CANZONE", rowCanzone);

@@ -81,6 +81,9 @@ public class PaginaPanePrincipale implements Initializable {
             });
 
             String locPath = "upload/copertine/" + brano.get("ID_CANZONE") + ".jpg";
+            if(!new File(locPath).exists())         // Controllo se eventualmente è un PNG
+                locPath = "upload/copertine/" + brano.get("ID_CANZONE") + ".png";
+
             Image immagine = new Image(new File(locPath).toURI().toString());
             ImageView copertina = new ImageView(immagine);
             copertina.setFitWidth(120);
