@@ -5,13 +5,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="PaginaCommenti_anchorPane" styleClass="PaginaCommenti_anchorPane" stylesheets="@Applicazione.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneCommenti">
+<AnchorPane fx:id="PaginaCommenti_anchorPane" styleClass="PaginaCommenti_anchorPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneCommenti">
 
     <children>
         <VBox fx:id="PaginaPaneCommenti_vBox" maxHeight="Infinity" prefWidth="350.0" styleClass="PaginaPaneCommenti_vBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -22,7 +22,14 @@
                         <VBox fx:id="commentiContainer" prefWidth="1.0" spacing="5.0" styleClass="commentiContainer" VBox.vgrow="ALWAYS" />
                     </content>
                 </ScrollPane>
-                <TextArea fx:id="commentoTextArea" minHeight="100.0" prefRowCount="4" promptText="Scrivi un commento..." styleClass="commentoTextArea" wrapText="true"/>
+            <HBox fx:id="PaginaPaneCommenti_hBoxMinutaggio" alignment="CENTER" minHeight="50.0" prefHeight="50.0" prefWidth="340.0" styleClass="PaginaPaneCommenti_hBoxMinutaggio">
+               <children>
+                  <TextField fx:id="PaginaPaneCommenti_testoInizio" prefWidth="140.0" promptText="Sec. inizio" styleClass="PaginaPaneCommenti_testoInizio" />
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <TextField fx:id="PaginaPaneCommenti_testoFine" prefWidth="140.0" promptText="Sec. fine" styleClass="PaginaPaneCommenti_testoFine" />
+               </children>
+            </HBox>
+                <TextArea fx:id="commentoTextArea" minHeight="100.0" prefRowCount="4" promptText="Scrivi un commento..." styleClass="commentoTextArea" wrapText="true" />
             <HBox alignment="CENTER" prefHeight="40.0">
                <children>
                   <Button fx:id="PaginaPaneCommenti_bottoneAnnullaInvio" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#annullaCommento" prefHeight="30.0" prefWidth="100.0" styleClass="PaginaPaneCommenti_bottoneAnnullaInvio" text="Annulla" />
@@ -30,6 +37,7 @@
                       <Button fx:id="PaginaPaneCommenti_bottoneInvia" minHeight="30.0" minWidth="200.0" onAction="#inviaCommento" prefHeight="30.0" prefWidth="200.0" styleClass="PaginaPaneCommenti_bottoneInvia" text="Invia" />
                </children>
             </HBox>
+            <VBox fx:id="PaginaPaneCommenti_vBoxMinutaggio" prefHeight="10.0" styleClass="PaginaPaneCommenti_vBoxMinutaggio" />
             </children>
         </VBox>
     </children>

@@ -1,6 +1,7 @@
 package com.univr.javfx_scene;
 
 import com.univr.javfx_scene.Classi.UTENTI;
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -9,7 +10,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.stage.Popup;
+import javafx.stage.Window;
+import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,13 +25,22 @@ import java.util.Map;
 public class PaginaPaneCommenti {
     private static ObjSql objSql = ObjSql.oggettoSql();
     private int ID_CANZONE;
-    private List<Map<String, Object>> listaCommenti;    // Messa pubblica per averla disponibile in tutta la gestione commenti
-    private Map<String, Object> rowCommento;            // Il commento attualmente selezionato
+    private List<Map<String, Object>> listaCommenti, listaCommentiRange;    // Messa pubblica per averla disponibile in tutta la gestione commenti
+    private Map<String, Object> rowCommento, rowCanzone;            // Il commento attualmente selezionato e la canzone attuale in riproduzione
 
     public int tipoCommento=0;      // 0=commento a se stante, 1=risposta ad un commento esistente
 
     @FXML private VBox commentiContainer;
+    @FXML private VBox PaginaPaneCommenti_vBoxMinutaggio;
     @FXML private TextArea commentoTextArea;
+
+    @FXML private TextField PaginaPaneCommenti_testoInizio, PaginaPaneCommenti_testoFine;
+
+    private VBox commentoMostrato = null;
+    private int rangeInizioCorrente = -1;
+    private int rangeFineCorrente = -1;
+    private PaginaPrincipale mainController;
+    public void setMainController(PaginaPrincipale mainController) {this.mainController=mainController;}
 
     @FXML
     public void inviaCommento(ActionEvent event) {
@@ -41,6 +57,56 @@ public class PaginaPaneCommenti {
         locRowCommento.put("ID_UTENTE", utente);
         locRowCommento.put("TESTO", testo);
 
+        // Controllo se si tratta di un commento per un determinato minutaggio della canzone
+        String locInizio = PaginaPaneCommenti_testoInizio.getText();
+        String locFine = PaginaPaneCommenti_testoFine.getText();
+        if(!locInizio.isEmpty() && (!locFine.isEmpty())){
+            // Se è un commento che dura più di 10 secondi
+            int inizio = Integer.parseInt(locInizio);
+            int fine = Integer.parseInt(locFine);
+            if(fine-inizio>10) {
+                erroreCommento(1);
+                pulisciCampi();
+                return;
+            }
+
+            // Se il commento viene scritto dentro al range della musica
+            MediaPlayer locMediaPlayer = mainController.getMediaPlayer();
+            Duration locDurata = locMediaPlayer.getMedia().getDuration();
+            if(inizio>(int) locDurata.toSeconds() || fine>(int) locDurata.toSeconds()) {
+                erroreCommento(2);
+                pulisciCampi();
+                return;
+            }
+
+            // Se esiste già un commento dentro quel range
+            for (Map<String, Object> rowCommento : listaCommentiRange) {
+                String locInizioCommento = rowCommento.get("RANGE_INIZIO").toString();
+                String locFineCommento = rowCommento.get("RANGE_FINE").toString();
+
+                if (!locInizioCommento.isEmpty() && !locFineCommento.isEmpty()) {
+                    int inizioCommento = Integer.parseInt(locInizioCommento);
+                    int fineCommento = Integer.parseInt(locFineCommento);
+
+
+                    // Controllo se i due intervalli si sovrappongono
+                    boolean siSovrappone = (inizio >= inizioCommento && inizio <= fineCommento) ||
+                            (fine >= inizioCommento && fine <= fineCommento) ||
+                            (inizio <= inizioCommento && fine >= fineCommento);
+
+                    if (siSovrappone) {
+                        erroreCommento(3); // Sovrapposizione di range
+                        pulisciCampi();
+                        return;
+                    }
+                }
+            }
+
+            mostraPopupSuccesso("Commento aggiunto con successo!");
+            locRowCommento.put("RANGE_INIZIO", PaginaPaneCommenti_testoInizio.getText());
+            locRowCommento.put("RANGE_FINE", PaginaPaneCommenti_testoFine.getText());
+        }
+
         if(tipoCommento==1){
             locRowCommento.put("ID_PADRE", rowCommento.get("ID_PADRE"));
             tipoCommento=0;     // Lo ripristino immediatamente per non avere sorprese
@@ -49,6 +115,13 @@ public class PaginaPaneCommenti {
         objSql.inserisci("COMMENTI", locRowCommento);
         caricaCommenti(ID_CANZONE);
         impostaTextArea(tipoCommento);
+
+        pulisciCampi();
+    }
+
+    private void pulisciCampi(){
+        PaginaPaneCommenti_testoInizio.setText("");
+        PaginaPaneCommenti_testoFine.setText("");
         commentoTextArea.setText("");
     }
 
@@ -62,13 +135,22 @@ public class PaginaPaneCommenti {
     // Carica i commenti presenti nel db per quella canzone
     public void caricaCommenti(int id_canzone) {
         ID_CANZONE = id_canzone;
+
+        rowCanzone = objSql.leggi("SELECT * FROM CANZONE WHERE ID_CANZONE = " + ID_CANZONE);
+
         commentiContainer.getChildren().clear();
 
         // Carica tutti i commenti della canzone
         listaCommenti = objSql.leggiLista("SELECT ID_COMMENTO,ID_CANZONE, UTENTI.ID_UTENTE, ID_PADRE, TESTO, RANGE_INIZIO, RANGE_FINE, UTENTI.NOME, UTENTI.COGNOME "+
                 "FROM COMMENTI "+
                 "INNER JOIN UTENTI ON UTENTI.ID_UTENTE=COMMENTI.ID_UTENTE "+
-                "WHERE ID_CANZONE = " + id_canzone + " ORDER BY ID_COMMENTO ASC");
+                "WHERE ID_CANZONE = " + id_canzone + " AND (RANGE_INIZIO IS NULL OR RANGE_INIZIO='') AND (RANGE_FINE IS NULL OR RANGE_FINE='') ORDER BY ID_COMMENTO ASC");
+
+        // Leggo la lista dei commenti a minutaggio
+        listaCommentiRange = objSql.leggiLista("SELECT ID_COMMENTO,ID_CANZONE, UTENTI.ID_UTENTE, ID_PADRE, TESTO, RANGE_INIZIO, RANGE_FINE, UTENTI.NOME, UTENTI.COGNOME "+
+                "FROM COMMENTI "+
+                "INNER JOIN UTENTI ON UTENTI.ID_UTENTE=COMMENTI.ID_UTENTE "+
+                "WHERE ID_CANZONE = " + id_canzone + " AND (RANGE_INIZIO IS NOT NULL OR RANGE_INIZIO!='') AND (RANGE_FINE IS NOT NULL OR RANGE_FINE!='') ORDER BY ID_COMMENTO ASC");
 
         if (listaCommenti == null) return;
 
@@ -100,7 +182,6 @@ public class PaginaPaneCommenti {
         box.getStyleClass().add("commento");
 
         // Se l'utente che commenta è l'autore della canzone
-        Map<String, Object> rowCanzone = objSql.leggi("SELECT * FROM CANZONE WHERE ID_CANZONE = " + ID_CANZONE);
         if(rowCanzone.get("AUTORE").toString().equals(commento.get("NOME").toString())) {
             autore = commento.get("NOME").toString() + " " + commento.get("COGNOME").toString()+ " (autore)";
             autoreLabel = new Label(autore);
@@ -114,7 +195,7 @@ public class PaginaPaneCommenti {
         Label testoLabel = new Label(commento.get("TESTO").toString());
         testoLabel.setWrapText(true);
         testoLabel.setMaxWidth(400);
-        testoLabel.setStyle("-fx-font-size: 14; -fx-line-spacing: 5;");
+        testoLabel.setStyle("-fx-font-size: 14; -fx-line-spacing: 5; -fx-text-fill: #ffffff");
 
         Label testoRispondi = new Label("Rispondi");
         testoRispondi.setStyle("-fx-text-fill: #4A90E2 ; -fx-underline: true; -fx-font-size: 12; -fx-padding: 4 0 4 0;");
@@ -136,6 +217,51 @@ public class PaginaPaneCommenti {
             box.setMaxWidth(Double.MAX_VALUE); // padre prende tutta la larghezza disponibile
             VBox.setMargin(box, new Insets(0, 0, 3, 0)); // spaziatura tra i commenti
         }
+
+        if (commento.get("ID_UTENTE").equals(PaginaPaneLogin.ID_UTENTE) || PaginaPaneLogin.UTENTE_NOME.equals("adm")) {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem eliminaCommento = new MenuItem("✘ Elimina commento");
+            eliminaCommento.setId(commento.get("ID_COMMENTO").toString());
+            eliminaCommento.setOnAction(event -> {
+                cancellaCommentoSelezionato(eliminaCommento.getId());
+            });
+            contextMenu.getItems().add(eliminaCommento);
+
+            box.setOnContextMenuRequested(event -> {
+                contextMenu.show(box, event.getScreenX(), event.getScreenY());
+            });
+        }
+
+        return box;
+    }
+
+    private VBox creaVBoxCommentoMinutaggio(Map<String, Object> commento) {
+        String autore;
+        Label autoreLabel;
+
+        VBox box = new VBox();
+        box.setSpacing(2);
+        box.getStyleClass().add("commento");
+
+        // Se l'utente che commenta è l'autore della canzone
+        if(rowCanzone.get("AUTORE").toString().equals(commento.get("NOME").toString())) {
+            autore = commento.get("NOME").toString() + " " + commento.get("COGNOME").toString()+ " (autore)";
+            autoreLabel = new Label(autore);
+            autoreLabel.setStyle("-fx-text-fill: #E5484D; -fx-font-weight: bold; -fx-font-size: 16; -fx-padding: 0 0 4 0;");
+        } else {
+            autore = commento.get("NOME").toString() + " " + commento.get("COGNOME").toString();
+            autoreLabel = new Label(autore);
+            autoreLabel.setStyle("-fx-text-fill: #6d24e1; -fx-font-weight: bold; -fx-font-size: 16; -fx-padding: 0 0 4 0;");
+        }
+
+        Label testoLabel = new Label(commento.get("TESTO").toString());
+        testoLabel.setWrapText(true);
+        testoLabel.setMaxWidth(400);
+        testoLabel.setStyle("-fx-font-size: 14; -fx-line-spacing: 5; -fx-text-fill: #ffffff");
+
+        box.getChildren().addAll(autoreLabel, testoLabel);
+        box.setMaxWidth(Double.MAX_VALUE); // padre prende tutta la larghezza disponibile
+        VBox.setMargin(box, new Insets(0, 0, 3, 0)); // spaziatura tra i commenti
 
         if (commento.get("ID_UTENTE").equals(PaginaPaneLogin.ID_UTENTE) || PaginaPaneLogin.UTENTE_NOME.equals("adm")) {
             ContextMenu contextMenu = new ContextMenu();
@@ -212,4 +338,122 @@ public class PaginaPaneCommenti {
                     "    -fx-border-radius: 6;" +
                     locCampiPersonalizzati);
     }
+
+    //Banner per controllo degli errori
+    private void erroreCommento(int errore) {
+        String txt;
+        switch (errore) {
+            case 1 -> txt = "Impossibile inserire un range maggiore di 10 secondi";
+            case 2 -> txt = "Attenzione!! Impostare un range interno alla musica";
+            case 3 -> txt = "Attenzione!! Commento in sovrapposizione";
+            default -> txt = "Errore generico durante l'inserimento";
+        }
+        mostraPopupErrore(txt);
+    }
+
+    private void mostraPopupSuccesso(String messaggio) {
+        Label contenuto = new Label(messaggio);
+        contenuto.setStyle("""
+        -fx-background-color: #28a745;
+        -fx-text-fill: white;
+        -fx-padding: 12px 24px;
+        -fx-font-size: 14px;
+        -fx-background-radius: 10;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
+    """);
+
+        Popup popup = new Popup();
+        popup.getContent().add(contenuto);
+        popup.setAutoFix(true);
+        popup.setAutoHide(true);
+
+        Window finestra = commentoTextArea.getScene().getWindow();
+        popup.show(finestra);
+
+        // Posiziona in basso al centro
+        popup.setX(finestra.getX() + finestra.getWidth() / 2 - 100);
+        popup.setY(finestra.getY() + finestra.getHeight() - 100);
+
+        FadeTransition fade = new FadeTransition(Duration.seconds(3), contenuto);
+        fade.setFromValue(1.0);
+        fade.setToValue(0.0);
+        fade.setDelay(Duration.seconds(2));
+
+        fade.play();
+    }
+
+    private void mostraPopupErrore(String messaggio) {
+        Label contenuto = new Label(messaggio);
+        contenuto.setStyle("""
+        -fx-background-color: #dc3545;
+        -fx-text-fill: white;
+        -fx-padding: 12px 24px;
+        -fx-font-size: 14px;
+        -fx-background-radius: 10;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
+    """);
+
+        Popup popup = new Popup();
+        popup.getContent().add(contenuto);
+        popup.setAutoFix(true);
+        popup.setAutoHide(true);
+
+        Window finestra = commentoTextArea.getScene().getWindow();
+        popup.show(finestra);
+
+        popup.setX(finestra.getX() + finestra.getWidth() / 2 - 100);
+        popup.setY(finestra.getY() + finestra.getHeight() - 100);
+
+        FadeTransition fade = new FadeTransition(Duration.seconds(3), contenuto);
+        fade.setFromValue(1.0);
+        fade.setToValue(0.0);
+        fade.setDelay(Duration.seconds(2));
+        fade.play();
+    }
+
+    public void controllaRangeCommento(int parMinutaggioCanzone) {
+        // Controllo se il minutaggio attuale è ancora nel range corrente
+         if (rangeInizioCorrente != -1 && rangeFineCorrente != -1) {
+            if (parMinutaggioCanzone >= rangeInizioCorrente && parMinutaggioCanzone <= rangeFineCorrente) {
+                 // Siamo ancora nel range attuale, niente da fare
+                return;
+             }
+        }
+
+         // Minutaggio non più nel range corrente, resetto tutto
+        PaginaPaneCommenti_vBoxMinutaggio.getChildren().clear();
+        commentoMostrato = null;
+        rangeInizioCorrente = -1;
+        rangeFineCorrente = -1;
+
+        // Cerco il nuovo commento da mostrare
+        for (Map<String, Object> commento : listaCommentiRange) {
+             Object inizioObj = commento.get("RANGE_INIZIO");
+              Object fineObj = commento.get("RANGE_FINE");
+
+               if (inizioObj != null && fineObj != null) {
+                  try {
+                     int inizio = Integer.parseInt(inizioObj.toString());
+                     int fine = Integer.parseInt(fineObj.toString());
+
+                    if (parMinutaggioCanzone >= inizio && parMinutaggioCanzone <= fine) {
+                       VBox box = creaVBoxCommentoMinutaggio(commento);
+                       PaginaPaneCommenti_vBoxMinutaggio.getChildren().add(box);
+                       PaginaPaneCommenti_vBoxMinutaggio.setPrefHeight(box.getPrefHeight());
+
+                        // Memorizzo lo stato corrente
+                        commentoMostrato = box;
+                        rangeInizioCorrente = inizio;
+                        rangeFineCorrente = fine;
+
+                         break;  // Esco appena trovato il commento valido
+                    }
+                  } catch (NumberFormatException e) {
+                    System.err.println("Errore nel parsing del range per il commento ID: " + commento.get("ID_COMMENTO"));
+                  }
+               }
+        }
+    }
+
+
 }

@@ -788,6 +788,13 @@ PasswordField {
     -fx-border-radius: 6;
 }
 
+.commentoTextArea:focused {
+    -fx-border-color: #9b4dff; /* colore più acceso al focus */
+    -fx-border-width: 2;
+    -fx-background-color: #343434; /* leggermente più chiaro per il focus */
+    -fx-effect: dropshadow( gaussian , rgba(109,36,225,0.3), 6, 0.1, 0, 1 );
+}
+
 .commentButton {
     -fx-background-color: #6d24e1;
     -fx-text-fill: white;
@@ -803,6 +810,36 @@ PasswordField {
 .PaginaPaneCommenti_bottoneAnnullaInvio{
     -fx-background-color: #E5484D;
 }
+
+.PaginaPaneCommenti_vBoxMinutaggio {
+    -fx-pref-height: 1;
+    -fx-max-height: 100;
+    -fx-max-width: 400;
+    -fx-pref-width: 400;
+    -fx-min-height: 1;
+}
+
+.PaginaPaneCommenti_testoInizio,
+.PaginaPaneCommenti_testoFine {
+    -fx-background-color: #2c2c2c;
+    -fx-text-fill: #f9f9f9;
+    -fx-font-family: "Gotham-Medium";
+    -fx-font-size: 14;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: #6d24e1;
+    -fx-border-width: 1;
+    -fx-padding: 6;
+    -fx-prompt-text-fill: #aaaaaa;
+}
+
+.PaginaPaneCommenti_testoInizio:focused,
+.PaginaPaneCommenti_testoFine:focused {
+    -fx-border-color: #9b4dff;
+    -fx-border-width: 2;
+    -fx-background-color: #343434;
+}
+
 
 /* ----------------------------------------------------------------------------------------------------------- UTENTE ----------------------------------------------------------------- */
 

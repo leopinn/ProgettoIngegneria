@@ -47,6 +47,8 @@ public class PaginaPrincipale implements Initializable {
     private Scene scene;
     private Parent root;
 
+    private PaginaPaneCommenti commentiController;      // Per gestire i commenti in certi range
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -182,6 +184,9 @@ public class PaginaPrincipale implements Initializable {
         Parent registerPane = loaderCommenti.load();
 
         PaginaPaneCommenti controller = loaderCommenti.getController();
+
+        commentiController = loaderCommenti.getController();
+        controller.setMainController(this);  // <<< passaggio chiave
         controller.caricaCommenti(id_canzone);
 
         PaginaPrincipale_borderPane.setRight(registerPane);
@@ -233,6 +238,11 @@ public class PaginaPrincipale implements Initializable {
                 int locSeconds = (int) (newTime.toSeconds() % 60);
                 PaginaPrincipale_minutaggioFinale.setText(String.format("%02d:%02d", (int) mediaPlayer.getMedia().getDuration().toMinutes(), (int) (mediaPlayer.getMedia().getDuration().toSeconds() % 60)));
                 PaginaPrincipale_minutaggioIniziale.setText(String.format("%02d:%02d", locMinutes, locSeconds));
+
+                // Chiama il metodo per controllare se a questo istante parte un commento in minutaggio
+                if (commentiController != null) {
+                    commentiController.controllaRangeCommento((int) newTime.toSeconds());
+                }
             }
         });
 
@@ -256,4 +266,7 @@ public class PaginaPrincipale implements Initializable {
         mediaPlayer.setVolume(PaginaPrincipale_sliderVolume.getValue() / 100); // diviso 100 perchè il volume del player va da 0.0 a 1.0
     }
 
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
 }
