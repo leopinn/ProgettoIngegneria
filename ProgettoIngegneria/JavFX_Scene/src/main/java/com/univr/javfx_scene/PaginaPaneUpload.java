@@ -1,11 +1,10 @@
 package com.univr.javfx_scene;
 
 import javafx.animation.FadeTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -38,7 +37,10 @@ public class PaginaPaneUpload {
     @FXML private Label PaginaPaneUplaod_labelMusica, PaginaPaneUplaod_labelCopertina, PaginaPaneUplaod_labelPdf;
     @FXML private CheckBox checkboxUsaNomeUtente;
     @FXML private ComboBox<String> comboRuolo;
-    @FXML private TextField textStrumenti;
+    @FXML private ListView<String> listStrumenti;
+    @FXML private TextField textNuovoStrumento;
+    @FXML private TextField textNuovoGenere;
+
 
 
     private String nomeUtente;
@@ -73,7 +75,7 @@ public class PaginaPaneUpload {
 
         titolo = PaginaPaneUpload_textTitolo.getText();
         ruolo = comboRuolo.getValue();
-        strumenti = textStrumenti.getText();
+        strumenti = String.join(",", listStrumenti.getSelectionModel().getSelectedItems());
 
         if (checkboxUsaNomeUtente.isSelected()) {
             autore = nomeUtente;
@@ -88,7 +90,7 @@ public class PaginaPaneUpload {
         if (titolo.isEmpty() || autore.isEmpty() || genere == null || genere.isEmpty() || ruolo == null)
             return 1;
 
-        if ("Interprete".equals(ruolo) && (strumenti == null || strumenti.isBlank()))
+        if ("Interprete".equals(ruolo) && listStrumenti.getSelectionModel().getSelectedItems().isEmpty())
             return 4;
 
         if (anno_composizione != null && anno_composizione.matches("\\d+")) {
@@ -104,12 +106,21 @@ public class PaginaPaneUpload {
         return errore;
     }
 
-
     // Gestione attivazione box varie
     @FXML
     public void initialize() {
-        // Inizialmente disabilita il campo strumenti
-        textStrumenti.setDisable(true);
+        // Inizializza la combo dei generi con una lista predefinita (se non già fatto altrove)
+        PaginaPaneUpload_comboGenere.setItems(FXCollections.observableArrayList(
+                "Pop", "Rock", "Trap", "Jazz", "Hip Hop", "Classica", "Reggae", "Blues", "Electronic", "Metal", "Country"
+        ));
+
+        // Inizializza la ListView degli strumenti con strumenti predefiniti
+        ObservableList<String> strumentiBase = FXCollections.observableArrayList(
+                "Chitarra", "Pianoforte", "Batteria", "Violino", "Sax", "Voce", "Basso", "Synth"
+        );
+        listStrumenti.setItems(strumentiBase);
+        listStrumenti.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        listStrumenti.setDisable(true); // disabilitata di default
 
         // Disattiva il campo autore se la checkbox è attiva
         checkboxUsaNomeUtente.selectedProperty().addListener((obs, oldVal, newVal) -> {
@@ -121,20 +132,70 @@ public class PaginaPaneUpload {
             }
         });
 
-        // Abilita il campo strumenti se si seleziona "Interprete"
+        // Mostra la lista strumenti solo se si è "Interprete"
         comboRuolo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             boolean isInterprete = "Interprete".equals(newVal);
-            textStrumenti.setDisable(!isInterprete);
+            listStrumenti.setDisable(!isInterprete);
             if (!isInterprete) {
-                textStrumenti.clear();
+                listStrumenti.getSelectionModel().clearSelection();
             }
         });
     }
 
 
+    //Permette all'utente di aggiungere generi musicali
+    @FXML
+    public void aggiungiGenere() {
+        String nuovoGenere = textNuovoGenere.getText().trim();
+
+        if (nuovoGenere.isEmpty()) {
+            mostraPopupErrore("Inserisci un nome per il nuovo genere");
+            return;
+        }
+
+        // Controllo case-insensitive per evitare duplicati
+        boolean giàPresente = PaginaPaneUpload_comboGenere.getItems().stream()
+                .anyMatch(g -> g.equalsIgnoreCase(nuovoGenere));
+
+        if (giàPresente) {
+            mostraPopupErrore("Questo genere esiste già");
+            return;
+        } else{
+            mostraPopup("Elemento aggiunto");
+            PaginaPaneUpload_comboGenere.getItems().add(nuovoGenere);
+            PaginaPaneUpload_comboGenere.setValue(nuovoGenere); // Seleziona il nuovo
+            textNuovoGenere.clear();
+        }
+    }
+
+    @FXML
+    public void aggiungiStrumento() {
+        String nuovoStrumento = textNuovoStrumento.getText().trim();
+
+        if (nuovoStrumento.isEmpty()) {
+            mostraPopupErrore("Inserisci un nome per lo strumento.");
+            return;
+        }
+
+        boolean giàPresente = listStrumenti.getItems().stream()
+                .anyMatch(s -> s.equalsIgnoreCase(nuovoStrumento));
+
+        if (giàPresente) {
+            mostraPopupErrore("Questo strumento è già presente nella lista.");
+            return;
+        }
+
+        listStrumenti.getItems().add(nuovoStrumento);
+        listStrumenti.getSelectionModel().select(nuovoStrumento); // seleziona subito il nuovo
+        textNuovoStrumento.clear();
+        mostraPopup("Strumento aggiunto.");
+    }
+
+
+
     public void aggiungiCanzone() {
         ruolo = comboRuolo.getValue();
-        strumenti = textStrumenti.getText();
+        strumenti = String.join(",", listStrumenti.getSelectionModel().getSelectedItems());
 
         Map<String, Object> rowCanzone = new LinkedHashMap<>();
 
@@ -305,6 +366,35 @@ public class PaginaPaneUpload {
         fade.setToValue(0.0);
         fade.setDelay(Duration.seconds(2));
 
+        fade.play();
+    }
+
+    private void mostraPopup(String messaggio) {
+        Label contenuto = new Label(messaggio);
+        contenuto.setStyle("""
+        -fx-background-color: #28a745;
+        -fx-text-fill: white;
+        -fx-padding: 12px 24px;
+        -fx-font-size: 14px;
+        -fx-background-radius: 10;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
+    """);
+
+        Popup popup = new Popup();
+        popup.getContent().add(contenuto);
+        popup.setAutoFix(true);
+        popup.setAutoHide(true);
+
+        Window finestra = PaginaPaneUpload_textTitolo.getScene().getWindow();
+        popup.show(finestra);
+
+        popup.setX(finestra.getX() + finestra.getWidth() / 2 - 100);
+        popup.setY(finestra.getY() + finestra.getHeight() - 100);
+
+        FadeTransition fade = new FadeTransition(Duration.seconds(3), contenuto);
+        fade.setFromValue(1.0);
+        fade.setToValue(0.0);
+        fade.setDelay(Duration.seconds(2));
         fade.play();
     }
 
