@@ -149,7 +149,7 @@ public class PaginaPaneUpload {
         String nuovoGenere = textNuovoGenere.getText().trim();
 
         if (nuovoGenere.isEmpty()) {
-            mostraPopupErrore("Inserisci un nome per il nuovo genere");
+            ObjGenerici.mostraPopupErrore(PaginaPaneUpload_textTitolo,"Inserisci un nome per il nuovo genere");
             return;
         }
 
@@ -158,10 +158,10 @@ public class PaginaPaneUpload {
                 .anyMatch(g -> g.equalsIgnoreCase(nuovoGenere));
 
         if (giàPresente) {
-            mostraPopupErrore("Questo genere esiste già");
+            ObjGenerici.mostraPopupErrore(PaginaPaneUpload_textTitolo,"Questo genere esiste già");
             return;
         } else{
-            mostraPopup("Elemento aggiunto");
+            ObjGenerici.mostraPopupSuccesso(PaginaPaneUpload_textTitolo,"Elemento aggiunto");
             PaginaPaneUpload_comboGenere.getItems().add(nuovoGenere);
             PaginaPaneUpload_comboGenere.setValue(nuovoGenere); // Seleziona il nuovo
             textNuovoGenere.clear();
@@ -173,7 +173,7 @@ public class PaginaPaneUpload {
         String nuovoStrumento = textNuovoStrumento.getText().trim();
 
         if (nuovoStrumento.isEmpty()) {
-            mostraPopupErrore("Inserisci un nome per lo strumento.");
+            ObjGenerici.mostraPopupErrore(PaginaPaneUpload_textTitolo,"Inserisci un nome per lo strumento.");
             return;
         }
 
@@ -181,14 +181,14 @@ public class PaginaPaneUpload {
                 .anyMatch(s -> s.equalsIgnoreCase(nuovoStrumento));
 
         if (giàPresente) {
-            mostraPopupErrore("Questo strumento è già presente nella lista.");
+            ObjGenerici.mostraPopupErrore(PaginaPaneUpload_textTitolo, "Questo strumento è già presente nella lista.");
             return;
         }
 
         listStrumenti.getItems().add(nuovoStrumento);
         listStrumenti.getSelectionModel().select(nuovoStrumento); // seleziona subito il nuovo
         textNuovoStrumento.clear();
-        mostraPopup("Strumento aggiunto.");
+        ObjGenerici.mostraPopupSuccesso(PaginaPaneUpload_textTitolo,"Strumento aggiunto.");
     }
 
 
@@ -245,7 +245,7 @@ public class PaginaPaneUpload {
             case 19 -> txt = "Il seguente Titolo risulta già registrato!";
             default -> txt = "Errore generico durante l'inserimento";
         }
-        mostraPopupErrore(txt);
+        ObjGenerici.mostraPopupErrore(PaginaPaneUpload_textTitolo, txt);
     }
 
 
@@ -368,63 +368,4 @@ public class PaginaPaneUpload {
 
         fade.play();
     }
-
-    private void mostraPopup(String messaggio) {
-        Label contenuto = new Label(messaggio);
-        contenuto.setStyle("""
-        -fx-background-color: #28a745;
-        -fx-text-fill: white;
-        -fx-padding: 12px 24px;
-        -fx-font-size: 14px;
-        -fx-background-radius: 10;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
-    """);
-
-        Popup popup = new Popup();
-        popup.getContent().add(contenuto);
-        popup.setAutoFix(true);
-        popup.setAutoHide(true);
-
-        Window finestra = PaginaPaneUpload_textTitolo.getScene().getWindow();
-        popup.show(finestra);
-
-        popup.setX(finestra.getX() + finestra.getWidth() / 2 - 100);
-        popup.setY(finestra.getY() + finestra.getHeight() - 100);
-
-        FadeTransition fade = new FadeTransition(Duration.seconds(3), contenuto);
-        fade.setFromValue(1.0);
-        fade.setToValue(0.0);
-        fade.setDelay(Duration.seconds(2));
-        fade.play();
-    }
-
-    private void mostraPopupErrore(String messaggio) {
-        Label contenuto = new Label(messaggio);
-        contenuto.setStyle("""
-        -fx-background-color: #dc3545;
-        -fx-text-fill: white;
-        -fx-padding: 12px 24px;
-        -fx-font-size: 14px;
-        -fx-background-radius: 10;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
-    """);
-
-        Popup popup = new Popup();
-        popup.getContent().add(contenuto);
-        popup.setAutoFix(true);
-        popup.setAutoHide(true);
-
-        Window finestra = PaginaPaneUpload_textTitolo.getScene().getWindow();
-        popup.show(finestra);
-
-        popup.setX(finestra.getX() + finestra.getWidth() / 2 - 100);
-        popup.setY(finestra.getY() + finestra.getHeight() - 100);
-
-        FadeTransition fade = new FadeTransition(Duration.seconds(3), contenuto);
-        fade.setFromValue(1.0);
-        fade.setToValue(0.0);
-        fade.setDelay(Duration.seconds(2));
-        fade.play();
-    }
-
 }

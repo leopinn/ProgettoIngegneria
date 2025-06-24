@@ -22,6 +22,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.univr.javfx_scene.ObjGenerici.mostraPopupSuccesso;
+
 public class PaginaPaneCommenti {
     private static ObjSql objSql = ObjSql.oggettoSql();
     private int ID_CANZONE;
@@ -102,7 +104,7 @@ public class PaginaPaneCommenti {
                 }
             }
 
-            mostraPopupSuccesso("Commento aggiunto con successo!");
+            ObjGenerici.mostraPopupSuccesso(commentoTextArea,"Commento aggiunto con successo!");
             locRowCommento.put("RANGE_INIZIO", PaginaPaneCommenti_testoInizio.getText());
             locRowCommento.put("RANGE_FINE", PaginaPaneCommenti_testoFine.getText());
         }
@@ -348,67 +350,7 @@ public class PaginaPaneCommenti {
             case 3 -> txt = "Attenzione!! Commento in sovrapposizione";
             default -> txt = "Errore generico durante l'inserimento";
         }
-        mostraPopupErrore(txt);
-    }
-
-    private void mostraPopupSuccesso(String messaggio) {
-        Label contenuto = new Label(messaggio);
-        contenuto.setStyle("""
-        -fx-background-color: #28a745;
-        -fx-text-fill: white;
-        -fx-padding: 12px 24px;
-        -fx-font-size: 14px;
-        -fx-background-radius: 10;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
-    """);
-
-        Popup popup = new Popup();
-        popup.getContent().add(contenuto);
-        popup.setAutoFix(true);
-        popup.setAutoHide(true);
-
-        Window finestra = commentoTextArea.getScene().getWindow();
-        popup.show(finestra);
-
-        // Posiziona in basso al centro
-        popup.setX(finestra.getX() + finestra.getWidth() / 2 - 100);
-        popup.setY(finestra.getY() + finestra.getHeight() - 100);
-
-        FadeTransition fade = new FadeTransition(Duration.seconds(3), contenuto);
-        fade.setFromValue(1.0);
-        fade.setToValue(0.0);
-        fade.setDelay(Duration.seconds(2));
-
-        fade.play();
-    }
-
-    private void mostraPopupErrore(String messaggio) {
-        Label contenuto = new Label(messaggio);
-        contenuto.setStyle("""
-        -fx-background-color: #dc3545;
-        -fx-text-fill: white;
-        -fx-padding: 12px 24px;
-        -fx-font-size: 14px;
-        -fx-background-radius: 10;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
-    """);
-
-        Popup popup = new Popup();
-        popup.getContent().add(contenuto);
-        popup.setAutoFix(true);
-        popup.setAutoHide(true);
-
-        Window finestra = commentoTextArea.getScene().getWindow();
-        popup.show(finestra);
-
-        popup.setX(finestra.getX() + finestra.getWidth() / 2 - 100);
-        popup.setY(finestra.getY() + finestra.getHeight() - 100);
-
-        FadeTransition fade = new FadeTransition(Duration.seconds(3), contenuto);
-        fade.setFromValue(1.0);
-        fade.setToValue(0.0);
-        fade.setDelay(Duration.seconds(2));
-        fade.play();
+        ObjGenerici.mostraPopupErrore(commentoTextArea,txt);
     }
 
     public void controllaRangeCommento(int parMinutaggioCanzone) {
