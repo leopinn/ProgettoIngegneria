@@ -25,7 +25,7 @@ import static com.univr.javfx_scene.PaginaPaneLogin.UTENTE_NOME;
 
 public class PaginaPaneUpload {
     private PaginaPrincipale mainController;
-    private String autore, titolo, link_youtube, anno_composizione, genere;
+    private String autore, titolo, link_youtube, anno_composizione, genere, ruolo, strumenti;
     private int ID_CANZONE;
 
     // Variabili temporanee per musica, copertina e pdf
@@ -36,6 +36,9 @@ public class PaginaPaneUpload {
     @FXML private ComboBox<String> PaginaPaneUpload_comboGenere;
     @FXML private Label PaginaPaneUplaod_labelMusica, PaginaPaneUplaod_labelCopertina, PaginaPaneUplaod_labelPdf;
     @FXML private CheckBox checkboxUsaNomeUtente;
+    @FXML private ComboBox<String> comboRuolo;
+    @FXML private TextField textStrumenti;
+
 
     private String nomeUtente;
 
@@ -104,9 +107,20 @@ public class PaginaPaneUpload {
                 PaginaPaneUpload_textAutore.clear();
             }
         });
+        comboRuolo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if ("Interprete".equals(newVal)) {
+                textStrumenti.setVisible(true);
+            } else {
+                textStrumenti.setVisible(false);
+                textStrumenti.clear();
+            }
+        });
     }
 
     public void aggiungiCanzone() {
+        ruolo = comboRuolo.getValue();
+        strumenti = textStrumenti.getText();
+
         Map<String, Object> rowCanzone = new LinkedHashMap<>();
 
         rowCanzone.put("TITOLO", titolo);
@@ -114,6 +128,8 @@ public class PaginaPaneUpload {
         rowCanzone.put("GENERE", genere);
         rowCanzone.put("ANNO_COMPOSIZIONE", anno_composizione);
         rowCanzone.put("LINK_YOUTUBE", link_youtube);
+        rowCanzone.put("RUOLO", ruolo);
+        rowCanzone.put("STRUMENTI", strumenti);
 
         ObjSql objSql = ObjSql.oggettoSql();
         int risultato = objSql.inserisci("CANZONE", rowCanzone);
