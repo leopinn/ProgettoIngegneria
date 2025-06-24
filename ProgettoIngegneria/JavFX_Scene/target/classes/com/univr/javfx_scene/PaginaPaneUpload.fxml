@@ -8,6 +8,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -47,16 +48,6 @@
                            <Label style="-fx-font-size: 11px; -fx-text-fill: gray;" text="Spunta questa opzione per usare il tuo nome utente come autore del brano." wrapText="true" />
                             <CheckBox fx:id="checkboxUsaNomeUtente" />
                         </HBox>
-                    </children>
-                </VBox>
-                <VBox spacing="5.0" GridPane.columnIndex="1">
-                    <children>
-                        <Label styleClass="styleLabel" text="Upload spartiti (pdf, doc...)" />
-                        <VBox id="paneSpartiti" fx:id="PaginaPaneUpload_dragPdf" minHeight="100.0" onDragDropped="#dropPdf" onDragOver="#dragFile" style="-fx-border-color: gray; -fx-border-style: dashed; -fx-alignment: center;">
-                            <children>
-                                <Label fx:id="PaginaPaneUplaod_labelPdf" styleClass="styleLabel" text="Trascina qui il tuo spartito" />
-                            </children>
-                        </VBox>
                         <Label styleClass="styleRose" text="Genere *" />
                         <ComboBox fx:id="PaginaPaneUpload_comboGenere" maxHeight="37.0" promptText="Scegli un genere" styleClass="PaginaPaneUpload_comboGenere">
                             <items>
@@ -75,6 +66,20 @@
                                 </FXCollections>
                             </items>
                         </ComboBox>
+                        <HBox spacing="2.0">
+                            <TextField fx:id="textNuovoGenere" promptText="Aggiungi nuovo genere..." />
+                            <Button onAction="#aggiungiGenere" text="+" />
+                        </HBox>
+                    </children>
+                </VBox>
+                <VBox spacing="5.0" GridPane.columnIndex="1">
+                    <children>
+                        <Label styleClass="styleLabel" text="Upload spartiti (pdf, doc...)" />
+                        <VBox id="paneSpartiti" fx:id="PaginaPaneUpload_dragPdf" minHeight="100.0" onDragDropped="#dropPdf" onDragOver="#dragFile" style="-fx-border-color: gray; -fx-border-style: dashed; -fx-alignment: center;">
+                            <children>
+                                <Label fx:id="PaginaPaneUplaod_labelPdf" styleClass="styleLabel" text="Trascina qui il tuo spartito" />
+                            </children>
+                        </VBox>
                         <Label styleClass="styleRose" text="Ruolo nel brano *" />
                         <ComboBox fx:id="comboRuolo" promptText="Seleziona ruolo" styleClass="PaginaPaneUpload_comboGenere">
                             <items>
@@ -84,8 +89,12 @@
                                 </FXCollections>
                             </items>
                         </ComboBox>
-
-                              <TextField fx:id="textStrumenti" promptText="Strumenti usati" />
+                        <Label styleClass="styleLabel" text="Strumenti usati" />
+                        <ListView fx:id="listStrumenti" prefHeight="100.0" visible="true" />
+                  <HBox spacing="2.0"   >
+                          <TextField fx:id="textNuovoStrumento" promptText="Aggiungi nuovo strumento" />
+                          <Button onAction="#aggiungiStrumento" text="+" />
+                  </HBox>
                     </children>
                 </VBox>
                 <VBox centerShape="false" spacing="5.0" GridPane.columnIndex="2">
