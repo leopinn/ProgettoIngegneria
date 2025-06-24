@@ -1,7 +1,6 @@
 package com.univr.javfx_scene;
 
-import com.sun.jdi.connect.spi.Connection;
-import javafx.event.ActionEvent;
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -9,24 +8,20 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
+import javafx.stage.Window;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
-/** import java.lang.classfile.instruction.SwitchCase; **/
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.sql.PreparedStatement;
-import java.time.LocalDate;
 import java.time.Year;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class PaginaPaneUpload {
-    private  ObjSql objSql = ObjSql.oggettoSql();
-    private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
-    private String destFile="upload/musiche";
+    private PaginaPrincipale mainController;
     private String autore, titolo, link_youtube, anno_composizione, genere;
     private int ID_CANZONE;
 
@@ -50,13 +45,12 @@ public class PaginaPaneUpload {
     // richiesta Upload Brano musicale
     public void richiediInserimentoCanzone(){
         int errore = controllaDati();
-        if(errore>0) {
+        if (errore > 0) {
             erroreUpload(errore);
             return;
         }
-
-        aggiungiCanzone();
-    }
+            aggiungiCanzone();
+        }
 
     //Controllo correttezza dei dati
     public int controllaDati(){
@@ -69,159 +63,182 @@ public class PaginaPaneUpload {
         anno_composizione = PaginaPaneUpload_textAnno.getText();
         genere = PaginaPaneUpload_comboGenere.getValue();
 
-        if(titolo.isEmpty() || autore.isEmpty() || genere.isEmpty())  return 1;
+        if (titolo.isEmpty() || autore.isEmpty() || genere == null || genere.isEmpty()) return 1;
 
-        if(anno_composizione != null && anno_composizione.matches("\\d+")) {
+        if (anno_composizione != null && anno_composizione.matches("\\d+")) {
             if (Integer.parseInt(anno_composizione) < 1900 || Integer.parseInt(anno_composizione) > Year.now().getValue())
                 return 2;
-        }else{
-            anno_composizione="";
+        } else {
+            anno_composizione = "";
         }
 
-        if(!fileMusica.exists() || !filePdf.exists() || !fileCopertina.exists()) return 3;
+        if (fileMusica == null || filePdf == null || fileCopertina == null) return 3;
 
         return errore;
-    }
-
-    public void aggiungiCanzone() {
-        Map<String, Object> rowCanzone = new LinkedHashMap<>();
-
-        rowCanzone.put("TITOLO", titolo);
-        rowCanzone.put("AUTORE", autore);
-        rowCanzone.put("GENERE", genere);
-        rowCanzone.put("ANNO_COMPOSIZIONE", anno_composizione);
-        rowCanzone.put("LINK_YOUTUBE", link_youtube);
-        rowCanzone.put("ID_UTENTE", PaginaPaneLogin.ID_UTENTE);
-        rowCanzone.put("UTENTE_INS", PaginaPaneLogin.UTENTE_NOME);
-
-        ObjSql objSql = ObjSql.oggettoSql();
-        int risultato=objSql.inserisci("CANZONE", rowCanzone);
-
-        // Vendor code che indica violazione di un vincolo -> titolo già presente nel database
-        if(risultato==19){
-            erroreUpload(risultato);
-            return;
         }
 
-        // Se ritorna 1 è andato tutto a buon fine
-        if(risultato==1){
+
+        public void aggiungiCanzone() {
+            Map<String, Object> rowCanzone = new LinkedHashMap<>();
+
+            rowCanzone.put("TITOLO", titolo);
+            rowCanzone.put("AUTORE", autore);
+            rowCanzone.put("GENERE", genere);
+            rowCanzone.put("ANNO_COMPOSIZIONE", anno_composizione);
+            rowCanzone.put("LINK_YOUTUBE", link_youtube);
+
+            ObjSql objSql = ObjSql.oggettoSql();
+            int risultato = objSql.inserisci("CANZONE", rowCanzone);
+
+            // Vendor code che indica violazione di un vincolo -> titolo già presente nel database
+
+            if (risultato == 19) {
+                erroreUpload(risultato);
+                return;
+            }
+
             // Adesso leggo la chiave della canzone e sposto le canzoni
-            rowCanzone = objSql.leggi("SELECT ID_CANZONE FROM CANZONE ORDER BY ID_CANZONE DESC LIMIT 1");
-            String locChiave= rowCanzone.get("ID_CANZONE").toString();
-            ID_CANZONE = Integer.parseInt(locChiave);
+            if (risultato == 1) {
+                rowCanzone = objSql.leggi("SELECT ID_CANZONE FROM CANZONE ORDER BY ID_CANZONE DESC LIMIT 1");
+                String locChiave = rowCanzone.get("ID_CANZONE").toString();
+                ID_CANZONE = Integer.parseInt(locChiave);
 
-            // Adesso prendo i file, li rinomino e li sposto
-            richiediInserimentoCanzone(fileMusica, 0);
-            richiediInserimentoCanzone(filePdf, 1);
-            richiediInserimentoCanzone(fileCopertina, 2);
+                // Adesso prendo i file, li rinomino e li sposto
+                richiediInserimentoCanzone(fileMusica, 0);
+                richiediInserimentoCanzone(filePdf, 1);
+                richiediInserimentoCanzone(fileCopertina, 2);
 
-        }
-    }
-
-    private void erroreUpload(int errore) {
-        String txt="";
-        switch (errore) {
-            case 1:
-                txt = "Inserire tutti i campi obbligatori!";
-                break;
-            case 19:
-                txt = "Il seguente Titolo risulta già registrato!";
-                break;
-            default:
-                txt = "Errore generico";
-        }
-    }
-
-    public void dragFile(DragEvent event) {
-        Dragboard db = event.getDragboard();
-        if (db.hasFiles()) {
-            event.acceptTransferModes(TransferMode.COPY);
-        }
-        event.consume();
-    }
-
-    public void dropCanzone(DragEvent event) {
-        Dragboard db = event.getDragboard();
-        if (db.hasFiles()) {
-            File file = db.getFiles().get(0);
-            if (file.getName().toLowerCase().endsWith(".mp3") || file.getName().toLowerCase().endsWith(".mp4") || file.getName().toLowerCase().endsWith(".midi")) {
-                fileMusica = file; // memorizziamo il file
-                System.out.println("File caricato: " + file.getName());
-
-                // (opzionale) puoi mostrare anteprima con un label
-                PaginaPaneUplaod_labelMusica.setText("File selezionato: " + file.getName());
+                mostraPopupSuccessoEtorna("Brano caricato con successo!");
             }
         }
-        event.setDropCompleted(true);
-        event.consume();
-    }
 
-    public void dropCopertina(DragEvent event) {
-        Dragboard db = event.getDragboard();
-        if (db.hasFiles()) {
-            File file = db.getFiles().get(0);
-            if (file.getName().toLowerCase().endsWith(".jpg") || file.getName().toLowerCase().endsWith(".jpeg") || file.getName().toLowerCase().endsWith(".png")) {
-                fileCopertina = file; // memorizziamo il file
-                System.out.println("File caricato: " + file.getName());
+        private void erroreUpload(int errore) {
+            String txt;
+            switch (errore) {
+                    case 1 -> txt = "Inserire tutti i campi obbligatori!";
+                    case 19 -> txt = "Il seguente Titolo risulta già registrato!";
+                    default -> txt = "Errore generico";
+            }
+            mostraPopupSuccessoEtorna(txt); // Puoi fare anche mostraPopupErrore() se vuoi differenziare stile
+        }
+
+        public void dragFile(DragEvent event) {
+            Dragboard db = event.getDragboard();
+            if (db.hasFiles()) event.acceptTransferModes(TransferMode.COPY);
+            event.consume();
+        }
+
+        public void dropCanzone(DragEvent event) {
+            Dragboard db = event.getDragboard();
+            if (db.hasFiles()) {
+                File file = db.getFiles().get(0);
 
                 // (opzionale) puoi mostrare anteprima con un label
+                if (file.getName().toLowerCase().matches(".*\\.(mp3|mp4|midi)$")) {
+                    fileMusica = file;
+                    PaginaPaneUplaod_labelMusica.setText("File selezionato: " + file.getName());
+                 }
+            }
+            event.setDropCompleted(true);
+            event.consume();
+        }
+
+        public void dropCopertina(DragEvent event) {
+            Dragboard db = event.getDragboard();
+            if (db.hasFiles()) {
+                File file = db.getFiles().get(0);                                // (opzionale) puoi mostrare anteprima con un label
+            if (file.getName().toLowerCase().matches(".*\\.(jpg|jpeg|png)$")) {
+                fileCopertina = file;
                 PaginaPaneUplaod_labelCopertina.setText("File selezionato: " + file.getName());
             }
+            }
+            event.setDropCompleted(true);
+            event.consume();
         }
-        event.setDropCompleted(true);
-        event.consume();
-    }
 
-    public void dropPdf(DragEvent event) {
-        Dragboard db = event.getDragboard();
-        if (db.hasFiles()) {
-            File file = db.getFiles().get(0);
-            if (file.getName().toLowerCase().endsWith(".pdf")||file.getName().toLowerCase().endsWith(".txt")||file.getName().toLowerCase().endsWith(".doc")||file.getName().toLowerCase().endsWith(".docx")) {
-                filePdf= file; // memorizziamo il file
-                System.out.println("File caricato: " + file.getName());
+        public void dropPdf(DragEvent event) {
+            Dragboard db = event.getDragboard();
+            if (db.hasFiles()) {
+                File file = db.getFiles().get(0);
 
                 // (opzionale) puoi mostrare anteprima con un label
-                PaginaPaneUplaod_labelPdf.setText("File selezionato: " + file.getName());
+                if (file.getName().toLowerCase().matches(".*\\.(pdf|txt|doc|docx)$")) {
+                    filePdf = file;
+                    PaginaPaneUplaod_labelPdf.setText("File selezionato: " + file.getName());
+                }
+            }
+            event.setDropCompleted(true);
+            event.consume();
+        }
+
+        private void richiediInserimentoCanzone(File parFile, int parTipo) {
+            if (parFile == null) {
+                // mostra errore all’utente
+                System.out.println("Nessun file trascinato");
+                return;
+            }
+
+            String titolo = PaginaPaneUpload_textTitolo.getText().trim().replaceAll("[^a-zA-Z0-9]", "_");
+            if (titolo.isEmpty()) titolo = "musica_" + System.currentTimeMillis();
+
+            // Estensione del file originale (es. .mp3)
+            String fileName = parFile.getName();
+            String extension = fileName.substring(fileName.lastIndexOf("."));
+            String locCartella = switch (parTipo) {
+                case 0 -> "musiche";
+                case 1 -> "pdf";
+                default -> "copertine";
+            };
+
+            File cartella = new File("upload/" + locCartella);
+            if (!cartella.exists()) cartella.mkdirs();
+
+            File dest = new File(cartella, ID_CANZONE + extension);
+            try {
+                Files.copy(parFile.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("File salvato: " + dest.getAbsolutePath());
+                // procedi con il resto dell’inserimento (nome, cognome, ecc.)
+            } catch (IOException e) {
+                e.printStackTrace();
+                // mostra errore all’utente
             }
         }
-        event.setDropCompleted(true);
-        event.consume();
+
+        private void mostraPopupSuccessoEtorna(String messaggio) {
+            Label contenuto = new Label(messaggio);
+            contenuto.setStyle("""
+            -fx-background-color: #28a745;
+            -fx-text-fill: white;
+            -fx-padding: 12px 24px;
+            -fx-font-size: 14px;
+            -fx-background-radius: 10;
+            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
+        """);
+
+            Popup popup = new Popup();
+            popup.getContent().add(contenuto);
+            popup.setAutoFix(true);
+            popup.setAutoHide(true);
+
+            Window finestra = PaginaPaneUpload_textTitolo.getScene().getWindow();
+            popup.show(finestra);
+
+            // Posiziona in basso al centro
+            popup.setX(finestra.getX() + finestra.getWidth() / 2 - 100);
+            popup.setY(finestra.getY() + finestra.getHeight() - 100);
+
+            FadeTransition fade = new FadeTransition(Duration.seconds(3), contenuto);
+            fade.setFromValue(1.0);
+            fade.setToValue(0.0);
+            fade.setDelay(Duration.seconds(2));
+            fade.setOnFinished(e -> {
+                popup.hide();
+                try {
+                    mainController.paginaPrincipale(); // Torna al pane principale
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
+            fade.play();
+        }
     }
-
-    private void richiediInserimentoCanzone(File parFile, int parTipo) {
-        if (parFile == null) {
-            // mostra errore all’utente
-            System.out.println("Nessun file trascinato");
-            return;
-        }
-
-        String titolo = PaginaPaneUpload_textTitolo.getText().trim().replaceAll("[^a-zA-Z0-9]", "_");
-        if (titolo.isEmpty()) titolo = "musica_" + System.currentTimeMillis();
-
-        // Estensione del file originale (es. .mp3)
-        String fileName = parFile.getName();
-        String extension = fileName.substring(fileName.lastIndexOf("."));
-        String locCartella="";
-
-        if(parTipo==0)  locCartella="musiche";
-        else if(parTipo==1) locCartella="pdf";
-        else locCartella="copertine";
-
-        File cartellaMusiche = new File("upload/"+locCartella);
-        if (!cartellaMusiche.exists()) {
-            cartellaMusiche.mkdirs(); // crea se mancante
-        }
-
-       File dest = new File("upload/" + locCartella+"/" + ID_CANZONE + extension);
-        try {
-            Files.copy(parFile.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("File salvato: " + dest.getAbsolutePath());
-            // procedi con il resto dell’inserimento (nome, cognome, ecc.)
-        } catch (IOException e) {
-            e.printStackTrace();
-            // mostra errore all’utente
-        }
-    }
-}
-
-

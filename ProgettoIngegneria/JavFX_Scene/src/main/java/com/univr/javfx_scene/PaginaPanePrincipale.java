@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.DirectoryChooser;
 
 
 public class PaginaPanePrincipale implements Initializable {
@@ -34,7 +33,6 @@ public class PaginaPanePrincipale implements Initializable {
     @FXML
     private TilePane PaginaPanePrincipale_grigliaMusiche;
     @FXML private ScrollPane PaginaPrincipale_scrollPane;
-    private Label bannerNotifica;
 
 
     public void setMainController(PaginaPrincipale controller) {
