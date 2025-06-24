@@ -92,13 +92,24 @@ public class PaginaPaneCommenti {
 
 
     private VBox creaVBoxCommento(Map<String, Object> commento, boolean isFiglio) {
+        String autore;
+        Label autoreLabel;
+
         VBox box = new VBox();
         box.setSpacing(2);
         box.getStyleClass().add("commento");
 
-        String autore = commento.get("NOME").toString() + " " + commento.get("COGNOME").toString();
-        Label autoreLabel = new Label(autore);
-        autoreLabel.setStyle("-fx-text-fill: #6d24e1; -fx-font-weight: bold; -fx-font-size: 16; -fx-padding: 0 0 4 0;");
+        // Se l'utente che commenta è l'autore della canzone
+        Map<String, Object> rowCanzone = objSql.leggi("SELECT * FROM CANZONE WHERE ID_CANZONE = " + ID_CANZONE);
+        if(rowCanzone.get("AUTORE").toString().equals(commento.get("NOME").toString())) {
+            autore = commento.get("NOME").toString() + " " + commento.get("COGNOME").toString()+ " (autore)";
+            autoreLabel = new Label(autore);
+            autoreLabel.setStyle("-fx-text-fill: #E5484D; -fx-font-weight: bold; -fx-font-size: 16; -fx-padding: 0 0 4 0;");
+        } else {
+            autore = commento.get("NOME").toString() + " " + commento.get("COGNOME").toString();
+            autoreLabel = new Label(autore);
+            autoreLabel.setStyle("-fx-text-fill: #6d24e1; -fx-font-weight: bold; -fx-font-size: 16; -fx-padding: 0 0 4 0;");
+        }
 
         Label testoLabel = new Label(commento.get("TESTO").toString());
         testoLabel.setWrapText(true);
