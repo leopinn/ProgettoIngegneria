@@ -44,7 +44,7 @@ public class PaginaPaneImpostazioni implements Initializable {
         PaginaImpostazioni_textEmail.setText(PaginaPaneLogin.UTENTE_EMAIL);
 
         // Controllo se l'utente non è amministratore, nascondo le impostazioni
-        Map<String, Object> rowUtente=objSql.leggi(String.format("SELECT * FROM UTENTI WHERE ID_UTENTE=%s", PaginaPaneLogin.UTENTE_ID));
+        Map<String, Object> rowUtente=objSql.leggi(String.format("SELECT * FROM UTENTI WHERE ID_UTENTE=%s", PaginaPaneLogin.ID_UTENTE));
         if(Integer.parseInt(rowUtente.get("RUOLO").toString())!=1)
             PaginaPaneImpostazioni_labelAmministratore.setVisible(false);
     }
@@ -58,7 +58,7 @@ public class PaginaPaneImpostazioni implements Initializable {
             rowUtente.put("EMAIL", email);
         }
 
-        String query= String.format("SELECT PASSWORD FROM UTENTI WHERE ID_UTENTE=%s", PaginaPaneLogin.UTENTE_ID);
+        String query= String.format("SELECT PASSWORD FROM UTENTI WHERE ID_UTENTE=%s", PaginaPaneLogin.ID_UTENTE);
 
         Map<String, Object> loc_row = objSql.leggi(query);
         password=PaginaImpostazioni_textPassword.getText();
@@ -69,7 +69,7 @@ public class PaginaPaneImpostazioni implements Initializable {
         }
 
         if(!rowUtente.isEmpty()){
-            String where = "WHERE ID_UTENTE="+PaginaPaneLogin.UTENTE_ID;
+            String where = "WHERE ID_UTENTE="+PaginaPaneLogin.ID_UTENTE;
             objSql.aggiorna("UTENTI", where, rowUtente);
             PaginaPaneLogin.UTENTE_EMAIL=email; // Aggiorno la variabile globale
             mostraLabelIscrizione();

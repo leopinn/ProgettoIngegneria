@@ -22,7 +22,7 @@
                   <Insets left="10.0" />
                </HBox.margin></Button>
             <Region fx:id="PaginaPrincipale_spacer" styleClass="PaginaPrincipale_spacer" HBox.hgrow="ALWAYS" />
-          <Button fx:id="PaginaPrincipale_bottoneAccount" mnemonicParsing="false" styleClass="PaginaPrincipale_bottoneAccount">
+          <Button fx:id="PaginaPrincipale_bottoneAccount" mnemonicParsing="false" styleClass="PaginaPrincipale_bottoneAccount" onAction="#paginaUtente">
                <HBox.margin>
                   <Insets />
                </HBox.margin></Button>
