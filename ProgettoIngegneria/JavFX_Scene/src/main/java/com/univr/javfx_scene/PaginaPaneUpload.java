@@ -68,22 +68,28 @@ public class PaginaPaneUpload {
 
 
     //Controllo correttezza dei dati
-    public int controllaDati(){
+    public int controllaDati() {
         int errore = 0;
 
-        // Recupero i dati inseriti
         titolo = PaginaPaneUpload_textTitolo.getText();
-        //Controllo se la check box del nome utente è spuntata
+        ruolo = comboRuolo.getValue();
+        strumenti = textStrumenti.getText();
+
         if (checkboxUsaNomeUtente.isSelected()) {
             autore = nomeUtente;
         } else {
             autore = PaginaPaneUpload_textAutore.getText();
         }
+
         link_youtube = PaginaPaneUpload_textLink.getText();
         anno_composizione = PaginaPaneUpload_textAnno.getText();
         genere = PaginaPaneUpload_comboGenere.getValue();
 
-        if (titolo.isEmpty() || autore.isEmpty() || genere == null || genere.isEmpty()) return 1;
+        if (titolo.isEmpty() || autore.isEmpty() || genere == null || genere.isEmpty() || ruolo == null)
+            return 1;
+
+        if ("Interprete".equals(ruolo) && (strumenti == null || strumenti.isBlank()))
+            return 4;
 
         if (anno_composizione != null && anno_composizione.matches("\\d+")) {
             if (Integer.parseInt(anno_composizione) < 1900 || Integer.parseInt(anno_composizione) > Year.now().getValue())
@@ -92,14 +98,20 @@ public class PaginaPaneUpload {
             anno_composizione = "";
         }
 
-        if (fileMusica == null || filePdf == null || fileCopertina == null) return 3;
+        if (fileMusica == null || filePdf == null || fileCopertina == null)
+            return 3;
 
         return errore;
     }
 
-    // Disattiva il campo autore se la checkbox è attiva
+
+    // Gestione attivazione box varie
     @FXML
     public void initialize() {
+        // Inizialmente disabilita il campo strumenti
+        textStrumenti.setDisable(true);
+
+        // Disattiva il campo autore se la checkbox è attiva
         checkboxUsaNomeUtente.selectedProperty().addListener((obs, oldVal, newVal) -> {
             PaginaPaneUpload_textAutore.setDisable(newVal);
             if (newVal) {
@@ -108,15 +120,17 @@ public class PaginaPaneUpload {
                 PaginaPaneUpload_textAutore.clear();
             }
         });
+
+        // Abilita il campo strumenti se si seleziona "Interprete"
         comboRuolo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            if ("Interprete".equals(newVal)) {
-                textStrumenti.setVisible(true);
-            } else {
-                textStrumenti.setVisible(false);
+            boolean isInterprete = "Interprete".equals(newVal);
+            textStrumenti.setDisable(!isInterprete);
+            if (!isInterprete) {
                 textStrumenti.clear();
             }
         });
     }
+
 
     public void aggiungiCanzone() {
         ruolo = comboRuolo.getValue();
@@ -159,17 +173,20 @@ public class PaginaPaneUpload {
         }
     }
 
+    //Banner per controllo degli errori
     private void erroreUpload(int errore) {
         String txt;
         switch (errore) {
             case 1 -> txt = "Inserire tutti i campi obbligatori!";
-            case 2 -> txt = "Anno non valido. Deve essere tra 1900 e l'anno corrente.";
-            case 3 -> txt = "Devi trascinare tutti i file richiesti (musica, pdf, copertina).";
+            case 2 -> txt = "Anno non valido. Deve essere tra 1900 e l'anno corrente";
+            case 3 -> txt = "Devi trascinare tutti i file richiesti (musica, pdf, copertina)";
+            case 4 -> txt = "Inserire almeno uno strumento se il ruolo è 'Interprete'";
             case 19 -> txt = "Il seguente Titolo risulta già registrato!";
-            default -> txt = "Errore generico durante l'inserimento.";
+            default -> txt = "Errore generico durante l'inserimento";
         }
         mostraPopupErrore(txt);
     }
+
 
 
     public void dragFile(DragEvent event) {
