@@ -25,11 +25,17 @@
             <HBox alignment="CENTER" />
 
             <Region fx:id="PaginaPrincipale_spacerLeft" prefHeight="100.0" prefWidth="454.0" styleClass="PaginaPrincipale_spacer" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER_LEFT" spacing="8">
-               <ImageView fx:id="PaginaPrincipale_immagineRicerca" fitHeight="18" fitWidth="18" preserveRatio="true" styleClass="PaginaPrincipale_immagineRicerca">
+            <HBox alignment="CENTER_LEFT" spacing="5" styleClass="searchBarWrapper">
+               <ImageView fx:id="PaginaPrincipale_immagineRicerca"
+                          fitHeight="18" fitWidth="18"
+                          styleClass="PaginaPrincipale_immagineRicerca">
+                  <HBox.margin>
+                     <Insets left="10.0" />
+                  </HBox.margin>
                </ImageView>
-
-               <TextField fx:id="cercaTextField" promptText="Cerca una canzone" styleClass="cercaTextArea" />
+               <TextField fx:id="cercaTextField"
+                          promptText="Cosa vuoi ascoltare?"
+                          styleClass="cercaTextArea" />
             </HBox>
             <Region fx:id="PaginaPrincipale_spacerRight" prefHeight="100.0" prefWidth="316.0" styleClass="PaginaPrincipale_spacer" HBox.hgrow="ALWAYS" />
             <Button fx:id="PaginaPrincipale_bottoneAccount" mnemonicParsing="false" onAction="#paginaUtente" styleClass="PaginaPrincipale_bottoneAccount">

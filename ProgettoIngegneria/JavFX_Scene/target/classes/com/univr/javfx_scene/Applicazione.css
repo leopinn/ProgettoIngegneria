@@ -746,9 +746,21 @@ PasswordField {
 }
 
 .PaginaPrincipale_immagineRicerca{
-    -fx-background-image: url("../../../immagini/iconaRicerca.png");
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
+    -fx-image: url("../../../immagini/iconaRicerca.png");
+}
+
+.searchBarWrapper {
+    -fx-background-color: #1f1f1f;
+    -fx-background-radius: 20;
+    -fx-padding: 5 5 5 15;
+
+    -fx-pref-width: 500;
+    -fx-max-width: 600;
+
+    -fx-pref-height: 40;
+    -fx-max-height: 40;
+
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0.3, 0, 1);
 }
 
 .cercaTextArea {
@@ -756,13 +768,18 @@ PasswordField {
     -fx-background-color: #1f1f1f;
     -fx-text-fill: #ffffff;
     -fx-font-size: 15px;
-    -fx-padding: 8 16 8 36;
+    -fx-padding: 5 5 5 15;
     -fx-background-radius: 20;
     -fx-border-color: transparent;
     -fx-border-radius: 20;
+
     -fx-pref-width: 500;
     -fx-max-width: 600;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0.3, 0, 1);
+    -fx-pref-height: 40;
+    -fx-max-height: 40;
+
+    -fx-background-insets: 0;
+    -fx-border-width: 0;
 }
 
 /* ----------------------------------------------------------------------------------------------------------- COMMENTI ----------------------------------------------------------------- */
