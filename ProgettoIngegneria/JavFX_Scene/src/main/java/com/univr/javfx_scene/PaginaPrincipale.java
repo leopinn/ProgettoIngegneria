@@ -5,15 +5,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.layout.StackPane;
@@ -22,9 +26,11 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -40,6 +46,9 @@ public class PaginaPrincipale implements Initializable {
     @FXML private Slider PaginaPrincipale_sliderMusica;
     @FXML private Slider PaginaPrincipale_sliderVolume;
     @FXML private Button PaginaPrincipale_buttonPlay;
+    @FXML private TextField cercaTextField;
+
+    private PaginaPanePrincipale controller;
 
     public MediaPlayer mediaPlayer;
 
@@ -58,9 +67,23 @@ public class PaginaPrincipale implements Initializable {
             PaginaPrincipale_sliderVolume.valueProperty().addListener((obs, oldVal, newVal) -> {
                 mediaPlayer.setVolume(newVal.doubleValue() / 100.0);
             });
+
+            // Ricerca canzone in tempo reale
+            cercaTextField.textProperty().addListener((obs, oldValue, newValue) -> {
+                try {
+                    aggiornaMusiche(newValue);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void aggiornaMusiche(String val) throws IOException {
+        List<Map<String, Object>> rowCanzone = objSql.leggiLista("SELECT * FROM CANZONE WHERE TITOLO LIKE '" + val.trim().replace("'", "''").toLowerCase() + "%' COLLATE NOCASE");
+        controller.setGrigliaMusica(rowCanzone);
     }
 
     public void paginaPrincipale() throws IOException {
@@ -68,7 +91,7 @@ public class PaginaPrincipale implements Initializable {
         Parent registerPane = loaderPrincipale.load();
 
         // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
-        PaginaPanePrincipale controller = loaderPrincipale.getController();
+        controller = loaderPrincipale.getController();
         controller.setMainController(this);  // <<< passaggio chiave
 
         PaginaPrincipale_borderPane.setCenter(registerPane);
@@ -207,6 +230,7 @@ public class PaginaPrincipale implements Initializable {
             PaginaPrincipale_buttonPlay.getStyleClass().remove("PaginaPrincipale_buttonPlay");
             PaginaPrincipale_buttonPlay.getStyleClass().add("PaginaPrincipale_buttonStop");
             mediaPlayer.play();
+            mediaPlayer.setVolume(PaginaPrincipale_sliderVolume.getValue() / 100);
         }
     }
 
@@ -247,9 +271,11 @@ public class PaginaPrincipale implements Initializable {
         });
 
         mediaPlayer.play();
+        mediaPlayer.setVolume(PaginaPrincipale_sliderVolume.getValue() / 100);
 
         PaginaPrincipale_buttonPlay.getStyleClass().remove("PaginaPrincipale_buttonPlay");
         PaginaPrincipale_buttonPlay.getStyleClass().add("PaginaPrincipale_buttonStop");
+        System.out.println(PaginaPrincipale_buttonPlay);
     }
 
     public void sliderPressed(){

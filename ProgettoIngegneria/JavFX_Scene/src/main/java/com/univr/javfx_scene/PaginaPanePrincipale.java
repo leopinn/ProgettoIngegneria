@@ -44,65 +44,7 @@ public class PaginaPanePrincipale implements Initializable {
         PaginaPanePrincipale_grigliaMusiche.prefWidthProperty().bind(PaginaPrincipale_scrollPane.widthProperty());
 
         List<Map<String, Object>> listaBrani = objSql.leggiLista("SELECT * FROM CANZONE");
-        for (Map<String, Object> brano : listaBrani) {
-            VBox card = new VBox(10);
-            card.setAlignment(Pos.CENTER);
-            card.setStyle("""
-        -fx-background-color: #1e1e1e;
-        -fx-background-radius: 15;
-        -fx-padding: 10;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);
-    """);
-            card.setPrefWidth(150);
-            card.setPrefHeight(150);
-            card.setId(Integer.toString((Integer) brano.get("ID_CANZONE")));
-
-            card.setOnMouseClicked(event -> {
-                try {
-                    selezionaMusica(card.getId());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-
-            // Crea menu contestuale (tasto destro)
-            ContextMenu contextMenu = new ContextMenu();
-            MenuItem downloadItem = new MenuItem("Download");
-
-            downloadItem.setOnAction(e -> {
-                int idCanzone = Integer.parseInt(card.getId());
-                scaricaFileCanzone(idCanzone);
-            });
-
-            contextMenu.getItems().add(downloadItem);
-
-            card.setOnContextMenuRequested(e -> {
-                contextMenu.show(card, e.getScreenX(), e.getScreenY());
-            });
-
-            String locPath = "upload/copertine/" + brano.get("ID_CANZONE") + ".jpg";
-            if(!new File(locPath).exists())         // Controllo se eventualmente è un PNG
-                locPath = "upload/copertine/" + brano.get("ID_CANZONE") + ".png";
-
-            Image immagine = new Image(new File(locPath).toURI().toString());
-            ImageView copertina = new ImageView(immagine);
-            copertina.setFitWidth(120);
-            copertina.setFitHeight(120);
-            copertina.setPreserveRatio(true);
-
-            Label titolo = new Label((String) brano.get("TITOLO"));
-            titolo.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;");
-            titolo.setWrapText(true);
-            titolo.setAlignment(Pos.CENTER);
-
-            Label autore = new Label((String) brano.get("AUTORE"));
-            autore.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 12px;");
-            autore.setWrapText(true);
-            autore.setAlignment(Pos.CENTER);
-
-            card.getChildren().addAll(copertina, titolo, autore);
-            PaginaPanePrincipale_grigliaMusiche.getChildren().add(card);
-        }
+        setGrigliaMusica(listaBrani);
     }
 
     private void selezionaMusica(String parId) throws IOException {
@@ -236,6 +178,71 @@ public class PaginaPanePrincipale implements Initializable {
         } else {
             // Se il file sorgente non esiste, stampa un messaggio in console
             System.out.println("File non trovato: " + sorgente.getAbsolutePath());
+        }
+    }
+
+    public void setGrigliaMusica (List<Map<String, Object>> rowCanzone) {
+        PaginaPanePrincipale_grigliaMusiche.getChildren().clear();
+        System.out.println(rowCanzone);
+
+        for (Map<String, Object> brano : rowCanzone) {
+            VBox card = new VBox(10);
+            card.setAlignment(Pos.CENTER);
+            card.setStyle("""
+        -fx-background-color: #1e1e1e;
+        -fx-background-radius: 15;
+        -fx-padding: 10;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);
+    """);
+            card.setPrefWidth(150);
+            card.setPrefHeight(150);
+            card.setId(Integer.toString((Integer) brano.get("ID_CANZONE")));
+
+            card.setOnMouseClicked(event -> {
+                try {
+                    selezionaMusica(card.getId());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            // Crea menu contestuale (tasto destro)
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem downloadItem = new MenuItem("Download");
+
+            downloadItem.setOnAction(e -> {
+                int idCanzone = Integer.parseInt(card.getId());
+                scaricaFileCanzone(idCanzone);
+            });
+
+            contextMenu.getItems().add(downloadItem);
+
+            card.setOnContextMenuRequested(e -> {
+                contextMenu.show(card, e.getScreenX(), e.getScreenY());
+            });
+
+            String locPath = "upload/copertine/" + brano.get("ID_CANZONE") + ".jpg";
+            if(!new File(locPath).exists())         // Controllo se eventualmente è un PNG
+                locPath = "upload/copertine/" + brano.get("ID_CANZONE") + ".png";
+
+            Image immagine = new Image(new File(locPath).toURI().toString());
+            ImageView copertina = new ImageView(immagine);
+            copertina.setFitWidth(120);
+            copertina.setFitHeight(120);
+            copertina.setPreserveRatio(true);
+
+            Label titolo = new Label((String) brano.get("TITOLO"));
+            titolo.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;");
+            titolo.setWrapText(true);
+            titolo.setAlignment(Pos.CENTER);
+
+            Label autore = new Label((String) brano.get("AUTORE"));
+            autore.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 12px;");
+            autore.setWrapText(true);
+            autore.setAlignment(Pos.CENTER);
+
+            card.getChildren().addAll(copertina, titolo, autore);
+            PaginaPanePrincipale_grigliaMusiche.getChildren().add(card);
         }
     }
 }
