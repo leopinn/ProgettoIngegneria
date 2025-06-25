@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.stage.DirectoryChooser;
 
@@ -29,9 +30,9 @@ public class PaginaPanePrincipale implements Initializable {
 
     private  ObjSql objSql = ObjSql.oggettoSql();
     private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
+    private List<Map<String, Object>> listaBrani, listaBraniMancanti;
 
-    @FXML
-    private TilePane PaginaPanePrincipale_grigliaMusiche;
+    @FXML private TilePane PaginaPanePrincipale_grigliaMusiche;
     @FXML private ScrollPane PaginaPrincipale_scrollPane;
 
 
@@ -43,13 +44,47 @@ public class PaginaPanePrincipale implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         PaginaPanePrincipale_grigliaMusiche.prefWidthProperty().bind(PaginaPrincipale_scrollPane.widthProperty());
 
-        List<Map<String, Object>> listaBrani = objSql.leggiLista("SELECT * FROM CANZONE");
+        listaBrani = objSql.leggiLista("SELECT * FROM CANZONE");
         setGrigliaMusica(listaBrani);
     }
 
-    private void selezionaMusica(String parId) throws IOException {
-        mainController.selezionaMusica(Integer.parseInt(parId));
+
+    /* ---------- Inizio - GESTIONE MUSICA AUTOMATICA ----------*/
+
+    private void selezionaMusica(String parId, int isCasuale) throws IOException {
+        if(isCasuale==0) {
+            // Ogni volta che si seleziona una musica manualmente, si resettano i brani mancanti
+            listaBraniMancanti = objSql.leggiLista("SELECT * FROM CANZONE");
+        }
+        rimuoviBrano(parId);
+
+        mainController.selezionaMusica(Integer.parseInt(parId), this);
     }
+
+    private void rimuoviBrano(String parId){
+        for (Map<String, Object> rowBrano:listaBraniMancanti){
+            if(rowBrano.get("ID_CANZONE").toString().equals(parId)){
+                listaBraniMancanti.remove(rowBrano);
+                break;
+            }
+        }
+    }
+
+    // Riproduzione casuale delle musiche
+    public void riproduzioneCasuale(){
+        Random rand = new Random();
+        int canzomeRandom = rand.nextInt(listaBraniMancanti.size());
+
+        Map<String, Object> rowCanzone = listaBraniMancanti.get(canzomeRandom);
+        try {
+            selezionaMusica(rowCanzone.get("ID_CANZONE").toString(), 1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /* ---------- Fine - GESTIONE MUSICA AUTOMATICA ----------*/
+
 
     private void mostraPopup(String messaggio) {
         Label contenuto = new Label(messaggio);
@@ -161,13 +196,6 @@ public class PaginaPanePrincipale implements Initializable {
         }
     }
 
-    /**
-     * Copia un file dalla posizione sorgente alla destinazione scelta dall'utente.
-     * Se il file sorgente non esiste, stampa un messaggio di errore.
-     *
-     * @param sorgente      Il file da copiare (es. .mp3, .txt, .mp4, ecc.)
-     * @param destinazione  Il percorso dove il file verrà copiato
-     */
     private void copiaFile(File sorgente, File destinazione) throws IOException {
         if (sorgente.exists()) {
             java.nio.file.Files.copy(
@@ -200,7 +228,7 @@ public class PaginaPanePrincipale implements Initializable {
 
             card.setOnMouseClicked(event -> {
                 try {
-                    selezionaMusica(card.getId());
+                    selezionaMusica(card.getId(), 0);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

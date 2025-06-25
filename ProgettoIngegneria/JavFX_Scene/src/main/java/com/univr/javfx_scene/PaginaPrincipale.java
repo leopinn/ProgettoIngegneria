@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,17 +15,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.scene.layout.StackPane;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -37,6 +32,15 @@ import java.util.ResourceBundle;
 public class PaginaPrincipale implements Initializable {
 
     private  ObjSql objSql = ObjSql.oggettoSql();
+    private PaginaPanePrincipale controller;
+    public MediaPlayer mediaPlayer;
+    public int ID_CANZONE;  // ID della canzone attualmente in ascolto
+
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
+
+    private PaginaPaneCommenti commentiController;      // Per gestire i commenti in certi range
 
     @FXML private BorderPane PaginaPrincipale_borderPane;
     @FXML private ImageView PaginaPrincipale_imageCopertina;
@@ -48,15 +52,6 @@ public class PaginaPrincipale implements Initializable {
     @FXML private Button PaginaPrincipale_buttonPlay;
     @FXML private TextField cercaTextField;
 
-    private PaginaPanePrincipale controller;
-    public MediaPlayer mediaPlayer;
-    public int ID_CANZONE;  // ID della canzone attualmente in ascolto
-
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-
-    private PaginaPaneCommenti commentiController;      // Per gestire i commenti in certi range
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -204,9 +199,9 @@ public class PaginaPrincipale implements Initializable {
         stage.show();
     }
 
-    public void selezionaMusica(int parId) throws IOException {
+    public void selezionaMusica(int parId, PaginaPanePrincipale controller) throws IOException {
         impostaDatiCanzone(parId);
-        riproduciCanzone(parId);
+        riproduciCanzone(parId, controller);
     }
 
     private void impostaDatiCanzone(int parId) throws IOException {
@@ -235,7 +230,6 @@ public class PaginaPrincipale implements Initializable {
 
         // Sezione video del brano
         mostraVideo(1, parId);
-
     }
 
     public void playStop(){
@@ -252,7 +246,7 @@ public class PaginaPrincipale implements Initializable {
         }
     }
 
-    public void riproduciCanzone(int parId){
+    public void riproduciCanzone(int parId, PaginaPanePrincipale controller){
         File file = new File("upload/musiche/"+parId+".mp3");
         if (!file.exists()) {
             System.out.println("File audio non trovato!");
@@ -273,6 +267,9 @@ public class PaginaPrincipale implements Initializable {
             PaginaPrincipale_sliderMusica.setMax(durata.toMillis());
         });
 
+        mediaPlayer.setOnEndOfMedia(() -> {
+            controller.riproduzioneCasuale();
+        });
 
         mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
             if (!PaginaPrincipale_sliderMusica.isValueChanging()) { // evita salti mentre l’utente trascina
