@@ -745,16 +745,24 @@ PasswordField {
     -fx-border-width: 0 0 1 0;
 }
 
+.PaginaPrincipale_immagineRicerca{
+    -fx-background-image: url("../../../immagini/iconaRicerca.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
 .cercaTextArea {
-    -fx-background-color: #2c2c2c;
-    -fx-text-fill: #f9f9f9;
     -fx-font-family: "Gotham-Medium";
-    -fx-font-size: 16;
-    -fx-line-spacing: 5;
-    -fx-padding: 6;
-    -fx-background-radius: 6;
-    -fx-border-color: #6d24e1;
-    -fx-border-radius: 6;
+    -fx-background-color: #1f1f1f;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 15px;
+    -fx-padding: 8 16 8 36;
+    -fx-background-radius: 20;
+    -fx-border-color: transparent;
+    -fx-border-radius: 20;
+    -fx-pref-width: 500;
+    -fx-max-width: 600;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0.3, 0, 1);
 }
 
 /* ----------------------------------------------------------------------------------------------------------- COMMENTI ----------------------------------------------------------------- */

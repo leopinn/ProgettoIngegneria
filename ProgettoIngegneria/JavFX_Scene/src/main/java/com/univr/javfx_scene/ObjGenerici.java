@@ -21,24 +21,7 @@ public class ObjGenerici {
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
     """);
 
-        Popup popup = new Popup();
-        popup.getContent().add(contenuto);
-        popup.setAutoFix(true);
-        popup.setAutoHide(true);
-
-        Window finestra = parNodo.getScene().getWindow();
-        popup.show(finestra);
-
-        // Posiziona in basso al centro
-        popup.setX(finestra.getX() + finestra.getWidth() / 2 - 100);
-        popup.setY(finestra.getY() + finestra.getHeight() - 100);
-
-        FadeTransition fade = new FadeTransition(Duration.seconds(3), contenuto);
-        fade.setFromValue(1.0);
-        fade.setToValue(0.0);
-        fade.setDelay(Duration.seconds(2));
-
-        fade.play();
+        generaPopUp(contenuto, parNodo);
     }
 
     public static void mostraPopupErrore(Node parNodo, String parMsg) {
@@ -52,6 +35,11 @@ public class ObjGenerici {
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
     """);
 
+        generaPopUp(contenuto, parNodo);
+    }
+
+
+    private static void generaPopUp(Label contenuto, Node parNodo){
         Popup popup = new Popup();
         popup.getContent().add(contenuto);
         popup.setAutoFix(true);
@@ -60,13 +48,17 @@ public class ObjGenerici {
         Window finestra = parNodo.getScene().getWindow();
         popup.show(finestra);
 
-        popup.setX(finestra.getX() + finestra.getWidth() / 2 - 100);
-        popup.setY(finestra.getY() + finestra.getHeight() - 100);
+        // Posiziona in basso al centro
+        double popupWidth = popup.getWidth();
+
+        popup.setX(finestra.getX() + (finestra.getWidth() - popupWidth) / 2);
+        popup.setY(finestra.getY() + finestra.getHeight() - 160);       // Immediatamente sopra al player
 
         FadeTransition fade = new FadeTransition(Duration.seconds(3), contenuto);
         fade.setFromValue(1.0);
         fade.setToValue(0.0);
         fade.setDelay(Duration.seconds(2));
+
         fade.play();
     }
 }

@@ -236,10 +236,14 @@ public class PaginaPrincipale implements Initializable {
         // Controlla se è in esecuzione
         if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             PaginaPrincipale_buttonPlay.getStyleClass().remove("PaginaPrincipale_buttonStop");
+            PaginaPrincipale_buttonPlay.getStyleClass().remove("PaginaPrincipale_buttonPlay");
+
             PaginaPrincipale_buttonPlay.getStyleClass().add("PaginaPrincipale_buttonPlay");
             mediaPlayer.pause();
         } else {
+            PaginaPrincipale_buttonPlay.getStyleClass().remove("PaginaPrincipale_buttonStop");
             PaginaPrincipale_buttonPlay.getStyleClass().remove("PaginaPrincipale_buttonPlay");
+
             PaginaPrincipale_buttonPlay.getStyleClass().add("PaginaPrincipale_buttonStop");
             mediaPlayer.play();
             mediaPlayer.setVolume(PaginaPrincipale_sliderVolume.getValue() / 100);
@@ -289,8 +293,7 @@ public class PaginaPrincipale implements Initializable {
         mediaPlayer.play();
         mediaPlayer.setVolume(PaginaPrincipale_sliderVolume.getValue() / 100);
 
-        PaginaPrincipale_buttonPlay.getStyleClass().remove("PaginaPrincipale_buttonPlay");
-        PaginaPrincipale_buttonPlay.getStyleClass().add("PaginaPrincipale_buttonStop");
+        playStop();
         System.out.println(PaginaPrincipale_buttonPlay);
     }
 
