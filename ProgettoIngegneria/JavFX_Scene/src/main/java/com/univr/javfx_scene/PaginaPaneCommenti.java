@@ -382,6 +382,7 @@ public class PaginaPaneCommenti {
                        VBox box = creaVBoxCommentoMinutaggio(commento);
                        PaginaPaneCommenti_vBoxMinutaggio.getChildren().add(box);
                        PaginaPaneCommenti_vBoxMinutaggio.setPrefHeight(box.getPrefHeight());
+                        PaginaPaneCommenti_vBoxMinutaggio.setMinHeight(box.getPrefHeight());
 
                         // Memorizzo lo stato corrente
                         commentoMostrato = box;
@@ -396,6 +397,4 @@ public class PaginaPaneCommenti {
                }
         }
     }
-
-
 }

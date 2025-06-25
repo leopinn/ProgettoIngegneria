@@ -49,8 +49,8 @@ public class PaginaPrincipale implements Initializable {
     @FXML private TextField cercaTextField;
 
     private PaginaPanePrincipale controller;
-
     public MediaPlayer mediaPlayer;
+    public int ID_CANZONE;  // ID della canzone attualmente in ascolto
 
     private Stage stage;
     private Scene scene;
@@ -81,10 +81,9 @@ public class PaginaPrincipale implements Initializable {
         }
     }
 
-    public void aggiornaMusiche(String val) throws IOException {
-        List<Map<String, Object>> rowCanzone = objSql.leggiLista("SELECT * FROM CANZONE WHERE TITOLO LIKE '" + val.trim().replace("'", "''").toLowerCase() + "%' COLLATE NOCASE");
-        controller.setGrigliaMusica(rowCanzone);
-    }
+
+
+    /* ---------- INIZIO - CAMBIO SCHERMATA ----------*/
 
     public void paginaPrincipale() throws IOException {
         FXMLLoader loaderPrincipale = new FXMLLoader(getClass().getResource("PaginaPanePrincipale.fxml"));
@@ -122,15 +121,6 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_borderPane.setCenter(registerPane);
     }
 
-    public void logout(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("PaginaLogin.fxml"));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("Applicazione.css").toExternalForm());
-        stage.setScene(scene);
-        stage.show();
-    }
-
     public void upload(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneUpload.fxml"));
         Parent registerPane = loader.load();
@@ -150,45 +140,21 @@ public class PaginaPrincipale implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneImpostazioniAmministratore.fxml"));
         Parent registerPane = loader.load();
 
-        // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
         PaginaPaneImpostazioniAmministratore controller = loader.getController();
         controller.setMainController(this);  // <<< passaggio chiave
 
         PaginaPrincipale_borderPane.setCenter(registerPane);
     }
 
-    public void selezionaMusica(int parId) throws IOException {
-        impostaDatiCanzone(parId);
-        riproduciCanzone(parId);
-    }
+    public void paginaCanzone() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneCanzone.fxml"));
+        Parent paneCanzone = loader.load();
 
-    private void impostaDatiCanzone(int parId) throws IOException {
-        // Imposto la copertina
-        String locPath="upload/copertine/"+parId+".jpg";
-        Image immagine = new Image(new File(locPath).toURI().toString());
+        PaginaPaneCanzone controller = loader.getController();
+        controller.setMainController(this);  // <<< passaggio chiave
+        controller.mostraSchermataCanzone(ID_CANZONE);
 
-        PaginaPrincipale_imageCopertina.setImage(immagine);
-
-        // Imposto bordi tondeggianti
-        Rectangle clip = new Rectangle(60, 60);
-        clip.setArcWidth(10); // + grande = più arrotondato
-        clip.setArcHeight(10);
-        PaginaPrincipale_imageCopertina.setClip(clip);
-
-        // Imposto titolo e autore
-        Map<String, Object> rowBrano = objSql.leggi(String.format("SELECT TITOLO, AUTORE FROM CANZONE WHERE ID_CANZONE=%s", parId));
-        PaginaPrincipale_labelTitoloCanzone.setText(rowBrano.get("TITOLO").toString());
-        PaginaPrincipale_labelTitoloCanzone.setVisible(true);
-
-        PaginaPrincipale_labelAutoreCanzone.setText(rowBrano.get("AUTORE").toString());
-        PaginaPrincipale_labelAutoreCanzone.setVisible(true);
-
-        // Sezione commenti del brano
-        mostraCommenti(1, parId);
-
-        // Sezione video del brano
-        mostraVideo(1, parId);
-
+        PaginaPrincipale_borderPane.setCenter(paneCanzone);
     }
 
     public void mostraVideo(int parId, int id_canzone) throws IOException {
@@ -220,6 +186,58 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_borderPane.setRight(null);
     }
 
+    /* ---------- FINE - CAMBIO SCHERMATA ----------*/
+
+
+
+    public void aggiornaMusiche(String val) throws IOException {
+        List<Map<String, Object>> rowCanzone = objSql.leggiLista("SELECT * FROM CANZONE WHERE TITOLO LIKE '" + val.trim().replace("'", "''").toLowerCase() + "%' COLLATE NOCASE");
+        controller.setGrigliaMusica(rowCanzone);
+    }
+
+    public void logout(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("PaginaLogin.fxml"));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("Applicazione.css").toExternalForm());
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void selezionaMusica(int parId) throws IOException {
+        impostaDatiCanzone(parId);
+        riproduciCanzone(parId);
+    }
+
+    private void impostaDatiCanzone(int parId) throws IOException {
+        // Imposto la copertina
+        String locPath="upload/copertine/"+parId+".jpg";
+        Image immagine = new Image(new File(locPath).toURI().toString());
+
+        PaginaPrincipale_imageCopertina.setImage(immagine);
+
+        // Imposto bordi tondeggianti
+        Rectangle clip = new Rectangle(60, 60);
+        clip.setArcWidth(5);
+        clip.setArcHeight(5);
+        PaginaPrincipale_imageCopertina.setClip(clip);
+
+        // Imposto titolo e autore
+        Map<String, Object> rowBrano = objSql.leggi(String.format("SELECT TITOLO, AUTORE FROM CANZONE WHERE ID_CANZONE=%s", parId));
+        PaginaPrincipale_labelTitoloCanzone.setText(rowBrano.get("TITOLO").toString());
+        PaginaPrincipale_labelTitoloCanzone.setVisible(true);
+
+        PaginaPrincipale_labelAutoreCanzone.setText(rowBrano.get("AUTORE").toString());
+        PaginaPrincipale_labelAutoreCanzone.setVisible(true);
+
+        // Sezione commenti del brano
+        mostraCommenti(1, parId);
+
+        // Sezione video del brano
+        mostraVideo(1, parId);
+
+    }
+
     public void playStop(){
         // Controlla se è in esecuzione
         if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
@@ -248,6 +266,7 @@ public class PaginaPrincipale implements Initializable {
         }
 
         mediaPlayer = new MediaPlayer(media);
+        ID_CANZONE=parId;
 
         mediaPlayer.setOnReady(() -> {
             Duration durata = mediaPlayer.getMedia().getDuration();

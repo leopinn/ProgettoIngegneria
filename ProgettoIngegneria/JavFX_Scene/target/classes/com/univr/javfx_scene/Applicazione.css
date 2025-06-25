@@ -390,6 +390,16 @@ PasswordField {
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-font-size: 14px;
+    -fx-alignment: top-left;
+
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.PaginaPrincipale_labelTitoloCanzone:hover{
+    -fx-underline: true;
+    -fx-cursor: hand;
 }
 
 .PaginaPrincipale_labelAutoreCanzone{
@@ -934,4 +944,55 @@ PasswordField {
     -fx-spacing: 10;
     -fx-background-radius: 10;
     -fx-background-color: #1f1f1f;
+}
+
+/* ----------------------------------------------------------------------------------------------------------- CANZONE ----------------------------------------------------------------- */
+
+.PaginaPaneCanzone_anchorPane{
+    -fx-background-color: #1f1f1f;
+    -fx-background-radius: 10;
+    -fx-spacing: 20;
+}
+
+.PaginaPaneCanzone_vBoxDatiCanzone{
+    -fx-spacing: 10;
+}
+
+.PaginaPaneCanzone_vBoxPrincipale{
+    -fx-spacing: 10;
+}
+
+.PaginaPaneCanzone_copertina{
+}
+
+.PaginaPaneCanzone_titolo{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 42px;
+    -fx-alignment: center;
+    -fx-wrap-text: true;
+}
+
+.PaginaPaneCanzone_hBoxBottom{
+    -fx-spacing: 10;
+}
+
+.PaginaPaneCanzone_altriDati{
+    -fx-text-fill: #cccccc;
+    -fx-font-size: 14px;
+    -fx-alignment: center;
+    -fx-wrap-text: true;
+}
+
+.PaginaPaneCanzone_labelYoutube{
+    -fx-text-fill: #0077ff;
+    -fx-font-style: normal;
+    -fx-underline: true;
+    -fx-font-size: 14px;
+    -fx-alignment: center;
+    -fx-wrap-text: true;
+}
+
+.PaginaPaneCanzone_labelYoutube:hover{
+    -fx-cursor: hand;
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="PaginaPaneCanzone_anchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="PaginaPaneCanzone_anchorPane" stylesheets="Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneCanzone">
+
+    <children>
+        <VBox fx:id="PaginaPaneCanzone_vBoxPrincipale" prefHeight="400.0" prefWidth="600.0" styleClass="PaginaPaneCanzone_vBoxPrincipale" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+            <children>
+                <HBox fx:id="PaginaPaneCanzone_hBoxUp" alignment="BOTTOM_LEFT" prefHeight="350.0" prefWidth="600.0">
+                    <children>
+                        <ImageView fx:id="PaginaPaneCanzone_copertina" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" styleClass="PaginaPaneCanzone_copertina">
+                            <HBox.margin>
+                                <Insets bottom="30" left="30" right="30" top="30" />
+                            </HBox.margin>
+                        </ImageView>
+
+                        <VBox fx:id="PaginaPaneCanzone_vBoxDatiCanzone" alignment="BOTTOM_LEFT" styleClass="PaginaPaneCanzone_vBoxDatiCanzone" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label fx:id="PaginaPaneCanzone_titolo" styleClass="PaginaPaneCanzone_titolo" text="Label" />
+                                <HBox fx:id="PaginaPaneCanzone_hBoxDatiAggiuntiviCanzone">
+                                    <children>
+                                        <Label fx:id="PaginaPaneCanzone_altriDati" styleClass="PaginaPaneCanzone_altriDati" text="Label">
+                                            <HBox.margin>
+                                                <Insets bottom="35" />
+                                            </HBox.margin>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+
+                    </children>
+                </HBox>
+            <HBox fx:id="PaginaPaneCanzone_hBoxBottom" alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="PaginaPaneCanzone_hBoxBottom">
+               <children>
+                  <Label styleClass="PaginaPaneCanzone_altriDati" text="Link Youtube: ">
+                      <HBox.margin>
+                            <Insets left="30" top="15" />
+                      </HBox.margin>
+                  </Label>
+                  <Label fx:id="PaginaPaneCanzone_labelYoutube" onMouseClicked="#apriLinkYoutube" styleClass="PaginaPaneCanzone_labelYoutube" text="Label">
+                        <HBox.margin>
+                                <Insets top="15" />
+                        </HBox.margin>
+               </Label>
+               </children>
+            </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
