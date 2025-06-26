@@ -386,7 +386,7 @@ PasswordField {
 }
 
 .PaginaPrincipale_sliderMusica .track:filled {
-    -fx-background-color: white;
+    -fx-background-color: #ffffff;
     -fx-background-insets: 0;
     -fx-background-radius: 3;
 }
@@ -395,32 +395,47 @@ PasswordField {
     -fx-background-image: url("../../../immagini/iconaPrecedente.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-size: 24 24;
+    -fx-background-size: 18 18;
 
     -fx-background-color: transparent;
 
-    -fx-min-width: 60;
-    -fx-min-height: 60;
-    -fx-max-width: 60;
-    -fx-max-height: 60;
+    -fx-min-width: 30;
+    -fx-min-height: 30;
+    -fx-max-width: 30;
+    -fx-max-height: 30;
 
     -fx-padding: 10 10 10 10;
 }
+.PaginaPrincipale_buttonIndietro:hover {
+    -fx-background-image: url("../../../immagini/iconaPrecedenteHover.png");
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-cursor: hand;
+    -fx-opacity: 0.95;
+}
+
 
 .PaginaPrincipale_buttonAvanti{
     -fx-background-image: url("../../../immagini/iconaSuccessivo.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-size: 24 24;
+    -fx-background-size: 18 18;
 
     -fx-background-color: transparent;
 
-    -fx-min-width: 60;
-    -fx-min-height: 60;
-    -fx-max-width: 60;
-    -fx-max-height: 60;
+    -fx-min-width: 30;
+    -fx-min-height: 30;
+    -fx-max-width: 30;
+    -fx-max-height: 30;
 
     -fx-padding: 10 10 10 10;
+}
+.PaginaPrincipale_buttonAvanti:hover {
+    -fx-background-image: url("../../../immagini/iconaSuccessivoHover.png");
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-cursor: hand;
+    -fx-opacity: 0.95;
 }
 
 .PaginaPrincipale_buttonPlay{
@@ -472,6 +487,10 @@ PasswordField {
     -fx-scale-y: 1.1;
     -fx-cursor: hand;
     -fx-opacity: 0.95;
+}
+
+.PaginaPrincipale_hBoxBottoniPlayer{
+    -fx-spacing: 20;
 }
 
 .PaginaPrincipale_labelTitoloCanzone{
@@ -837,10 +856,12 @@ PasswordField {
     -fx-image: url("../../../immagini/iconaRicerca.png");
 }
 
-.searchBarWrapper {
+.PaginaPrincipale_barraRicercaMusica {
     -fx-background-color: #1f1f1f;
     -fx-background-radius: 20;
     -fx-padding: 5 5 5 15;
+    -fx-border-width: 2;
+    -fx-border-color: transparent;
 
     -fx-pref-width: 500;
     -fx-max-width: 600;
@@ -850,10 +871,16 @@ PasswordField {
 
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0.3, 0, 1);
 }
+.PaginaPrincipale_barraRicercaMusica:hover{
+    -fx-border-color: #9b4dff;
+    -fx-border-radius: 20;
+    -fx-border-width: 2;
+    -fx-background-color: #343434;
+}
 
 .cercaTextArea {
     -fx-font-family: "Gotham-Medium";
-    -fx-background-color: #1f1f1f;
+    -fx-background-color: transparent;
     -fx-text-fill: #ffffff;
     -fx-font-size: 15px;
     -fx-padding: 5 5 5 15;

@@ -25,17 +25,13 @@
             <HBox alignment="CENTER" />
 
             <Region fx:id="PaginaPrincipale_spacerLeft" prefHeight="100.0" prefWidth="454.0" styleClass="PaginaPrincipale_spacer" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER_LEFT" spacing="5" styleClass="searchBarWrapper">
-               <ImageView fx:id="PaginaPrincipale_immagineRicerca"
-                          fitHeight="18" fitWidth="18"
-                          styleClass="PaginaPrincipale_immagineRicerca">
+            <HBox fx:id="PaginaPrincipale_barraRicercaMusica" alignment="CENTER_LEFT" spacing="5" styleClass="PaginaPrincipale_barraRicercaMusica">
+               <ImageView fx:id="PaginaPrincipale_immagineRicerca" fitHeight="18" fitWidth="18" styleClass="PaginaPrincipale_immagineRicerca">
                   <HBox.margin>
                      <Insets left="10.0" />
                   </HBox.margin>
                </ImageView>
-               <TextField fx:id="cercaTextField"
-                          promptText="Cosa vuoi ascoltare?"
-                          styleClass="cercaTextArea" />
+               <TextField fx:id="cercaTextField" promptText="Cosa vuoi ascoltare?" styleClass="cercaTextArea" />
             </HBox>
             <Region fx:id="PaginaPrincipale_spacerRight" prefHeight="100.0" prefWidth="316.0" styleClass="PaginaPrincipale_spacer" HBox.hgrow="ALWAYS" />
             <Button fx:id="PaginaPrincipale_bottoneAccount" mnemonicParsing="false" onAction="#paginaUtente" styleClass="PaginaPrincipale_bottoneAccount">
@@ -79,11 +75,11 @@
             <Region HBox.hgrow="ALWAYS" />
             <VBox alignment="CENTER" maxWidth="700.0" minWidth="300.0" prefHeight="150.0" prefWidth="700.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                  <HBox fx:id="PaginaPrincipale_hBoxBottoniPlayer" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="PaginaPrincipale_hBoxBottoniPlayer">
                      <children>
-                        <Button fx:id="PaginaPrincipale_buttonIndietro" mnemonicParsing="false" styleClass="PaginaPrincipale_buttonIndietro" onAction="#indietro"/>
+                        <Button fx:id="PaginaPrincipale_buttonIndietro" mnemonicParsing="false" onAction="#indietro" styleClass="PaginaPrincipale_buttonIndietro" />
                         <Button fx:id="PaginaPrincipale_buttonPlay" mnemonicParsing="false" onAction="#playStop" styleClass="PaginaPrincipale_buttonPlay" />
-                        <Button fx:id="PaginaPrincipale_buttonAvanti" mnemonicParsing="false" styleClass="PaginaPrincipale_buttonAvanti" onAction="#avanti"/>
+                        <Button fx:id="PaginaPrincipale_buttonAvanti" mnemonicParsing="false" onAction="#avanti" styleClass="PaginaPrincipale_buttonAvanti" />
                      </children>
                   </HBox>
                   <HBox fx:id="PaginaPrincipale_hBoxPlayer" alignment="TOP_CENTER" maxWidth="1000" minHeight="30.0" minWidth="300.0" styleClass="PaginaPrincipale_hBoxPlayer">

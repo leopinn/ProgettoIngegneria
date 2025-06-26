@@ -4,6 +4,7 @@ import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -56,6 +57,7 @@ public class PaginaPanePrincipale implements Initializable {
     private void selezionaMusica(String parId, int isCasuale) throws IOException {
         if(isCasuale==0) {
             // Ogni volta che si seleziona una musica manualmente, si resettano i brani mancanti
+            listaBraniMancanti = objSql.leggiLista("SELECT * FROM CANZONE");
             listaBraniMancanti = objSql.leggiLista("SELECT * FROM CANZONE");
             codaBrani.clear();
         }
@@ -243,12 +245,14 @@ public class PaginaPanePrincipale implements Initializable {
         for (Map<String, Object> brano : rowCanzone) {
             VBox card = new VBox(10);
             card.setAlignment(Pos.CENTER);
+
             card.setStyle("""
-        -fx-background-color: #1e1e1e;
+        -fx-background-color: transparent;
         -fx-background-radius: 15;
         -fx-padding: 10;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);
     """);
+
+
             card.setPrefWidth(150);
             card.setPrefHeight(150);
             card.setId(Integer.toString((Integer) brano.get("ID_CANZONE")));
@@ -259,6 +263,26 @@ public class PaginaPanePrincipale implements Initializable {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            });
+
+            // Imposto lo stile al passaggio del mouse
+            card.setOnMouseEntered(event -> {
+                card.setCursor(Cursor.HAND);
+                card.setStyle("""
+                -fx-background-color: #2a2a2a;
+                -fx-background-radius: 15;
+                -fx-padding: 10;
+                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);
+                """);
+            });
+
+            card.setOnMouseExited(event -> {
+                card.setCursor(Cursor.DEFAULT);
+                card.setStyle("""
+                 -fx-background-color: transparent;
+                  -fx-background-radius: 15;
+                  -fx-padding: 10;
+                  """);
             });
 
             // Crea menu contestuale (tasto destro)
