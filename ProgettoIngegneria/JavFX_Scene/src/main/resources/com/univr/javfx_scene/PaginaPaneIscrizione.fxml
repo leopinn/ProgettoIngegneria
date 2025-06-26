@@ -61,7 +61,7 @@
             <Insets />
          </VBox.margin>
       </HBox>
-      <Button fx:id="PaginaIscrizione_bottoneAvanti" mnemonicParsing="false" onMouseClicked="#richiediIscrizione" styleClass="PaginaIscrizione_bottoneAvanti" text="Avanti">
+      <Button fx:id="PaginaIscrizione_bottoneAvanti" minWidth="200.0" mnemonicParsing="false" onMouseClicked="#richiediIscrizione" prefWidth="200.0" styleClass="buttonViola" text="Avanti">
          <VBox.margin>
             <Insets />
          </VBox.margin>

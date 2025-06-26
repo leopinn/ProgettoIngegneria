@@ -46,6 +46,48 @@ PasswordField {
         -fx-opacity: 0;
 }
 
+/* ----------------------------------------------------------------------------------------------------------- BOTTONI GENERICI ----------------------------------------------------------------- */
+
+.buttonViola{
+    -fx-background-radius: 8;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: -primary;
+    -fx-font-size: 18;
+}
+.buttonViola:hover{
+    -fx-cursor: hand;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-background-color: derive(-primary, 20%);
+}
+
+.buttonVerde{
+    -fx-background-radius: 8;
+    -fx-background-color: #1ed660;
+    -fx-text-fill: #021609;
+    -fx-font-size: 18;
+}
+.buttonVerde:hover{
+    -fx-cursor: hand;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-background-color: derive(#1ed660, 20%);
+}
+
+.buttonRosso{
+    -fx-background-radius: 8;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #E5484D;
+    -fx-font-size: 18;
+}
+.buttonRosso:hover{
+    -fx-cursor: hand;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-background-color: derive(#E5484D, 20%);
+}
+
+
 
 /* ----------------------------------------------------------------------------------------------------------- LOGIN ----------------------------------------------------------------- */
 
@@ -64,7 +106,7 @@ PasswordField {
 .PaginaLogin_textField {
     -fx-max-width: 300;
 }
-
+/*
 .button {
     -fx-background-radius: 8;
     -fx-text-fill: #ffffff;
@@ -74,7 +116,13 @@ PasswordField {
     -fx-max-height: 100;
     -fx-max-width: 300;
 }
-
+.button:hover{
+    -fx-cursor: hand;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-background-color: derive(-primary, 20%);
+}
+*/
 .check-box {
     -fx-text-fill: #121212;
     -fx-font-size: 14;
@@ -112,11 +160,17 @@ PasswordField {
     -fx-text-fill: #ffffff;
     -fx-padding: 10 0 20 0;
 }
+.PaginaLogin_labelBottom:hover{
+    -fx-cursor: hand;
+}
 
 .PaginaLogin_LabelPassDimenticata{
     -fx-padding: 20 0 0 0;
     -fx-text-fill: #0077ff;
     -fx-underline: true;
+}
+.PaginaLogin_LabelPassDimenticata:hover{
+    -fx-cursor: hand;
 }
 
 /* ----------------------------------------------------------------------------------------------------------- ISCRIZIONE -------------------- */
@@ -641,11 +695,6 @@ PasswordField {
     -fx-max-height: 30;
 }
 
-.PaginaImpostazioni_bottoneSalva{
-    -fx-background-color: #1ed660;
-    -fx-text-fill: #021609;
-}
-
 .PaginaImpostazioni_labelRichiestaAccount {
     -fx-background-color: #d4edda;       /* verde chiaro */
     -fx-text-fill: #155724;              /* verde scuro per il testo */
@@ -909,16 +958,6 @@ PasswordField {
     -fx-spacing: 10;
 }
 
-.PaginaPaneCommenti_bottoneInvia{
-    -fx-background-radius: 8;
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 18;
-    -fx-background-color: -primary;
-
-    -fx-max-height: 100;
-    -fx-max-width: 300;
-}
-
 .commentiContainer {
     -fx-background-color: #1f1f1f;
     -fx-padding: 10;
@@ -968,10 +1007,6 @@ PasswordField {
 }
 .commentButton:hover {
     -fx-background-color: #5a1dbb;
-}
-
-.PaginaPaneCommenti_bottoneAnnullaInvio{
-    -fx-background-color: #E5484D;
 }
 
 .PaginaPaneCommenti_vBoxMinutaggio {
