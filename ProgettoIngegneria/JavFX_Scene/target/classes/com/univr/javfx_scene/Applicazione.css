@@ -1,4 +1,4 @@
-* {
+{
     -primary: #6d24e1;
     -secondary: #f9f9f9;
     -fx-font-family: "Gotham-Medium", sans-serif;
@@ -34,16 +34,16 @@ PasswordField {
 }
 
 .PaginaLogin_labelRichiestaAccount {
-        -fx-background-color: #d4edda;       /* verde chiaro */
-        -fx-text-fill: #155724;              /* verde scuro per il testo */
-        -fx-border-color: #c3e6cb;           /* bordo verde leggero */
-        -fx-border-width: 1;
-        -fx-border-radius: 6;
-        -fx-background-radius: 6;
-        -fx-padding: 10 16;
-        -fx-font-size: 14;
-        -fx-font-weight: bold;
-        -fx-opacity: 0;
+    -fx-background-color: #d4edda;       /* verde chiaro */
+    -fx-text-fill: #155724;              /* verde scuro per il testo */
+    -fx-border-color: #c3e6cb;           /* bordo verde leggero */
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 10 16;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-opacity: 0;
 }
 
 /* ----------------------------------------------------------------------------------------------------------- BOTTONI GENERICI ----------------------------------------------------------------- */

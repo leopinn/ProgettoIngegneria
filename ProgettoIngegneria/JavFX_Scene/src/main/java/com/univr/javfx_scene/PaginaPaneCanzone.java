@@ -1,6 +1,7 @@
 package com.univr.javfx_scene;
 
 import com.univr.javfx_scene.Classi.CANZONE;
+import javafx.animation.FadeTransition;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -16,29 +17,41 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.*;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.time.Year;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
+import javafx.util.Duration;
 
 public class PaginaPaneCanzone {
+
+    private String nomeUtente, autore, titolo, link_youtube, anno_composizione, genere, ruolo, strumenti;
+    private int ID_CANZONE;
+
+    // Variabili temporanee per musica, copertina e pdf
+    private File filePdf;
 
     private static ObjSql objSql = ObjSql.oggettoSql();
     private Map<String, Object> rowCanzone;
@@ -50,8 +63,12 @@ public class PaginaPaneCanzone {
     @FXML private VBox formModifica;
     @FXML private TextField fieldTitolo, fieldAutore, fieldGenere, fieldAnno, fieldYoutube;
 
+    @FXML private ListView<String> listStrumenti;
+    @FXML private ComboBox<String> PaginaPaneUpload_comboGenere;
+
     @FXML
     public void initialize() {
+
         formModifica.setVisible(false);
         formModifica.setManaged(false);
         popolaLista();
@@ -312,25 +329,27 @@ public class PaginaPaneCanzone {
         locListaCanzoni= objSql.leggiLista(locQuery);
     }
 
+    // Gestione della visbilità del form Modifica dati
     @FXML
     private void mostraFormModifica() {
         if (rowCanzone == null) return;
 
-        // Precompilazione
-        fieldTitolo.setText(rowCanzone.get("TITOLO").toString());
-        fieldAutore.setText(rowCanzone.get("AUTORE").toString());
-        fieldGenere.setText(rowCanzone.get("GENERE").toString());
-        fieldAnno.setText(rowCanzone.get("ANNO_COMPOSIZIONE").toString());
-        fieldYoutube.setText(rowCanzone.get("LINK_YOUTUBE").toString());
+        // Toggle visibilità
+        boolean attualeVisibilita = formModifica.isVisible();
+        formModifica.setVisible(!attualeVisibilita);
+        formModifica.setManaged(!attualeVisibilita);
 
-        // Mostra il form e permetti al layout di gestirlo
-        formModifica.setVisible(true);
-        formModifica.setManaged(true);
+        // Solo se si sta mostrando, precompila i campi
+        if (!attualeVisibilita) {
+            fieldTitolo.setPromptText(rowCanzone.get("TITOLO").toString());
+            fieldAutore.setPromptText(rowCanzone.get("AUTORE").toString());
+            fieldGenere.setPromptText(rowCanzone.get("GENERE").toString());
+            fieldAnno.setPromptText(rowCanzone.get("ANNO_COMPOSIZIONE").toString());
+            fieldYoutube.setPromptText(rowCanzone.get("LINK_YOUTUBE").toString());
+        }
     }
 
-
-
-
+    // Salvataggio modifiche
     @FXML
     private void salvaModificheCanzone() {
         String sql = "UPDATE CANZONE SET " +

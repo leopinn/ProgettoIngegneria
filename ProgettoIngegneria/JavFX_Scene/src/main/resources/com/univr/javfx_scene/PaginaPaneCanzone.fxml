@@ -46,7 +46,7 @@
                             <children>
                                 <Label styleClass="PaginaPaneCanzone_altriDati" text="Link Youtube: ">
                                     <HBox.margin>
-                                        <Insets left="30" top="15" />
+                                        <Insets left="32.0" top="15.0" />
                                     </HBox.margin>
                                 </Label>
                                 <Label fx:id="PaginaPaneCanzone_labelYoutube" onMouseClicked="#apriLinkYoutube" styleClass="PaginaPaneCanzone_labelYoutube" text="youtube.com/link">
@@ -94,6 +94,9 @@
                                     <Button onAction="#salvaModificheCanzone" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6;" text="💾 Salva modifiche" />
                                 </HBox>
                             </children>
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" top="10.0" />
+                     </VBox.margin>
                         </VBox>
 
 
@@ -101,13 +104,13 @@
                             <children>
                                 <Label styleClass="PaginaPaneCanzone_altriDati" text="Altre Info">
                                     <HBox.margin>
-                                        <Insets left="30" top="15" />
+                                        <Insets left="32.0" top="5.0" />
                                     </HBox.margin>
                                 </Label>
                                 <Button onAction="#mostraFormModifica" text="Modifica" />
                             </children>
                      <VBox.margin>
-                        <Insets left="2.0" top="25.0" />
+                        <Insets top="15.0" />
                      </VBox.margin>
                         </HBox>
 

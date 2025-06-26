@@ -8,7 +8,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.RowConstraints;
 import javafx.stage.Popup;
 import javafx.stage.Window;
 import javafx.util.Duration;
@@ -25,7 +24,7 @@ import static com.univr.javfx_scene.PaginaPaneLogin.UTENTE_NOME;
 
 public class PaginaPaneUpload {
     private PaginaPrincipale mainController;
-    private String autore, titolo, link_youtube, anno_composizione, genere, ruolo, strumenti;
+    private String nomeUtente, autore, titolo, link_youtube, anno_composizione, genere, ruolo, strumenti;
     private int ID_CANZONE;
 
     // Variabili temporanee per musica, copertina e pdf
@@ -42,9 +41,6 @@ public class PaginaPaneUpload {
     @FXML private TextField textNuovoGenere;
 
 
-
-    private String nomeUtente;
-
     public void setMainController(PaginaPrincipale controller) {
         this.mainController = controller;
         this.nomeUtente = UTENTE_NOME; // recupera il nome utente
@@ -56,6 +52,7 @@ public class PaginaPaneUpload {
         mainController.paginaPrincipale();
     }
 
+
     // richiesta Upload Brano musicale
     public void richiediInserimentoCanzone(){
         int errore = controllaDati();
@@ -65,8 +62,6 @@ public class PaginaPaneUpload {
         }
             aggiungiCanzone();
         }
-
-
 
 
     //Controllo correttezza dei dati
