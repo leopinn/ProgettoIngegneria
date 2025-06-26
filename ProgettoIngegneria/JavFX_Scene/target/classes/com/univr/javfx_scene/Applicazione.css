@@ -1171,3 +1171,28 @@ PasswordField {
 .PaginaPaneCanzone_labelYoutube:hover{
     -fx-cursor: hand;
 }
+.no-scrollbar .scroll-bar:vertical {
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+    -fx-min-width: 0;
+}
+
+.scroll-pane {
+    -fx-background-color: #1f1f1f;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent; /* eviti sovrapposizione */
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-clip: true; /* ritaglia seguendo il bordo */
+}
+
+.scroll-pane .content {
+    -fx-background-color: #1f1f1f;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
