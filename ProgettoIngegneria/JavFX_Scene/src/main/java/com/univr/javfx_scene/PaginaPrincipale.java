@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -22,11 +23,15 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class PaginaPrincipale implements Initializable {
@@ -51,6 +56,11 @@ public class PaginaPrincipale implements Initializable {
     @FXML private Slider PaginaPrincipale_sliderVolume;
     @FXML private Button PaginaPrincipale_buttonPlay;
     @FXML private TextField cercaTextField;
+    @FXML private HBox PaginaPrincipale_hBox;
+    @FXML private Button PaginaPrincipale_bottoneHome;
+
+    private Button pulsanteVideo;
+    private List<Map<String, Object>> listaBrani, listaBraniMancanti;
 
 
     @Override
@@ -152,17 +162,6 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_borderPane.setCenter(paneCanzone);
     }
 
-    public void mostraVideo(int parId, int id_canzone) throws IOException {
-        FXMLLoader loaderVideo = new FXMLLoader(getClass().getResource("PaginaPaneVideo.fxml"));
-        Parent registerPaneVideo = loaderVideo.load();
-
-        PaginaPaneVideo controllerVideo = loaderVideo.getController();
-        controllerVideo.caricaVideo(id_canzone);
-
-        PaginaPrincipale_borderPane.setLeft(registerPaneVideo);
-        BorderPane.setMargin(registerPaneVideo, new Insets(0, 10, 0, 10));
-    }
-
     public void mostraCommenti(int parId, int id_canzone) throws IOException {
         FXMLLoader loaderCommenti = new FXMLLoader(getClass().getResource("PaginaPaneCommenti.fxml"));
         Parent registerPane = loaderCommenti.load();
@@ -186,11 +185,12 @@ public class PaginaPrincipale implements Initializable {
 
 
     public void aggiornaMusiche(String val) throws IOException {
-        List<Map<String, Object>> rowCanzone = objSql.leggiLista("SELECT * FROM CANZONE WHERE TITOLO LIKE '" + val.trim().replace("'", "''").toLowerCase() + "%' COLLATE NOCASE");
+        List<Map<String, Object>> rowCanzone = objSql.leggiLista("SELECT * FROM CANZONE WHERE (TITOLO LIKE '" + val.trim().replace("'", "''").toLowerCase() + "%' OR AUTORE LIKE '" + val.trim().replace("'", "''").toLowerCase() + "%')COLLATE NOCASE");
         controller.setGrigliaMusica(rowCanzone);
     }
 
     public void logout(ActionEvent event) throws IOException {
+        playStop();
         root = FXMLLoader.load(getClass().getResource("PaginaLogin.fxml"));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -218,7 +218,7 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_imageCopertina.setClip(clip);
 
         // Imposto titolo e autore
-        Map<String, Object> rowBrano = objSql.leggi(String.format("SELECT TITOLO, AUTORE FROM CANZONE WHERE ID_CANZONE=%s", parId));
+        Map<String, Object> rowBrano = objSql.leggi(String.format("SELECT TITOLO, AUTORE, LINK_YOUTUBE FROM CANZONE WHERE ID_CANZONE=%s", parId));
         PaginaPrincipale_labelTitoloCanzone.setText(rowBrano.get("TITOLO").toString());
         PaginaPrincipale_labelTitoloCanzone.setVisible(true);
 
@@ -228,12 +228,40 @@ public class PaginaPrincipale implements Initializable {
         // Sezione commenti del brano
         mostraCommenti(1, parId);
 
-        // Sezione video del brano
-        mostraVideo(1, parId);
+        // Aggiungi pulsante YT
+        if (pulsanteVideo != null) {
+            PaginaPrincipale_hBox.getChildren().remove(pulsanteVideo);
+            pulsanteVideo = null;
+        }
+        if (pulsanteVideo == null) {
+            pulsanteVideo = new Button("YT");
+            pulsanteVideo.getStyleClass().add("PaginaPrincipale_bottoneYT");
+            pulsanteVideo.setOnAction(e -> {
+                String locUrl =rowBrano.get("LINK_YOUTUBE").toString();
+
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().browse(new URI(locUrl));
+                    } catch (IOException | URISyntaxException err) {
+                        System.out.println("Errore nell'apertura del browser");
+                    }
+                } else {
+                    System.out.println("Errore nell'apertura del browser");
+                }
+            });
+
+            HBox.setMargin(pulsanteVideo, new Insets(0, 0, 0, 5));
+            int indexHome = PaginaPrincipale_hBox.getChildren().indexOf(PaginaPrincipale_bottoneHome);
+            PaginaPrincipale_hBox.getChildren().add(indexHome + 1, pulsanteVideo);
+        }
     }
 
     public void playStop(){
         // Controlla se è in esecuzione
+        if(mediaPlayer == null) {
+            return;
+        }
+
         if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             PaginaPrincipale_buttonPlay.getStyleClass().remove("PaginaPrincipale_buttonStop");
             PaginaPrincipale_buttonPlay.getStyleClass().remove("PaginaPrincipale_buttonPlay");
@@ -295,6 +323,14 @@ public class PaginaPrincipale implements Initializable {
 
         playStop();
         System.out.println(PaginaPrincipale_buttonPlay);
+    }
+
+    public void avanti() throws IOException {
+        controller.canzoneSucessiva();
+    }
+
+    public void indietro() throws IOException {
+        controller.canzonePrecedente();
     }
 
     public void sliderPressed(){

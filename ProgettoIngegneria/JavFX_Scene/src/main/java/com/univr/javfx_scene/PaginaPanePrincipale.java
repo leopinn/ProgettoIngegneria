@@ -19,10 +19,8 @@ import javafx.stage.Popup;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
+
 import javafx.stage.DirectoryChooser;
 
 
@@ -34,6 +32,10 @@ public class PaginaPanePrincipale implements Initializable {
 
     @FXML private TilePane PaginaPanePrincipale_grigliaMusiche;
     @FXML private ScrollPane PaginaPrincipale_scrollPane;
+
+    private int canzoneCorrente;
+
+    public ArrayList<Integer> codaBrani = new ArrayList<Integer>();
 
 
     public void setMainController(PaginaPrincipale controller) {
@@ -55,9 +57,16 @@ public class PaginaPanePrincipale implements Initializable {
         if(isCasuale==0) {
             // Ogni volta che si seleziona una musica manualmente, si resettano i brani mancanti
             listaBraniMancanti = objSql.leggiLista("SELECT * FROM CANZONE");
+            codaBrani.clear();
         }
         rimuoviBrano(parId);
 
+        if(!codaBrani.contains(Integer.parseInt(parId))) {
+            codaBrani.add(Integer.parseInt(parId));
+        }
+        System.out.println(codaBrani);
+
+        canzoneCorrente = Integer.parseInt(parId);
         mainController.selezionaMusica(Integer.parseInt(parId), this);
     }
 
@@ -80,6 +89,24 @@ public class PaginaPanePrincipale implements Initializable {
             selezionaMusica(rowCanzone.get("ID_CANZONE").toString(), 1);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void canzonePrecedente() throws IOException {
+        if(codaBrani.indexOf(codaBrani.get(codaBrani.size() - 1)) == 0) {
+            selezionaMusica(codaBrani.get(codaBrani.size() - 1).toString(), 1);
+        } else {
+            selezionaMusica(codaBrani.get(codaBrani.indexOf(canzoneCorrente) - 1).toString(), 1);
+        }
+    }
+
+    public void canzoneSucessiva() throws IOException {
+        if(codaBrani.contains(canzoneCorrente)) {
+            if(codaBrani.indexOf(canzoneCorrente) == codaBrani.size() - 1) {
+                riproduzioneCasuale();
+            } else {
+                selezionaMusica(codaBrani.get(codaBrani.indexOf(canzoneCorrente) + 1).toString(), 1);
+            }
         }
     }
 
