@@ -29,7 +29,7 @@
       </Label>
       <TextField fx:id="PaginaLogin_nameTextField" promptText="Username" styleClass="PaginaLogin_textField" />
       <PasswordField fx:id="PaginaLogin_passwordField" promptText="Password" styleClass="PaginaLogin_textField" />
-      <Button fx:id="PaginaLogin_bottoneLogin" defaultButton="true" onAction="#invio" styleClass="button" text="Invia" />
+      <Button fx:id="PaginaLogin_bottoneLogin" defaultButton="true" minWidth="300.0" onAction="#invio" prefWidth="300.0" styleClass="buttonViola" text="Invia" />
       <Label fx:id="PaginaLogin_LabelPassDimenticata" styleClass="PaginaLogin_LabelPassDimenticata" text="Password dimenticata?">
          <VBox.margin>
             <Insets />

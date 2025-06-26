@@ -32,9 +32,9 @@
                 <TextArea fx:id="commentoTextArea" minHeight="100.0" prefRowCount="4" promptText="Scrivi un commento..." styleClass="commentoTextArea" wrapText="true" />
             <HBox alignment="CENTER" prefHeight="40.0">
                <children>
-                  <Button fx:id="PaginaPaneCommenti_bottoneAnnullaInvio" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#annullaCommento" prefHeight="30.0" prefWidth="100.0" styleClass="PaginaPaneCommenti_bottoneAnnullaInvio" text="Annulla" />
+                  <Button fx:id="PaginaPaneCommenti_bottoneAnnullaInvio" minWidth="100.0" mnemonicParsing="false" onAction="#annullaCommento" prefWidth="100.0" styleClass="buttonRosso" text="Annulla" />
                   <Region HBox.hgrow="ALWAYS" />
-                      <Button fx:id="PaginaPaneCommenti_bottoneInvia" minHeight="30.0" minWidth="200.0" onAction="#inviaCommento" prefHeight="30.0" prefWidth="200.0" styleClass="PaginaPaneCommenti_bottoneInvia" text="Invia" />
+                      <Button fx:id="PaginaPaneCommenti_bottoneInvia" minWidth="200.0" onAction="#inviaCommento" prefWidth="200.0" styleClass="buttonVerde" text="Invia" />
                </children>
             </HBox>
             <VBox fx:id="PaginaPaneCommenti_vBoxMinutaggio" prefHeight="10.0" styleClass="PaginaPaneCommenti_vBoxMinutaggio" />

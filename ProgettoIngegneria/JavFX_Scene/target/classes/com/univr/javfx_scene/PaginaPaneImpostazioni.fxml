@@ -10,9 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="PaginaImpostazioni_anchorPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@Applicazione.css"
-            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.univr.javfx_scene.PaginaPaneImpostazioni">
+<AnchorPane fx:id="PaginaImpostazioni_anchorPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneImpostazioni">
    <children>
       <ScrollPane fx:id="PaginaImpostazioni_scrollPane" hbarPolicy="NEVER" prefHeight="494.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <VBox fx:id="PaginaImpostazioni_vBox" prefHeight="200.0" prefWidth="100.0" styleClass="PaginaImpostazioni_vBox" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="50.0">
@@ -31,8 +29,8 @@
             <Label fx:id="PaginaPaneImpostazioni_labelAmministratore" alignment="TOP_LEFT" onMouseClicked="#mostraImpostazioniAmministratore" styleClass="PaginaImpostazioni_label" text="Impostazioni amministratore" underline="true" />
             <HBox fx:id="PaginaImpostazioni_hBox" alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" styleClass="PaginaImpostazioni_hBox">
                <children>
-                  <Button fx:id="PaginaImpostazioni_bottoneAnnulla" mnemonicParsing="false" onAction="#annulla" text="Annulla" />
-                  <Button fx:id="PaginaImpostazioni_bottoneSalva" mnemonicParsing="false" onAction="#salvaProfilo" styleClass="PaginaImpostazioni_bottoneSalva" text="Salva profilo" />
+                  <Button fx:id="PaginaImpostazioni_bottoneAnnulla" mnemonicParsing="false" onAction="#annulla" styleClass="buttonRosso" text="Annulla" />
+                  <Button fx:id="PaginaImpostazioni_bottoneSalva" mnemonicParsing="false" onAction="#salvaProfilo" styleClass="buttonVerde" text="Salva profilo" />
                </children>
             </HBox>
          </children>

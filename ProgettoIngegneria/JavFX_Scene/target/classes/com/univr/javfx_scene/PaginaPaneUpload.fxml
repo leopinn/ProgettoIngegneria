@@ -91,7 +91,7 @@
                         </ComboBox>
                         <Label styleClass="styleLabel" text="Strumenti usati" />
                         <ListView fx:id="listStrumenti" prefHeight="100.0" visible="true" />
-                  <HBox spacing="2.0"   >
+                  <HBox spacing="2.0">
                           <TextField fx:id="textNuovoStrumento" promptText="Aggiungi nuovo strumento" />
                           <Button onAction="#aggiungiStrumento" text="+" />
                   </HBox>
@@ -119,8 +119,8 @@
                         </VBox>
                         <HBox fx:id="PaginaImpostazioni_hBox" alignment="TOP_RIGHT" styleClass="PaginaImpostazioni_hBox">
                             <children>
-                                <Button fx:id="PaginaImpostazioni_bottoneAnnulla" mnemonicParsing="false" onAction="#annulla" text="Annulla" />
-                                <Button fx:id="PaginaImpostazioni_bottoneSalva" mnemonicParsing="false" onAction="#richiediInserimentoCanzone" styleClass="PaginaImpostazioni_bottoneSalva" text="Salva" />
+                                <Button fx:id="PaginaImpostazioni_bottoneAnnulla" minWidth="100.0" mnemonicParsing="false" onAction="#annulla" prefWidth="100.0" styleClass="buttonRosso" text="Annulla" />
+                                <Button fx:id="PaginaImpostazioni_bottoneSalva" minWidth="200.0" mnemonicParsing="false" onAction="#richiediInserimentoCanzone" prefWidth="200.0" styleClass="buttonVerde" text="Salva" />
                             </children>
                         </HBox>
                     </children>
