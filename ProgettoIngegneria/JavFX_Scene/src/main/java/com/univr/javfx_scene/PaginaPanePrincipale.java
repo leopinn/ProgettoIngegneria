@@ -93,8 +93,8 @@ public class PaginaPanePrincipale implements Initializable {
     }
 
     public void canzonePrecedente() throws IOException {
-        if(codaBrani.indexOf(codaBrani.get(codaBrani.size() - 1)) == 0) {
-            selezionaMusica(codaBrani.get(codaBrani.size() - 1).toString(), 1);
+        if(codaBrani.indexOf(canzoneCorrente) == 0) {
+            selezionaMusica(String.valueOf(canzoneCorrente), 1);
         } else {
             selezionaMusica(codaBrani.get(codaBrani.indexOf(canzoneCorrente) - 1).toString(), 1);
         }

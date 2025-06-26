@@ -51,6 +51,11 @@
                <HBox.margin>
                   <Insets />
                </HBox.margin></Button>
+            <Button fx:id="PaginaPrincipale_bottoneLogout" mnemonicParsing="false" onAction="#logout" styleClass="PaginaPrincipale_bottoneLogout">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
          </children>
          <BorderPane.margin>
             <Insets right="10.0" top="10.0" />
@@ -76,9 +81,9 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="PaginaPrincipale_buttonIndietro" mnemonicParsing="false" styleClass="PaginaPrincipale_buttonIndietro" />
+                        <Button fx:id="PaginaPrincipale_buttonIndietro" mnemonicParsing="false" styleClass="PaginaPrincipale_buttonIndietro" onAction="#indietro"/>
                         <Button fx:id="PaginaPrincipale_buttonPlay" mnemonicParsing="false" onAction="#playStop" styleClass="PaginaPrincipale_buttonPlay" />
-                        <Button fx:id="PaginaPrincipale_buttonAvanti" mnemonicParsing="false" styleClass="PaginaPrincipale_buttonAvanti" />
+                        <Button fx:id="PaginaPrincipale_buttonAvanti" mnemonicParsing="false" styleClass="PaginaPrincipale_buttonAvanti" onAction="#avanti"/>
                      </children>
                   </HBox>
                   <HBox fx:id="PaginaPrincipale_hBoxPlayer" alignment="TOP_CENTER" maxWidth="1000" minHeight="30.0" minWidth="300.0" styleClass="PaginaPrincipale_hBoxPlayer">
