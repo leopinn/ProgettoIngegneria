@@ -234,7 +234,7 @@ public class PaginaPrincipale implements Initializable {
             pulsanteVideo = null;
         }
         if (pulsanteVideo == null) {
-            pulsanteVideo = new Button("YT");
+            pulsanteVideo = new Button("");
             pulsanteVideo.getStyleClass().add("PaginaPrincipale_bottoneYT");
             pulsanteVideo.setOnAction(e -> {
                 String locUrl =rowBrano.get("LINK_YOUTUBE").toString();

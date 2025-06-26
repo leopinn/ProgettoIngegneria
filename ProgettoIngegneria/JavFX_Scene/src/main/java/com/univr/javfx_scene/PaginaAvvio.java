@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -25,6 +26,9 @@ public class PaginaAvvio extends Application {
             stage.setScene(scene);
             stage.setMinWidth(1280);
             stage.setMinHeight(720);
+
+            Image iconaApplicazione = new Image(getClass().getResourceAsStream("/immagini/iconaApplicazione.png"));
+            stage.getIcons().add(iconaApplicazione);
             stage.show();
 
             stage.setOnCloseRequest(event -> {

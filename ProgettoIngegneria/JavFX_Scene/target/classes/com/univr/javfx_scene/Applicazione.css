@@ -225,6 +225,12 @@ PasswordField {
     -fx-border-radius: 25;
     -fx-padding: 10 10 10 10;
 }
+.PaginaPrincipale_bottoneImpostazioni:hover {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: #2a2a2a;
+    -fx-cursor: hand;
+    -fx-opacity: 0.9;
+}
 
 .PaginaPrincipale_bottoneUpload{
     -fx-background-image: url("../../../immagini/iconaUpload.png");
@@ -243,6 +249,12 @@ PasswordField {
     -fx-background-radius: 25;
     -fx-border-radius: 25;
     -fx-padding: 10 10 10 10;
+}
+.PaginaPrincipale_bottoneUpload:hover {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: #2a2a2a;
+    -fx-cursor: hand;
+    -fx-opacity: 0.9;
 }
 
 .PaginaPrincipale_bottoneHome{
@@ -263,6 +275,12 @@ PasswordField {
     -fx-border-radius: 25;
     -fx-padding: 10 10 10 10;
 }
+.PaginaPrincipale_bottoneHome:hover {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: #2a2a2a;
+    -fx-cursor: hand;
+    -fx-opacity: 0.9;
+}
 
 .PaginaPrincipale_bottoneAccount{
     -fx-background-image: url("../../../immagini/iconaAccount.png");
@@ -282,9 +300,41 @@ PasswordField {
     -fx-border-radius: 25;
     -fx-padding: 10 10 10 5;
 }
+.PaginaPrincipale_bottoneAccount:hover {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: #2a2a2a;
+    -fx-cursor: hand;
+    -fx-opacity: 0.9;
+}
 
 .PaginaPrincipale_bottoneLogout{
     -fx-background-image: url("../../../immagini/iconaLogout.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 10 center;
+    -fx-background-size: 36 36;
+
+    -fx-background-color: #1f1f1f;
+    -fx-border-color: #1f1f1f;
+
+    -fx-min-width: 50;
+    -fx-min-height: 50;
+    -fx-max-width: 50;
+    -fx-max-height: 50;
+
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
+    -fx-padding: 10 10 10 10;
+}
+
+.PaginaPrincipale_bottoneLogout:hover {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: #2a2a2a;
+    -fx-cursor: hand;
+    -fx-opacity: 0.9;
+}
+
+.PaginaPrincipale_bottoneYT{
+    -fx-background-image: url("../../../immagini/iconaYouTube.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size: 36 36;
@@ -301,24 +351,11 @@ PasswordField {
     -fx-border-radius: 25;
     -fx-padding: 10 10 10 10;
 }
-
-.PaginaPrincipale_bottoneYT{
-    -fx-background-image: url("../../../immagini/icona");
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-    -fx-background-size: 36 36;
-
-    -fx-background-color: #1f1f1f;
-    -fx-border-color: #1f1f1f;
-
-    -fx-min-width: 50;
-    -fx-min-height: 50;
-    -fx-max-width: 50;
-    -fx-max-height: 50;
-
-    -fx-background-radius: 25;
-    -fx-border-radius: 25;
-    -fx-padding: 10 10 10 10;
+.PaginaPrincipale_bottoneYT:hover {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: #2a2a2a;
+    -fx-cursor: hand;
+    -fx-opacity: 0.9;
 }
 
 .PaginaPrincipale_sliderMusica {
@@ -389,39 +426,52 @@ PasswordField {
 .PaginaPrincipale_buttonPlay{
     -fx-background-image: url("../../../immagini/iconaPlay.png");
     -fx-background-repeat: no-repeat;
-    -fx-background-position: 10;
-    -fx-background-size: 24 24;
+    -fx-background-position: 7 center;
+    -fx-background-size: 18 18;
 
     -fx-background-color: #fdfdfd;
     -fx-border-color: #fdfdfd;
 
-    -fx-min-width: 40;
-    -fx-min-height: 40;
-    -fx-max-width: 40;
-    -fx-max-height: 40;
+    -fx-min-width: 30;
+    -fx-min-height: 30;
+    -fx-max-width: 30;
+    -fx-max-height: 30;
 
-    -fx-background-radius: 20;
-    -fx-border-radius: 20;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
     -fx-padding: 10 10 10 10;
 }
+.PaginaPrincipale_buttonPlay:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-cursor: hand;
+    -fx-opacity: 0.95;
+}
+
 
 .PaginaPrincipale_buttonStop{
     -fx-background-image: url("../../../immagini/iconaStop.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-size: 24 24;
+    -fx-background-size: 18 18;
 
     -fx-background-color: #fdfdfd;
     -fx-border-color: #fdfdfd;
 
-    -fx-min-width: 40;
-    -fx-min-height: 40;
-    -fx-max-width: 40;
-    -fx-max-height: 40;
+    -fx-min-width: 30;
+    -fx-min-height: 30;
+    -fx-max-width: 30;
+    -fx-max-height: 30;
 
-    -fx-background-radius: 20;
-    -fx-border-radius: 20;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
     -fx-padding: 10 10 10 10;
+}
+.PaginaPrincipale_buttonStop:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-cursor: hand;
+    -fx-opacity: 0.95;
 }
 
 .PaginaPrincipale_labelTitoloCanzone{
