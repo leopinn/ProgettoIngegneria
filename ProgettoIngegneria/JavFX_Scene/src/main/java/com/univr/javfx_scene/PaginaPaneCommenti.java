@@ -200,10 +200,12 @@ public class PaginaPaneCommenti {
         testoLabel.setStyle("-fx-font-size: 14; -fx-line-spacing: 5; -fx-text-fill: #ffffff");
 
         Label testoRispondi = new Label("Rispondi");
-        testoRispondi.setStyle("-fx-text-fill: #4A90E2 ; -fx-underline: true; -fx-font-size: 12; -fx-padding: 4 0 4 0;");
+        testoRispondi.setStyle("-fx-text-fill: #4A90E2 ; -fx-underline: false; -fx-font-size: 12; -fx-padding: 4 0 4 0;");
         testoRispondi.setOnMouseClicked(event -> {
             rispondiCommento((Integer) commento.get("ID_COMMENTO"));
         });
+        testoRispondi.setOnMouseEntered(event -> {testoRispondi.setStyle("-fx-text-fill: #4A90E2 ; -fx-underline: true; -fx-font-size: 12; -fx-padding: 4 0 4 0; -fx-cursor: hand;");});
+        testoRispondi.setOnMouseExited(event -> {testoRispondi.setStyle("-fx-text-fill: #4A90E2 ; -fx-underline: false; -fx-font-size: 12; -fx-padding: 4 0 4 0; -fx-cursor: default;");});
 
         HBox rispondiBox = new HBox(testoRispondi);
         rispondiBox.setAlignment(Pos.CENTER_RIGHT);
