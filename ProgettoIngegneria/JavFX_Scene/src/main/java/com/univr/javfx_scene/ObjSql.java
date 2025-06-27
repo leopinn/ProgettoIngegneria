@@ -177,4 +177,36 @@ public class ObjSql {
         }
     }
 
+    public boolean aggiorna(String query, Object... params) {
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            for (int i = 0; i < params.length; i++) {
+                stmt.setObject(i + 1, params[i]);
+            }
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Map<String, Object>> leggiTutti(String query) {
+        List<Map<String, Object>> risultati = new ArrayList<>();
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            ResultSetMetaData meta = rs.getMetaData();
+            int colCount = meta.getColumnCount();
+            while (rs.next()) {
+                Map<String, Object> riga = new LinkedHashMap<>();
+                for (int i = 1; i <= colCount; i++) {
+                    riga.put(meta.getColumnName(i), rs.getObject(i));
+                }
+                risultati.add(riga);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return risultati;
+    }
+
+
 }
