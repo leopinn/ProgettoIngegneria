@@ -163,6 +163,7 @@ public class PaginaPaneUpload {
         }
     }
 
+
     @FXML
     public void aggiungiStrumento() {
         String nuovoStrumento = textNuovoStrumento.getText().trim();
@@ -185,7 +186,6 @@ public class PaginaPaneUpload {
         textNuovoStrumento.clear();
         ObjGenerici.mostraPopupSuccesso(PaginaPaneUpload_textTitolo,"Strumento aggiunto.");
     }
-
 
 
     public void aggiungiCanzone() {

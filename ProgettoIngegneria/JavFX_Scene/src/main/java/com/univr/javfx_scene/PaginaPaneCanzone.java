@@ -1,5 +1,8 @@
 package com.univr.javfx_scene;
+import com.univr.javfx_scene.Classi.CANZONE;
 import com.univr.javfx_scene.Classi.ModificaCanzone;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -20,25 +23,26 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Map;
 
 public class PaginaPaneCanzone {
     private static ObjSql objSql = ObjSql.oggettoSql();
     private Map<String, Object> rowCanzone;
+    private List<Map<String, Object>> locListaModifiche;
     @FXML private VBox formModifica;
     @FXML private TextField fieldTitolo, fieldAutore, fieldGenere, fieldAnno, fieldYoutube;
-
     @FXML private ImageView PaginaPaneCanzone_copertina;
     @FXML private Label PaginaPaneCanzone_titolo, PaginaPaneCanzone_altriDati, PaginaPaneCanzone_labelYoutube;
     @FXML private HBox PaginaPaneCanzone_hBoxUp;
     @FXML private TableView<ModificaCanzone> PaginaPaneCanzone_tabelView;
+
 
     private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
     public void setMainController(PaginaPrincipale controller) {
@@ -49,7 +53,6 @@ public class PaginaPaneCanzone {
         Object val = map.get(key);
         return val != null ? val.toString() : "";
     }
-
 
     public void mostraSchermataCanzone(int parIdCanzone){
         // Non dovrebbe mai accedere
@@ -88,65 +91,12 @@ public class PaginaPaneCanzone {
         Color coloreMedio = calcolaColoreMedio();
         applicaGradiente(PaginaPaneCanzone_hBoxUp, coloreMedio);
 
-        // Popola il form con i dati esistenti
-        fieldTitolo.setText(getSafe(rowCanzone, "TITOLO"));
-        fieldAutore.setText(getSafe(rowCanzone, "AUTORE"));
-        fieldGenere.setText(getSafe(rowCanzone, "GENERE"));
-        fieldAnno.setText(getSafe(rowCanzone, "ANNO_COMPOSIZIONE"));
-        fieldYoutube.setText(getSafe(rowCanzone, "LINK_YOUTUBE"));
-
-
         // Nascondi il form all'apertura
         formModifica.setVisible(false);
-
-        // Carica modifiche utente dalla tabella DATI_AGGIUNTIVI_CANZONE
-        ObservableList<ModificaCanzone> listaModifiche = FXCollections.observableArrayList();
-
-        var modifiche = objSql.leggiTutti("SELECT * FROM DATI_AGGIUNTIVI_CANZONE WHERE ID_CANZONE = " + parIdCanzone + " ORDER BY DATA_INSERIMENTO DESC");
-
-        for (Map<String, Object> riga : modifiche) {
-            listaModifiche.add(new ModificaCanzone(
-                    getSafe(riga, "TITOLO"),
-                    getSafe(riga, "AUTORE"),
-                    getSafe(riga, "GENERE"),
-                    riga.get("ANNO_COMPOSIZIONE") != null ? Integer.parseInt(riga.get("ANNO_COMPOSIZIONE").toString()) : null,
-                    getSafe(riga, "LINK_YOUTUBE"),
-                    getSafe(riga, "UTENTE_INS"),
-                    getSafe(riga, "DATA_INSERIMENTO")
-            ));
-
-        }
+        formModifica.setManaged(false);
 
         // Inizializza le colonne solo se vuote (la prima volta)
-        if (PaginaPaneCanzone_tabelView.getColumns().isEmpty()) {
-            TableColumn<ModificaCanzone, String> colTitolo = new TableColumn<>("Titolo");
-            colTitolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
-
-            TableColumn<ModificaCanzone, String> colAutore = new TableColumn<>("Autore");
-            colAutore.setCellValueFactory(new PropertyValueFactory<>("autore"));
-
-            TableColumn<ModificaCanzone, String> colGenere = new TableColumn<>("Genere");
-            colGenere.setCellValueFactory(new PropertyValueFactory<>("genere"));
-
-            TableColumn<ModificaCanzone, Integer> colAnno = new TableColumn<>("Anno");
-            colAnno.setCellValueFactory(new PropertyValueFactory<>("anno"));
-
-            TableColumn<ModificaCanzone, String> colYoutube = new TableColumn<>("YouTube");
-            colYoutube.setCellValueFactory(new PropertyValueFactory<>("youtube"));
-
-            TableColumn<ModificaCanzone, String> colUtente = new TableColumn<>("Utente");
-            colUtente.setCellValueFactory(new PropertyValueFactory<>("utente"));
-
-            TableColumn<ModificaCanzone, String> colData = new TableColumn<>("Data");
-            colData.setCellValueFactory(new PropertyValueFactory<>("data"));
-
-            PaginaPaneCanzone_tabelView.getColumns().addAll(
-                    colTitolo, colAutore, colGenere, colAnno, colYoutube, colUtente, colData
-            );
-        }
-
-        // Assegna i dati alla tabella
-        PaginaPaneCanzone_tabelView.setItems(listaModifiche);
+        popolaLista();
     }
 
 
@@ -188,7 +138,6 @@ public class PaginaPaneCanzone {
     }
 
 
-
     public void applicaGradiente(HBox box, Color baseColor) {
         double radius = 10;
 
@@ -203,7 +152,6 @@ public class PaginaPaneCanzone {
 
         box.setBackground(new Background(new BackgroundFill(verticalGradient, radii, Insets.EMPTY)));
     }
-
 
 
     /* ---------- Fine - gestione colori ----------*/
@@ -270,10 +218,125 @@ public class PaginaPaneCanzone {
         }
     }
 
+
+    /* ---------- Inizio - gestione Table View ----------*/
+
+
+    // Popola la Table View
+    private void popolaLista() {
+        leggiModifiche();
+
+        if(locListaModifiche.isEmpty()) return; // Se un utente non avesse canzoni dove lui è l'autore
+
+        TableColumn<ModificaCanzone, Integer> colId = new TableColumn<>("ID_DATI");
+        colId.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID_DATI()));
+
+        //TableColumn<ModificaCanzone, Integer> colIdCanzone = new TableColumn<>("ID_CANZONE");
+        //colIdCanzone.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID_CANZONE()));
+
+        TableColumn<ModificaCanzone, String> colTitolo = new TableColumn<>("TITOLO");
+        colTitolo.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getTITOLO()));
+
+        TableColumn<ModificaCanzone, String> colAutore = new TableColumn<>("AUTORE");
+        colAutore.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getAUTORE()));
+
+        TableColumn<ModificaCanzone, String> colGenere = new TableColumn<>("GENERE");
+        colGenere.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getGENERE()));
+
+        TableColumn<ModificaCanzone, Integer> colAnno = new TableColumn<>("ANNO_COMPOSIZIONE");
+        colAnno.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getANNO()));
+
+        TableColumn<ModificaCanzone, String> colYoutube = new TableColumn<>("LINK_YOUTUBE");
+        colYoutube.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getYOUTUBE()));
+
+        //TableColumn<ModificaCanzone, Integer> colIdUtente = new TableColumn<>("ID_UTENTE");
+        //colIdUtente.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID_UTENTE()));
+
+        TableColumn<ModificaCanzone, String> colutenteIns = new TableColumn<>("UTENTE_INS");
+        colutenteIns.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUTENTE_INS()));
+
+        TableColumn<ModificaCanzone, String> colData = new TableColumn<>("DATA_INSERIMENTO");
+        colData.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getDATA()));
+
+        if (PaginaPaneCanzone_tabelView.getColumns().isEmpty()) {
+            //PaginaPaneCanzone_tabelView.getColumns().addAll(colId, colIdCanzone, colTitolo, colAutore, colGenere, colAnno, colYoutube, colIdUtente, colutenteIns, colData);
+            PaginaPaneCanzone_tabelView.getColumns().addAll(colId, colTitolo, colAutore, colGenere, colAnno, colYoutube, colutenteIns, colData);
+        }
+
+
+        // Carica modifiche utente dalla tabella DATI_AGGIUNTIVI_CANZONE
+        ObservableList<ModificaCanzone> listaModifiche = FXCollections.observableArrayList();
+        //var modifiche = objSql.leggiTutti("SELECT * FROM DATI_AGGIUNTIVI_CANZONE WHERE ID_CANZONE = " + parIdCanzone + " ORDER BY DATA_INSERIMENTO DESC");
+        for (Map<String, Object> riga : locListaModifiche) {
+            //
+            Integer annoComposizione = null;
+            Object valAnno = riga.get("ANNO_COMPOSIZIONE");
+            if (valAnno != null) {
+                try {
+                    annoComposizione = Integer.parseInt(valAnno.toString());
+                } catch (NumberFormatException e) {
+                    annoComposizione = 0; // oppure puoi anche ignorare
+                }
+            }
+
+            ModificaCanzone modCanzone = new ModificaCanzone(
+                    Integer.parseInt(riga.get("ID_DATI").toString()),
+                    //Integer.parseInt(riga.get("ID_CANZONE").toString()),
+                    String.valueOf(riga.get("TITOLO")),
+                    String.valueOf(riga.get("AUTORE")),
+                    String.valueOf(riga.get("GENERE")),
+                    annoComposizione != null ? annoComposizione : 0, // oppure lascia null se accetta
+                    String.valueOf(riga.get("LINK_YOUTUBE")),
+                    //Integer.parseInt(riga.get("ID_UTENTE").toString()),
+                    String.valueOf(riga.get("UTENTE_INS")),
+                    String.valueOf(riga.get("DATA_INSERIMENTO"))
+            );
+            listaModifiche.add(modCanzone);
+        }
+
+        // Assegna i dati alla tabella
+        PaginaPaneCanzone_tabelView.setItems(listaModifiche);
+    }
+
+
+    /* ---------- Fine - gestione Table View ----------*/
+
+
+    private void leggiModifiche(){
+        String locQuery="";
+
+        if(PaginaPaneLogin.UTENTE_NOME.equals("adm")) {
+            locQuery = "SELECT * FROM DATI_AGGIUNTIVI_CANZONE";
+
+        } else {    // Le canzoni caricate dall'utente corrente
+            locQuery = "SELECT * FROM DATI_AGGIUNTIVI_CANZONE WHERE ID_UTENTE = " + PaginaPaneLogin.ID_UTENTE;
+        }
+
+        locListaModifiche= objSql.leggiLista(locQuery);
+    }
+
+
+    // Gestione della visbilità del form Modifica dati
     @FXML
     private void mostraFormModifica() {
-        formModifica.setVisible(true);
+        if (rowCanzone == null) return;
+
+        // Toggle visibilità
+        boolean attualeVisibilita = formModifica.isVisible();
+        formModifica.setVisible(!attualeVisibilita);
+        formModifica.setManaged(!attualeVisibilita);
+
+        // Solo se si sta mostrando, precompila i campi
+        if (!attualeVisibilita) {
+            fieldTitolo.setPromptText(rowCanzone.get("TITOLO").toString());
+            fieldAutore.setPromptText(rowCanzone.get("AUTORE").toString());
+            fieldGenere.setPromptText(rowCanzone.get("GENERE").toString());
+            fieldAnno.setPromptText(rowCanzone.get("ANNO_COMPOSIZIONE").toString());
+            fieldYoutube.setPromptText(rowCanzone.get("LINK_YOUTUBE").toString());
+        }
     }
+
+    //Salvataggio modifica dati
     @FXML
     private void salvaModificheCanzone() {
         String nuovoTitolo = fieldTitolo.getText().trim();
@@ -317,7 +380,6 @@ public class PaginaPaneCanzone {
 
         if (successo) {
             ObjGenerici.mostraPopupSuccesso(fieldTitolo, "Modifiche salvate con successo!");
-            formModifica.setVisible(false);
             mostraSchermataCanzone(idCanzone); // aggiorna vista
         } else {
             ObjGenerici.mostraPopupErrore(fieldTitolo, "Errore durante il salvataggio.");
