@@ -38,7 +38,10 @@
       <HBox fx:id="PaginaLogin_hBox" alignment="CENTER" styleClass="PaginaLogin_hBox">
          <children>
             <Label fx:id="PaginaLogin_text1" styleClass="PaginaLogin_labelBottom" text="Non hai un account?" />
-            <Label fx:id="PaginaLogin_text2" onMouseClicked="#iscriviti" styleClass="PaginaLogin_labelBottom" text="Iscriviti a UniSound." underline="true" />
+            <Label fx:id="PaginaLogin_text2" onMouseClicked="#iscriviti" styleClass="labelBianca" text="Iscriviti a UniSound." underline="true">
+               <padding>
+                  <Insets bottom="20.0" top="10.0" />
+               </padding></Label>
          </children>
       </HBox>
    </children>

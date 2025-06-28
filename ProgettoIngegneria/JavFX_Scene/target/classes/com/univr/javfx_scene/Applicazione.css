@@ -87,8 +87,12 @@ PasswordField {
     -fx-background-color: derive(#E5484D, 20%);
 }
 
-
-
+.labelBianca {
+    -fx-text-fill: #ffffff;
+}
+.labelBianca:hover {
+    -fx-cursor: hand;
+}
 /* ----------------------------------------------------------------------------------------------------------- LOGIN ----------------------------------------------------------------- */
 
 .PaginaLogin_vBox{
@@ -106,23 +110,7 @@ PasswordField {
 .PaginaLogin_textField {
     -fx-max-width: 300;
 }
-/*
-.button {
-    -fx-background-radius: 8;
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 18;
-    -fx-background-color: -primary;
 
-    -fx-max-height: 100;
-    -fx-max-width: 300;
-}
-.button:hover{
-    -fx-cursor: hand;
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
-    -fx-background-color: derive(-primary, 20%);
-}
-*/
 .check-box {
     -fx-text-fill: #121212;
     -fx-font-size: 14;
@@ -671,13 +659,6 @@ PasswordField {
     -fx-spacing: 10;
     -fx-background-radius: 10;
     -fx-background-color: #1f1f1f;
-}
-
-.PaginaImpostazioni_label{
-    -fx-text-fill: #ffffff;
-
-    -fx-padding: 10 0 0 0;  /* top right bottom left */
-    -fx-font-size: 16;
 }
 
 .PaginaImpostazioni_labelNomeUtente{
