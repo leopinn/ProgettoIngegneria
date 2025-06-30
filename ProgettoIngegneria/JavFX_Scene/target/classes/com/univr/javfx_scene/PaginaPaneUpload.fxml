@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="PaginaPaneUpload_anchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="PaginaPaneUpload_anchorPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUpload">
+<AnchorPane fx:id="PaginaPaneUpload_anchorPane" prefHeight="714.0" prefWidth="1205.0" styleClass="PaginaPaneUpload_anchorPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUpload">
     <children>
       <GridPane hgap="10.0" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <columnConstraints>
@@ -42,12 +42,51 @@
                         </VBox>
                         <Label styleClass="styleRose" text="Titolo *" />
                         <TextField fx:id="PaginaPaneUpload_textTitolo" promptText="Titolo" />
+                  <Label styleClass="styleLabel" text="Anno di composizione" />
+                  <TextField fx:id="PaginaPaneUpload_textAnno" prefHeight="25.0" prefWidth="148.0" promptText="Anno di composizione" />
+                        <Label styleClass="styleLabel" text="Link YouTube correlato" />
+                        <TextField fx:id="PaginaPaneUpload_textLink" promptText="Link YouTube" styleClass="styleTextFieldYoutube" />
+                        <Label styleClass="styleLabel" text="Ruolo nel brano" />
+                        <ComboBox fx:id="comboRuolo" disable="true" promptText="Seleziona ruolo" styleClass="PaginaPaneUpload_comboGenere">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Autore" />
+                                    <String fx:value="Interprete" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                        <Label styleClass="styleLabel" text="Strumenti usati" />
+                        <ListView fx:id="listStrumenti" prefHeight="100.0" styleClass="PaginaPaneUpload_listView" visible="true" />
+                  <HBox spacing="2.0">
+                          <TextField fx:id="textNuovoStrumento" promptText="Aggiungi nuovo strumento" />
+                          <Button onAction="#aggiungiStrumento" text="+" />
+                  </HBox>
+                    </children>
+                </VBox>
+                <VBox spacing="5.0" GridPane.columnIndex="1">
+                    <children>
+                        <Label styleClass="styleLabel" text="Upload spartiti (pdf, doc...)" />
+                        <VBox id="paneSpartiti" fx:id="PaginaPaneUpload_dragPdf" minHeight="100.0" onDragDropped="#dropPdf" onDragOver="#dragFile" style="-fx-border-color: gray; -fx-border-style: dashed; -fx-alignment: center;">
+                            <children>
+                                <Label fx:id="PaginaPaneUplaod_labelPdf" styleClass="styleLabel" text="Trascina qui il tuo spartito" />
+                            </children>
+                        </VBox>
                         <Label styleClass="styleRose" text="Autore *" />
                          <TextField fx:id="PaginaPaneUpload_textAutore" promptText="Autore" />
-                        <HBox alignment="CENTER_LEFT" spacing="10">
-                           <Label style="-fx-font-size: 11px; -fx-text-fill: gray;" text="Spunta questa opzione per usare il tuo nome utente come autore del brano." wrapText="true" />
-                            <CheckBox fx:id="checkboxUsaNomeUtente" />
+                        <HBox alignment="CENTER_RIGHT" spacing="10">
+                           <Label style="-fx-font-size: 11px; -fx-text-fill: gray;" text="L'utente corrente è l'autore" wrapText="true" />
+                            <CheckBox fx:id="checkboxUsaNomeUtente" onAction="#abilitaDatiAggiuntivi" />
                         </HBox>
+                    </children>
+                </VBox>
+                <VBox centerShape="false" spacing="5.0" GridPane.columnIndex="2">
+                    <children>
+                        <Label styleClass="styleLabel" text="Upload copertina  (jpg, png...)" />
+                        <VBox id="paneCopertina" fx:id="PaginaPaneUpload_dragCopertina" minHeight="100.0" onDragDropped="#dropCopertina" onDragOver="#dragFile" style="-fx-border-color: gray; -fx-border-style: dashed; -fx-alignment: center;">
+                            <children>
+                                <Label fx:id="PaginaPaneUplaod_labelCopertina" styleClass="styleLabel" text="Trascina qui la tua copertina" />
+                            </children>
+                        </VBox>
                         <Label styleClass="styleRose" text="Genere *" />
                         <ComboBox fx:id="PaginaPaneUpload_comboGenere" maxHeight="37.0" promptText="Scegli un genere" styleClass="PaginaPaneUpload_comboGenere">
                             <items>
@@ -66,49 +105,10 @@
                                 </FXCollections>
                             </items>
                         </ComboBox>
-                        <HBox spacing="2.0">
+                        <HBox alignment="TOP_RIGHT" spacing="2.0">
                             <TextField fx:id="textNuovoGenere" promptText="Aggiungi nuovo genere..." />
-                            <Button onAction="#aggiungiGenere" text="+" />
+                            <Button alignment="TOP_LEFT" onAction="#aggiungiGenere" text="+" />
                         </HBox>
-                    </children>
-                </VBox>
-                <VBox spacing="5.0" GridPane.columnIndex="1">
-                    <children>
-                        <Label styleClass="styleLabel" text="Upload spartiti (pdf, doc...)" />
-                        <VBox id="paneSpartiti" fx:id="PaginaPaneUpload_dragPdf" minHeight="100.0" onDragDropped="#dropPdf" onDragOver="#dragFile" style="-fx-border-color: gray; -fx-border-style: dashed; -fx-alignment: center;">
-                            <children>
-                                <Label fx:id="PaginaPaneUplaod_labelPdf" styleClass="styleLabel" text="Trascina qui il tuo spartito" />
-                            </children>
-                        </VBox>
-                        <Label styleClass="styleRose" text="Ruolo nel brano *" />
-                        <ComboBox fx:id="comboRuolo" promptText="Seleziona ruolo" styleClass="PaginaPaneUpload_comboGenere">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="Autore" />
-                                    <String fx:value="Interprete" />
-                                </FXCollections>
-                            </items>
-                        </ComboBox>
-                        <Label styleClass="styleLabel" text="Strumenti usati" />
-                        <ListView fx:id="listStrumenti" prefHeight="100.0" visible="true" />
-                  <HBox spacing="2.0">
-                          <TextField fx:id="textNuovoStrumento" promptText="Aggiungi nuovo strumento" />
-                          <Button onAction="#aggiungiStrumento" text="+" />
-                  </HBox>
-                    </children>
-                </VBox>
-                <VBox centerShape="false" spacing="5.0" GridPane.columnIndex="2">
-                    <children>
-                        <Label styleClass="styleLabel" text="Upload copertina  (jpg, png...)" />
-                        <VBox id="paneCopertina" fx:id="PaginaPaneUpload_dragCopertina" minHeight="100.0" onDragDropped="#dropCopertina" onDragOver="#dragFile" style="-fx-border-color: gray; -fx-border-style: dashed; -fx-alignment: center;">
-                            <children>
-                                <Label fx:id="PaginaPaneUplaod_labelCopertina" styleClass="styleLabel" text="Trascina qui la tua copertina" />
-                            </children>
-                        </VBox>
-                        <Label styleClass="styleLabel" text="Link YouTube correlato" />
-                        <TextField fx:id="PaginaPaneUpload_textLink" promptText="Link YouTube" styleClass="styleTextFieldYoutube" />
-                  <Label styleClass="styleLabel" text="Anno di composizione" />
-                  <TextField fx:id="PaginaPaneUpload_textAnno" prefHeight="25.0" prefWidth="148.0" promptText="Anno di composizione" />
                         <VBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
                             <children>
                                 <Label fx:id="PaginaIscrizione_labelErrore" styleClass="PaginaLogin_labelErrore" text="Canzone caricata con successo!" underline="true" visible="false" />
