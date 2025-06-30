@@ -8,6 +8,8 @@ import javafx.stage.Popup;
 import javafx.stage.Window;
 import javafx.util.Duration;
 
+import java.io.File;
+
 public class ObjGenerici {
 
     public static void mostraPopupSuccesso(Node parNodo, String parMsg) {
@@ -60,5 +62,14 @@ public class ObjGenerici {
         fade.setDelay(Duration.seconds(2));
 
         fade.play();
+    }
+
+    public static String ritornaCopertina(int parId){
+        String locPath = "upload/copertine/" + parId + ".jpg";
+        if(!new File(locPath).exists())
+            locPath = "upload/copertine/" + parId + ".png";
+        if(!new File(locPath).exists())
+            locPath = "upload/copertine/" + parId + ".jpeg";
+        return locPath;
     }
 }

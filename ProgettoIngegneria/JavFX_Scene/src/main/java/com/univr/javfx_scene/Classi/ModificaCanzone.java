@@ -3,7 +3,7 @@ package com.univr.javfx_scene.Classi;
 public class ModificaCanzone {
 
     private final int ID_DATI;
-    //private final int ID_CANZONE;
+    private final int ID_CANZONE;
     private final String TITOLO;
     private final String AUTORE;
     private final String GENERE;
@@ -14,9 +14,9 @@ public class ModificaCanzone {
     private final String DATA_INSERIMENTO;
 
      //public ModificaCanzone(int idDati, int idCanzone, String titolo, String autore, String genere, Integer anno, String youtube, int idUtente, String insUtente, String data) {
-     public ModificaCanzone(int idDati, String titolo, String autore, String genere, Integer anno, String youtube, String insUtente, String data) {
+     public ModificaCanzone(int idDati, int idCanzone, String titolo, String autore, String genere, Integer anno, String youtube, String insUtente, String data) {
         this.ID_DATI = idDati;
-        //this.ID_CANZONE = idCanzone;
+        this.ID_CANZONE = idCanzone;
         this.TITOLO = titolo;
         this.AUTORE = autore;
         this.GENERE = genere;
@@ -30,11 +30,11 @@ public class ModificaCanzone {
     public int getID_DATI() {
         return ID_DATI;
     }
-/*
+
     public int getID_CANZONE() {
         return ID_CANZONE;
     }
-*/
+
     public String getTITOLO() {
         return TITOLO;
     }

@@ -61,7 +61,7 @@
    <bottom>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox alignment="CENTER" minHeight="100.0" minWidth="200.0" spacing="10.0">
                <children>
                   <ImageView fx:id="PaginaPrincipale_imageCopertina" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="PaginaPrincipale_imageCopertina" />
                   <VBox fx:id="PaginaPrincipale_vBoxDati" alignment="CENTER_LEFT" prefWidth="100.0" styleClass="PaginaPrincipale_vBoxDati">

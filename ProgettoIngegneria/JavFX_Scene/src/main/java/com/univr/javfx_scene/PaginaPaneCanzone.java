@@ -33,6 +33,9 @@ import java.util.Map;
 
 public class PaginaPaneCanzone {
     private static ObjSql objSql = ObjSql.oggettoSql();
+    private  ObjGenerici objGenerici;
+
+    private int ID_CANZONE;
     private Map<String, Object> rowCanzone;
     private List<Map<String, Object>> locListaModifiche;
     @FXML private VBox formModifica;
@@ -57,13 +60,12 @@ public class PaginaPaneCanzone {
         // Non dovrebbe mai accedere
         if (parIdCanzone == 0) return;
 
+        ID_CANZONE=parIdCanzone;
         rowCanzone = objSql.leggi("SELECT * FROM CANZONE WHERE ID_CANZONE=" + parIdCanzone);
         if (rowCanzone.isEmpty()) return;
 
         // Imposto la copertina, titolo e autore
-        String locPath = "upload/copertine/" + parIdCanzone + ".jpg";
-        if(!new File(locPath).exists())         // Controllo se eventualmente è un PNG
-            locPath = "upload/copertine/" + parIdCanzone + ".png";
+        String locPath =objGenerici.ritornaCopertina(parIdCanzone);
 
         Image immagine = new Image(new File(locPath).toURI().toString());
         PaginaPaneCanzone_copertina.setImage(immagine);
@@ -144,7 +146,7 @@ public class PaginaPaneCanzone {
                 0, 0, 0, 1, true, CycleMethod.NO_CYCLE,
                 new Stop(0, baseColor.brighter()),
                 new Stop(0.5, baseColor),
-                new Stop(1, baseColor.darker().darker().darker().darker())
+                new Stop(1, Color.rgb(31, 31, 31))
         );
 
         CornerRadii radii = new CornerRadii(10);
@@ -230,8 +232,8 @@ public class PaginaPaneCanzone {
         TableColumn<ModificaCanzone, Integer> colId = new TableColumn<>("ID_DATI");
         colId.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID_DATI()));
 
-        //TableColumn<ModificaCanzone, Integer> colIdCanzone = new TableColumn<>("ID_CANZONE");
-        //colIdCanzone.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID_CANZONE()));
+        TableColumn<ModificaCanzone, Integer> colIdCanzone = new TableColumn<>("ID_CANZONE");
+        colIdCanzone.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID_CANZONE()));
 
         TableColumn<ModificaCanzone, String> colTitolo = new TableColumn<>("TITOLO");
         colTitolo.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getTITOLO()));
@@ -258,10 +260,11 @@ public class PaginaPaneCanzone {
         colData.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getDATA()));
 
         if (PaginaPaneCanzone_tabelView.getColumns().isEmpty()) {
-            //PaginaPaneCanzone_tabelView.getColumns().addAll(colId, colIdCanzone, colTitolo, colAutore, colGenere, colAnno, colYoutube, colIdUtente, colutenteIns, colData);
-            PaginaPaneCanzone_tabelView.getColumns().addAll(colId, colTitolo, colAutore, colGenere, colAnno, colYoutube, colutenteIns, colData);
+            if(PaginaPaneLogin.UTENTE_NOME.equals("adm"))
+                PaginaPaneCanzone_tabelView.getColumns().addAll(colId, colIdCanzone, colTitolo, colAutore, colGenere, colAnno, colYoutube, colutenteIns, colData);
+            else
+                PaginaPaneCanzone_tabelView.getColumns().addAll(colTitolo, colAutore, colGenere, colAnno, colYoutube, colutenteIns, colData);   // Non mostro all'utente chiave canzone e dati
         }
-
 
         // Carica modifiche utente dalla tabella DATI_AGGIUNTIVI_CANZONE
         ObservableList<ModificaCanzone> listaModifiche = FXCollections.observableArrayList();
@@ -280,7 +283,7 @@ public class PaginaPaneCanzone {
 
             ModificaCanzone modCanzone = new ModificaCanzone(
                     Integer.parseInt(riga.get("ID_DATI").toString()),
-                    //Integer.parseInt(riga.get("ID_CANZONE").toString()),
+                    Integer.parseInt(riga.get("ID_CANZONE").toString()),
                     String.valueOf(riga.get("TITOLO")),
                     String.valueOf(riga.get("AUTORE")),
                     String.valueOf(riga.get("GENERE")),
@@ -305,10 +308,10 @@ public class PaginaPaneCanzone {
         String locQuery="";
 
         if(PaginaPaneLogin.UTENTE_NOME.equals("adm")) {
-            locQuery = "SELECT * FROM DATI_AGGIUNTIVI_CANZONE";
+            locQuery = "SELECT * FROM DATI_AGGIUNTIVI_CANZONE WHERE ID_CANZONE="+ID_CANZONE;
 
         } else {    // Le canzoni caricate dall'utente corrente
-            locQuery = "SELECT * FROM DATI_AGGIUNTIVI_CANZONE WHERE ID_UTENTE = " + PaginaPaneLogin.ID_UTENTE;
+            locQuery = "SELECT * FROM DATI_AGGIUNTIVI_CANZONE WHERE ID_UTENTE = " + PaginaPaneLogin.ID_UTENTE + " AND ID_CANZONE="+ID_CANZONE;
         }
 
         locListaModifiche= objSql.leggiLista(locQuery);

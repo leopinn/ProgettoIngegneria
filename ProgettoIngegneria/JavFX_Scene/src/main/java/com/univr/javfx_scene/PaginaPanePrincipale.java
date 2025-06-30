@@ -28,6 +28,8 @@ import javafx.stage.DirectoryChooser;
 public class PaginaPanePrincipale implements Initializable {
 
     private  ObjSql objSql = ObjSql.oggettoSql();
+    private  ObjGenerici objGenerici;
+
     private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
     private List<Map<String, Object>> listaBrani, listaBraniMancanti;
 
@@ -300,12 +302,10 @@ public class PaginaPanePrincipale implements Initializable {
                 contextMenu.show(card, e.getScreenX(), e.getScreenY());
             });
 
+
+
             // Controllo se eventualmente è un PNG o JPEG
-            String locPath = "upload/copertine/" + brano.get("ID_CANZONE") + ".jpg";
-            if(!new File(locPath).exists())
-                locPath = "upload/copertine/" + brano.get("ID_CANZONE") + ".png";
-            if(!new File(locPath).exists())
-                locPath = "upload/copertine/" + brano.get("ID_CANZONE") + ".jpeg";
+            String locPath = objGenerici.ritornaCopertina(Integer.parseInt(brano.get("ID_CANZONE").toString()));
 
             Image immagine = new Image(new File(locPath).toURI().toString());
             ImageView copertina = new ImageView(immagine);

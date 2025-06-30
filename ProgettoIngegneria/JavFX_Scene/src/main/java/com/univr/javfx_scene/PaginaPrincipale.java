@@ -37,6 +37,8 @@ import java.util.ResourceBundle;
 public class PaginaPrincipale implements Initializable {
 
     private  ObjSql objSql = ObjSql.oggettoSql();
+    private  ObjGenerici objGenerici;
+
     private PaginaPanePrincipale controller;
     public MediaPlayer mediaPlayer;
     public int ID_CANZONE;  // ID della canzone attualmente in ascolto
@@ -206,11 +208,7 @@ public class PaginaPrincipale implements Initializable {
 
     private void impostaDatiCanzone(int parId) throws IOException {
         // Imposto la copertina
-        String locPath = "upload/copertine/" + parId + ".jpg";
-        if(!new File(locPath).exists())
-            locPath = "upload/copertine/" + parId + ".png";
-        if(!new File(locPath).exists())
-            locPath = "upload/copertine/" + parId + ".jpeg";
+        String locPath = ObjGenerici.ritornaCopertina(parId);
         Image immagine = new Image(new File(locPath).toURI().toString());
 
         PaginaPrincipale_imageCopertina.setImage(immagine);
