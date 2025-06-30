@@ -61,7 +61,7 @@
    <bottom>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox alignment="CENTER" maxWidth="400.0" minHeight="100.0" minWidth="300.0" spacing="10.0">
                <children>
                   <ImageView fx:id="PaginaPrincipale_imageCopertina" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="PaginaPrincipale_imageCopertina" />
                   <VBox fx:id="PaginaPrincipale_vBoxDati" alignment="CENTER_LEFT" prefWidth="100.0" styleClass="PaginaPrincipale_vBoxDati">
@@ -92,7 +92,7 @@
                </children>
             </VBox>
             <Region HBox.hgrow="ALWAYS" />
-            <HBox fx:id="PaginaPrincipale_hBoxVolume" alignment="CENTER" minHeight="50" minWidth="200.0" styleClass="PaginaPrincipale_hBoxPlayer">
+            <HBox fx:id="PaginaPrincipale_hBoxVolume" alignment="CENTER" minHeight="50" minWidth="300.0" styleClass="PaginaPrincipale_hBoxPlayer">
                <children>
                   <Button fx:id="PaginaPrincipale_bottoneSuono" mnemonicParsing="false" styleClass="PaginaPrincipale_bottoneSuono">
                      <HBox.margin>
