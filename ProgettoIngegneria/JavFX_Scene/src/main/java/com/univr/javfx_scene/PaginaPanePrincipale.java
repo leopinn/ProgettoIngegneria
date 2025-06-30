@@ -253,8 +253,8 @@ public class PaginaPanePrincipale implements Initializable {
     """);
 
 
-            card.setPrefWidth(150);
-            card.setPrefHeight(150);
+            card.setPrefWidth(180);
+            card.setPrefHeight(180);
             card.setId(Integer.toString((Integer) brano.get("ID_CANZONE")));
 
             card.setOnMouseClicked(event -> {
@@ -270,7 +270,7 @@ public class PaginaPanePrincipale implements Initializable {
                 card.setCursor(Cursor.HAND);
                 card.setStyle("""
                 -fx-background-color: #2a2a2a;
-                -fx-background-radius: 15;
+                -fx-background-radius: 5;
                 -fx-padding: 10;
                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);
                 """);
@@ -280,7 +280,7 @@ public class PaginaPanePrincipale implements Initializable {
                 card.setCursor(Cursor.DEFAULT);
                 card.setStyle("""
                  -fx-background-color: transparent;
-                  -fx-background-radius: 15;
+                  -fx-background-radius: 5;
                   -fx-padding: 10;
                   """);
             });
@@ -300,14 +300,17 @@ public class PaginaPanePrincipale implements Initializable {
                 contextMenu.show(card, e.getScreenX(), e.getScreenY());
             });
 
+            // Controllo se eventualmente è un PNG o JPEG
             String locPath = "upload/copertine/" + brano.get("ID_CANZONE") + ".jpg";
-            if(!new File(locPath).exists())         // Controllo se eventualmente è un PNG
+            if(!new File(locPath).exists())
                 locPath = "upload/copertine/" + brano.get("ID_CANZONE") + ".png";
+            if(!new File(locPath).exists())
+                locPath = "upload/copertine/" + brano.get("ID_CANZONE") + ".jpeg";
 
             Image immagine = new Image(new File(locPath).toURI().toString());
             ImageView copertina = new ImageView(immagine);
-            copertina.setFitWidth(120);
-            copertina.setFitHeight(120);
+            copertina.setFitWidth(150);
+            copertina.setFitHeight(150);
             copertina.setPreserveRatio(true);
 
             Label titolo = new Label((String) brano.get("TITOLO"));

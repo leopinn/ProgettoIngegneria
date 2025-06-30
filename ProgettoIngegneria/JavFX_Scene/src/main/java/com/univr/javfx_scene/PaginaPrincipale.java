@@ -206,7 +206,11 @@ public class PaginaPrincipale implements Initializable {
 
     private void impostaDatiCanzone(int parId) throws IOException {
         // Imposto la copertina
-        String locPath="upload/copertine/"+parId+".jpg";
+        String locPath = "upload/copertine/" + parId + ".jpg";
+        if(!new File(locPath).exists())
+            locPath = "upload/copertine/" + parId + ".png";
+        if(!new File(locPath).exists())
+            locPath = "upload/copertine/" + parId + ".jpeg";
         Image immagine = new Image(new File(locPath).toURI().toString());
 
         PaginaPrincipale_imageCopertina.setImage(immagine);

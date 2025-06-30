@@ -95,7 +95,8 @@ public class PaginaPaneUpload {
             anno_composizione = "";
         }
 
-        if (fileMusica == null || filePdf == null || fileCopertina == null)
+        // if (fileMusica == null || filePdf == null || fileCopertina == null)  Leo -> ho tolto l'obbligo per il PDF
+        if (fileMusica == null || fileCopertina == null)
             return 3;
 
         return errore;
@@ -208,7 +209,6 @@ public class PaginaPaneUpload {
         int risultato = objSql.inserisci("CANZONE", rowCanzone);
 
         // Vendor code che indica violazione di un vincolo -> titolo già presente nel database
-
         if (risultato == 19) {
             erroreUpload(risultato);
             return;
@@ -221,9 +221,12 @@ public class PaginaPaneUpload {
             ID_CANZONE = Integer.parseInt(locChiave);
 
             // Adesso prendo i file, li rinomino e li sposto
-            richiediInserimentoCanzone(fileMusica, 0);
-            richiediInserimentoCanzone(filePdf, 1);
-            richiediInserimentoCanzone(fileCopertina, 2);
+            if(fileMusica != null ) // Eseguo nuovamente i controlli per evitare sorprese
+                richiediInserimentoCanzone(fileMusica, 0);
+            if(filePdf != null )
+                richiediInserimentoCanzone(filePdf, 1);
+            if(fileCopertina != null )
+                richiediInserimentoCanzone(fileCopertina, 2);
 
             mostraPopupSuccessoEtorna("Brano caricato con successo!");
         }
@@ -235,7 +238,7 @@ public class PaginaPaneUpload {
         switch (errore) {
             case 1 -> txt = "Inserire tutti i campi obbligatori!";
             case 2 -> txt = "Anno non valido. Deve essere tra 1900 e l'anno corrente";
-            case 3 -> txt = "Devi trascinare tutti i file richiesti (musica, pdf, copertina)";
+            case 3 -> txt = "Devi trascinare tutti i file richiesti (musica o copertina)";
             case 4 -> txt = "Inserire almeno uno strumento se il ruolo è 'Interprete'";
             case 19 -> txt = "Il seguente Titolo risulta già registrato!";
             default -> txt = "Errore generico durante l'inserimento";
@@ -269,7 +272,7 @@ public class PaginaPaneUpload {
     public void dropCopertina(DragEvent event) {
         Dragboard db = event.getDragboard();
         if (db.hasFiles()) {
-            File file = db.getFiles().get(0);                                // (opzionale) puoi mostrare anteprima con un label
+            File file = db.getFiles().get(0);
         if (file.getName().toLowerCase().matches(".*\\.(jpg|jpeg|png)$")) {
             fileCopertina = file;
             PaginaPaneUplaod_labelCopertina.setText("File selezionato: " + file.getName());

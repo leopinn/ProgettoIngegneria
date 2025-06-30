@@ -1,5 +1,4 @@
 package com.univr.javfx_scene;
-import com.univr.javfx_scene.Classi.CANZONE;
 import com.univr.javfx_scene.Classi.ModificaCanzone;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -166,7 +165,7 @@ public class PaginaPaneCanzone {
         double imageWidth = image.getWidth();
         double imageHeight = image.getHeight();
 
-        // Optional: imposta limiti massimi (es. 90% dello schermo)
+        // Imposto dei limiti massimi
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         double maxWidth = bounds.getWidth() * 0.9;
         double maxHeight = bounds.getHeight() * 0.9;
@@ -183,7 +182,7 @@ public class PaginaPaneCanzone {
         Scene scene = new Scene(centerPane, fullView.getBoundsInParent().getWidth(), fullView.getBoundsInParent().getHeight());
         scene.setFill(Color.BLACK);
 
-        // Qualasiasi tasto per chiudere la schermata
+        // Qualasiasi tasto della tastiera per chiudere la schermata
         scene.setOnKeyPressed(e -> {
             ((Stage) scene.getWindow()).close();
         });

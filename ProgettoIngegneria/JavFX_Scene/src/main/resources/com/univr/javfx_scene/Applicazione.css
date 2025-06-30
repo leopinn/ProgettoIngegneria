@@ -588,8 +588,8 @@ PasswordField {
 }
 
 /* ----------------------------------------------------------------------------------------------------------- PANE PRINCIPALE ----------------------------------------------------------------- */
-.PaginaPrincipale_anchorPane{
-    -fx-background-color: #1f1f1f;
+.PaginaPrincipale_anchorPane {
+    -fx-background-color:#1f1f1f;
     -fx-background-radius: 10;
 }
 
@@ -599,10 +599,16 @@ PasswordField {
     -fx-font-size: 26;
 }
 
-.PaginaPrincipale_scrollPane {
-    -fx-background: #1f1f1f;
-    -fx-background-color: #1f1f1f;
-    -fx-border-color: transparent;
+.PaginaPanePrincipale_labelMusica1{
+    -fx-text-fill: #ffffff;
+    -fx-padding: 20 0 0 10;  /* top right bottom left */
+    -fx-font-size: 26;
+    -fx-background-radius: 10;
+    -fx-background-color: linear-gradient(
+            to bottom,
+            #6d24e1 0%,
+            #1f1f1f 50%
+    );
 }
 
 .PaginaPrincipale_scrollPane > .viewport {

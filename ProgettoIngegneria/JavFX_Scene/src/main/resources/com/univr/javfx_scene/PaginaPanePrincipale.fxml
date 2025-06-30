@@ -7,10 +7,17 @@
 
 <AnchorPane fx:id="PaginaPrincipale_anchorPane" prefHeight="500.0" prefWidth="800.0" styleClass="PaginaPrincipale_anchorPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPanePrincipale">
    <children>
-      <Label fx:id="PaginaPanePrincipale_labelMusiche" styleClass="PaginaPanePrincipale_labelMusiche" text="Continua ad ascoltare" />
-      <ScrollPane fx:id="PaginaPrincipale_scrollPane" hbarPolicy="NEVER" maxHeight="Infinity" maxWidth="Infinity" styleClass="PaginaPrincipale_scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+       <Label fx:id="PaginaPanePrincipale_labelMusiche"
+              alignment="TOP_LEFT"
+              prefHeight="300"
+              styleClass="PaginaPanePrincipale_labelMusica1"
+              text="Continua ad ascoltare"
+              AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0"/>
+       <ScrollPane fx:id="PaginaPrincipale_scrollPane" hbarPolicy="NEVER" maxHeight="Infinity" maxWidth="Infinity" prefWidth="800.0"
+                   style="-fx-background-color: transparent;" styleClass="PaginaPrincipale_scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
         <content>
-            <TilePane fx:id="PaginaPanePrincipale_grigliaMusiche" alignment="TOP_LEFT" hgap="10.0" prefColumns="0" vgap="10.0" />
+            <TilePane fx:id="PaginaPanePrincipale_grigliaMusiche" alignment="TOP_LEFT" hgap="10.0" prefColumns="0" styleClass="PaginaPanePrincipale_grigliaMusiche" vgap="10.0" />
         </content>
       </ScrollPane>
    </children>
