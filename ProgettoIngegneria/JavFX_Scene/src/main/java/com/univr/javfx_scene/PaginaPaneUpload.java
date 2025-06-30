@@ -82,7 +82,8 @@ public class PaginaPaneUpload {
         anno_composizione = PaginaPaneUpload_textAnno.getText();
         genere = PaginaPaneUpload_comboGenere.getValue();
 
-        if (titolo.isEmpty() || autore.isEmpty() || genere == null || genere.isEmpty() || ruolo == null)
+        // if (titolo.isEmpty() || autore.isEmpty() || genere == null || genere.isEmpty() || ruolo == null) Leo -> ho tolto l'obbligo per il ruolo
+        if (titolo.isEmpty() || autore.isEmpty() || genere == null || genere.isEmpty())
             return 1;
 
         if ("Interprete".equals(ruolo) && listStrumenti.getSelectionModel().getSelectedItems().isEmpty())
@@ -365,5 +366,16 @@ public class PaginaPaneUpload {
         fade.setDelay(Duration.seconds(2));
 
         fade.play();
+    }
+
+    @FXML
+    private void abilitaDatiAggiuntivi(){
+        comboRuolo.setDisable(!checkboxUsaNomeUtente.isSelected());
+
+        // Se viene deselezionato, sbianco
+        if(!checkboxUsaNomeUtente.isSelected()){
+            comboRuolo.getSelectionModel().clearSelection();
+            listStrumenti.getSelectionModel().clearSelection();
+        }
     }
 }

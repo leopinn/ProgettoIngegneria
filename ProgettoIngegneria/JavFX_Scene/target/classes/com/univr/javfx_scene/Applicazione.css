@@ -855,6 +855,38 @@ PasswordField {
     -fx-max-width: Infinity;
 }
 
+.PaginaPaneUpload_listView {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 5;
+    -fx-padding: 6;
+    -fx-border-color: #dddddd;
+    -fx-border-radius: 5;
+    -fx-control-inner-background: #ffffff;
+    -fx-fixed-cell-size: 28;
+}
+
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #222222;
+    -fx-padding: 4 10;
+    -fx-font-size: 13px;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-font-family: "Segoe UI", "Roboto", sans-serif;
+}
+
+.list-view .list-cell:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #d6e0ff;
+    -fx-text-fill: #0a2a75;
+    -fx-font-weight: bold;
+}
+
+
+
 
 /* ----------------------------------------------------------------------------------------------------------- GENERICI ----------------------------------------------------------------- */
 
