@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane fx:id="PaginaPrincipale_anchorPane" prefHeight="500.0" prefWidth="800.0" styleClass="PaginaPrincipale_anchorPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPanePrincipale">
    <children>
-       <Label fx:id="PaginaPanePrincipale_labelMusiche"
-              alignment="TOP_LEFT"
-              prefHeight="300"
-              styleClass="PaginaPanePrincipale_labelMusica1"
-              text="Continua ad ascoltare"
-              AnchorPane.leftAnchor="0.0"
-              AnchorPane.rightAnchor="0.0"/>
-       <ScrollPane fx:id="PaginaPrincipale_scrollPane" hbarPolicy="NEVER" maxHeight="Infinity" maxWidth="Infinity" prefWidth="800.0"
-                   style="-fx-background-color: transparent;" styleClass="PaginaPrincipale_scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
-        <content>
-            <TilePane fx:id="PaginaPanePrincipale_grigliaMusiche" alignment="TOP_LEFT" hgap="10.0" prefColumns="0" styleClass="PaginaPanePrincipale_grigliaMusiche" vgap="10.0" />
-        </content>
+      <HBox fx:id="PaginaPanePrincipale_parteSuperiore" alignment="TOP_CENTER" prefHeight="300.0" styleClass="PaginaPanePrincipale_parteSuperiore" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+             <Label fx:id="PaginaPanePrincipale_labelMusiche" alignment="TOP_LEFT" prefHeight="39.0" prefWidth="203.0" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Esplora" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="PaginaPanePrincipale_bottoneTutto" mnemonicParsing="false" onAction="#paginaTutto" styleClass="PaginaPanePrincipale_bottoniSopra" text="Tutto" />
+            <Button fx:id="PaginaPanePrincipale_bottoneGeneri" mnemonicParsing="false" onAction="#paginaGeneri" styleClass="PaginaPanePrincipale_bottoniSopra" text="Generi" />
+            <Button fx:id="PaginaPanePrincipale_bottoneArtisti" mnemonicParsing="false" onAction="#paginaArtisti" styleClass="PaginaPanePrincipale_bottoniSopra" text="Artisti" />
+            <Button fx:id="PaginaPanePrincipale_bottoneConcerti" mnemonicParsing="false" onAction="#paginaConcerti" styleClass="PaginaPanePrincipale_bottoniSopra" text="Concerti">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin></Button>
+         </children>
+      </HBox>
+       <ScrollPane fx:id="PaginaPrincipale_scrollPane" hbarPolicy="NEVER" maxHeight="Infinity" maxWidth="Infinity" prefWidth="800.0" style="-fx-background-color: transparent;" styleClass="PaginaPrincipale_scrollPane" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="40" AnchorPane.rightAnchor="25" AnchorPane.topAnchor="100.0">
+         <content>
+            <VBox fx:id="PaginaPanePrincipale_vBoxGrigliaMusiche" />
+         </content>
       </ScrollPane>
    </children>
 </AnchorPane>

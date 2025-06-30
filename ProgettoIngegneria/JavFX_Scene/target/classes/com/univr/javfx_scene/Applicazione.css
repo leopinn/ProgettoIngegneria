@@ -273,6 +273,11 @@ PasswordField {
     -fx-cursor: hand;
     -fx-opacity: 0.9;
 }
+.PaginaPrincipale_bottoneImpostazioni:pressed {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #1a1a1a;
+    -fx-opacity: 1.0;
+}
 
 .PaginaPrincipale_bottoneUpload{
     -fx-background-image: url("../../../immagini/iconaUpload.png");
@@ -297,6 +302,11 @@ PasswordField {
     -fx-border-color: #2a2a2a;
     -fx-cursor: hand;
     -fx-opacity: 0.9;
+}
+.PaginaPrincipale_bottoneUpload:pressed {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #1a1a1a;
+    -fx-opacity: 1.0;
 }
 
 .PaginaPrincipale_bottoneHome{
@@ -323,6 +333,11 @@ PasswordField {
     -fx-cursor: hand;
     -fx-opacity: 0.9;
 }
+.PaginaPrincipale_bottoneHome:pressed {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #1a1a1a;
+    -fx-opacity: 1.0;
+}
 
 .PaginaPrincipale_bottoneAccount{
     -fx-background-image: url("../../../immagini/iconaAccount.png");
@@ -347,6 +362,11 @@ PasswordField {
     -fx-border-color: #2a2a2a;
     -fx-cursor: hand;
     -fx-opacity: 0.9;
+}
+.PaginaPrincipale_bottoneAccount:pressed {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #1a1a1a;
+    -fx-opacity: 1.0;
 }
 
 .PaginaPrincipale_bottoneLogout{
@@ -374,6 +394,11 @@ PasswordField {
     -fx-cursor: hand;
     -fx-opacity: 0.9;
 }
+.PaginaPrincipale_bottoneLogout:pressed {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #1a1a1a;
+    -fx-opacity: 1.0;
+}
 
 .PaginaPrincipale_bottoneYT{
     -fx-background-image: url("../../../immagini/iconaYouTube.png");
@@ -398,6 +423,11 @@ PasswordField {
     -fx-border-color: #2a2a2a;
     -fx-cursor: hand;
     -fx-opacity: 0.9;
+}
+.PaginaPrincipale_bottoneYT:pressed {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #1a1a1a;
+    -fx-opacity: 1.0;
 }
 
 .PaginaPrincipale_sliderMusica {
@@ -504,6 +534,13 @@ PasswordField {
     -fx-cursor: hand;
     -fx-opacity: 0.95;
 }
+.PaginaPrincipale_buttonPlay:pressed {
+    -fx-background-color: #e0e0e0;
+    -fx-border-color: #e0e0e0;
+    -fx-opacity: 1.0;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
 
 
 .PaginaPrincipale_buttonStop{
@@ -530,6 +567,14 @@ PasswordField {
     -fx-cursor: hand;
     -fx-opacity: 0.95;
 }
+.PaginaPrincipale_buttonStop:pressed {
+    -fx-background-color: #e0e0e0;
+    -fx-border-color: #e0e0e0;
+    -fx-opacity: 1.0;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
+
 
 .PaginaPrincipale_hBoxBottoniPlayer{
     -fx-spacing: 20;
@@ -595,20 +640,14 @@ PasswordField {
 
 .PaginaPanePrincipale_labelMusiche{
     -fx-text-fill: #ffffff;
-    -fx-padding: 20 0 0 10;  /* top right bottom left */
-    -fx-font-size: 26;
+    -fx-padding: 0 0 0 10;  /* top right bottom left */
+    -fx-font-size: 32;
 }
 
-.PaginaPanePrincipale_labelMusica1{
+.PaginaPanePrincipale_labelMusicheSopra{
     -fx-text-fill: #ffffff;
-    -fx-padding: 20 0 0 10;  /* top right bottom left */
-    -fx-font-size: 26;
-    -fx-background-radius: 10;
-    -fx-background-color: linear-gradient(
-            to bottom,
-            #6d24e1 0%,
-            #1f1f1f 50%
-    );
+    -fx-padding: 40 0 0 46;  /* top right bottom left */
+    -fx-font-size: 32;
 }
 
 .PaginaPrincipale_scrollPane > .viewport {
@@ -643,6 +682,57 @@ PasswordField {
     -fx-padding: 0;
     -fx-opacity: 0; /* In alternativa metti 0.2 per freccia appena visibile */
 }
+
+.PaginaPanePrincipale_parteSuperiore{
+    -fx-text-fill: #ffffff;
+    -fx-padding: 20 0 0 10;  /* top right bottom left */
+    -fx-font-size: 26;
+    -fx-background-radius: 10;
+    -fx-background-color: linear-gradient(
+            to bottom,
+            #6d24e1 0%,
+            #1f1f1f 50%
+    );
+    -fx-spacing: 5;
+}
+
+.PaginaPanePrincipale_bottoniSopra {
+    -fx-background-color: #552a2a2a;
+    -fx-border-color: #777777;
+    -fx-border-width: 1;
+    -fx-text-fill: #e7e7e7;
+    -fx-font-size: 14;
+
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 30 30;
+
+    -fx-min-width: 50;
+    -fx-min-height: 32;
+    -fx-max-width: 100;
+    -fx-max-height: 32;
+
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 4 16;
+
+    /* Effetto ombra leggera */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 3, 0.1, 0, 1);
+}
+
+.PaginaPanePrincipale_bottoniSopra:hover {
+    -fx-background-color: #88333333;
+    -fx-border-color: #aaaaaa;
+    -fx-opacity: 1.0;
+    -fx-cursor: hand;
+}
+
+.PaginaPanePrincipale_bottoniSopra:pressed {
+    -fx-background-color: #bb444444;
+    -fx-border-color: #cccccc;
+}
+
+
 
 /* ----------------------------------------------------------------------------------------------------------- PANE IMPOSTAZIONI ----------------------------------------------------------------- */
 

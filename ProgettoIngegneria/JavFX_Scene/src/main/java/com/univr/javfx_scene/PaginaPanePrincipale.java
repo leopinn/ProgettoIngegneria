@@ -1,16 +1,21 @@
 package com.univr.javfx_scene;
 
 import javafx.animation.FadeTransition;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -31,10 +36,11 @@ public class PaginaPanePrincipale implements Initializable {
     private  ObjGenerici objGenerici;
 
     private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
-    private List<Map<String, Object>> listaBrani, listaBraniMancanti;
+    private List<Map<String, Object>> listaBrani, listaBraniMancanti, listaBraniCustom, listaTipi;
 
-    @FXML private TilePane PaginaPanePrincipale_grigliaMusiche;
     @FXML private ScrollPane PaginaPrincipale_scrollPane;
+    @FXML private Label PaginaPanePrincipale_labelMusiche;
+    @FXML private VBox PaginaPanePrincipale_vBoxGrigliaMusiche;
 
     private int canzoneCorrente;
 
@@ -45,14 +51,39 @@ public class PaginaPanePrincipale implements Initializable {
         this.mainController = controller;
     }
 
+    public PaginaPrincipale getController(){
+        return mainController;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        PaginaPanePrincipale_grigliaMusiche.prefWidthProperty().bind(PaginaPrincipale_scrollPane.widthProperty());
+        PaginaPanePrincipale_vBoxGrigliaMusiche.prefWidthProperty().bind(PaginaPrincipale_scrollPane.widthProperty());
+        inizializzaListaBrani();
+    }
 
+    private void inizializzaListaBrani() {
         listaBrani = objSql.leggiLista("SELECT * FROM CANZONE");
+        PaginaPanePrincipale_labelMusiche.setText("Esplora");
         setGrigliaMusica(listaBrani);
     }
 
+    public void setGrigliaMusica (List<Map<String, Object>> rowCanzone) {
+        PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().clear();
+
+        // Creo un TilePane per avere una gestione automatica delle card
+        TilePane tilePane = new TilePane();
+        tilePane.setHgap(15);
+        tilePane.setVgap(15);
+        tilePane.setPrefColumns(4);  // Numero colonne preferite (opzionale)
+        tilePane.setTileAlignment(Pos.CENTER);
+
+
+        for (Map<String, Object> rowBrano : rowCanzone) {
+            VBox card = creaCard(rowBrano);
+            tilePane.getChildren().add(card);
+        }
+        PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().add(tilePane);
+    }
 
     /* ---------- Inizio - GESTIONE MUSICA AUTOMATICA ----------*/
 
@@ -117,214 +148,232 @@ public class PaginaPanePrincipale implements Initializable {
     /* ---------- Fine - GESTIONE MUSICA AUTOMATICA ----------*/
 
 
-    private void mostraPopup(String messaggio) {
-        Label contenuto = new Label(messaggio);
-        contenuto.setStyle("""
-        -fx-background-color: #28a745;
-        -fx-text-fill: white;
-        -fx-padding: 12px 24px;
-        -fx-font-size: 14px;
-        -fx-background-radius: 10;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
-    """);
 
-        StackPane container = new StackPane(contenuto);
-        container.setStyle("-fx-padding: 10;");
-        container.setOpacity(0);
 
-        Popup popup = new Popup();
-        popup.getContent().add(container);
-        popup.setAutoFix(true);
-        popup.setAutoHide(true);
-        popup.setHideOnEscape(true);
 
-        // Ottieni la finestra corrente
-        Window finestra = PaginaPrincipale_scrollPane.getScene().getWindow();
 
-        // Mostra il popup
-        popup.show(finestra);
+    @FXML private void paginaConcerti() throws IOException { }
 
-        // Posizionalo in basso al centro della finestra
-        popup.setX(finestra.getX() + finestra.getWidth() / 2 - 100); // centrato orizzontalmente
-        popup.setY(finestra.getY() + finestra.getHeight() - 100);    // 100px dal fondo
 
-        // Animazione fade-in
-        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), container);
-        fadeIn.setFromValue(0);
-        fadeIn.setToValue(1);
+    /* ---------- Inizio - GESTIONE GRIGLIA TUTO ----------*/
+    @FXML private void paginaTutto() throws IOException {
+        inizializzaListaBrani();
+    }
+    /* ---------- Fine - GESTIONE GRIGLIA TUTO ----------*/
 
-        // Animazione fade-out
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(500), container);
-        fadeOut.setFromValue(1);
-        fadeOut.setToValue(0);
-        fadeOut.setDelay(Duration.seconds(2.5));
-        fadeOut.setOnFinished(e -> popup.hide());
 
-        // Avvia animazioni
-        fadeIn.play();
-        fadeOut.play();
+    /* ---------- Inizio - GESTIONE GRIGLIA GENERI ----------*/
+
+    @FXML
+    private void paginaGeneri (){
+        // Popolo la lista dei brani e quella dei generi
+        listaBraniCustom = objSql.leggiLista("SELECT * FROM CANZONE");
+        listaTipi = objSql.leggiLista("SELECT GENERE FROM CANZONE GROUP BY GENERE");
+        PaginaPanePrincipale_labelMusiche.setText("Generi");
+
+        setGrigliaMusicaGeneri();
     }
 
-    // in questa funzione viene gestito il download da parte dell'utente dei file che compngono il brano
-    /**
-     * Scarica i file associati a una canzone (audio, testo, video) in una cartella scelta dall'utente.
-     * I file vengono rinominati con il titolo del brano e salvati in una sottocartella con lo stesso nome.
-     *
-     * @param idCanzone ID della canzone nel database
-     */
-    private void scaricaFileCanzone(int idCanzone) {
-        String basePath = "upload/"; // Cartella locale dei file sorgenti
+    private void setGrigliaMusicaGeneri(){
+        PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().clear();
+        PaginaPanePrincipale_vBoxGrigliaMusiche.setPadding(new Insets(10));
 
-        // Percorsi dei file sorgente (basati sull'ID della canzone)
-        File audioFile = new File(basePath + "musiche/" + idCanzone + ".mp3");
-        File testoFile = new File(basePath + "pdf/" + idCanzone + ".txt");
-        File videoFile = new File(basePath + "video/" + idCanzone + ".mp4");
+        // Ciclo i generi che contengono almeno una canzone
+        for (Map<String, Object> genereMap : listaTipi) {
+            String nomeGenere = (String) genereMap.get("GENERE");
 
-        // Recupera il titolo del brano dal database
-        String titoloBrano = "Brano";
-        List<Map<String, Object>> risultato = objSql.leggiLista(
-                "SELECT TITOLO FROM CANZONE WHERE ID_CANZONE = " + idCanzone
-        );
-        if (!risultato.isEmpty()) {
-            titoloBrano = (String) risultato.get(0).get("TITOLO");
-        }
+            // HBox principale per le card delle canzoni
+            HBox canzoniHBox = new HBox(15);
+            canzoniHBox.setPadding(new Insets(10, 0, 10, 0));
 
-        // Finestra di selezione cartella per far scegliere all'utente dove salvare
-        DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle("Scegli cartella per salvare: " + titoloBrano);
-        File targetFolder = chooser.showDialog(PaginaPrincipale_scrollPane.getScene().getWindow());
-
-        if (targetFolder == null) {
-            return; // Utente ha annullato la selezione
-        }
-
-        // Crea una sottocartella con il nome del brano (sanificando caratteri illegali)
-        String safeName = titoloBrano.replaceAll("[\\\\/:*?\"<>|]", "_");
-        File destinazioneBrano = new File(targetFolder, safeName);
-        destinazioneBrano.mkdirs(); // Crea la cartella se non esiste
-
-        try {
-            // Copia e rinomina i file solo se esistono
-            if (audioFile.exists()) {
-                copiaFile(audioFile, new File(destinazioneBrano, safeName + ".mp3"));
+            // Ciclo sui brani cercando quelli del genere corrente
+            for (Map<String, Object> rowBrano : listaBraniCustom) {
+                if (rowBrano.get("GENERE") != null && rowBrano.get("GENERE").equals(nomeGenere)) {
+                    VBox card = creaCard(rowBrano);
+                    canzoniHBox.getChildren().add(card);
+                }
             }
 
-            if (testoFile.exists()) {
-                copiaFile(testoFile, new File(destinazioneBrano, safeName + ".txt"));
+            // Se trovo una canzone, inizio a comporne la riga
+            if (!canzoniHBox.getChildren().isEmpty()) {
+                // Imposto l'etichetta del genere
+                Label genereLabel = new Label(nomeGenere);
+                genereLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 22px; ");
+
+                // Imposto lo scroll pane solo orizzontale, con hbox per le musiche
+                ScrollPane scrollPane = new ScrollPane();
+                scrollPane.setContent(canzoniHBox);
+                scrollPane.setFitToWidth(false);
+                scrollPane.setFitToHeight(true);
+                scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+                scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+
+                scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
+
+                // Aggiungo il tutto al Vbox principale
+                PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().addAll(genereLabel, scrollPane);
             }
-
-            if (videoFile.exists()) {
-                copiaFile(videoFile, new File(destinazioneBrano, safeName + ".mp4"));
-            }
-
-            // Mostra notifica popup di conferma
-            mostraPopup("Download completato: " + titoloBrano);
-
-        } catch (IOException e) {
-            // Errore durante la copia dei file
-            e.printStackTrace();
-            mostraPopup("Errore durante il download di: " + titoloBrano);
         }
     }
 
-    private void copiaFile(File sorgente, File destinazione) throws IOException {
-        if (sorgente.exists()) {
-            java.nio.file.Files.copy(
-                    sorgente.toPath(),
-                    destinazione.toPath(),
-                    java.nio.file.StandardCopyOption.REPLACE_EXISTING
-            );
-        } else {
-            // Se il file sorgente non esiste, stampa un messaggio in console
-            System.out.println("File non trovato: " + sorgente.getAbsolutePath());
+    /* ---------- Fine - GESTIONE GRIGLIA GENERI ----------*/
+
+
+
+
+    /* ---------- Inizio - GESTIONE GRIGLIA GENERI ----------*/
+
+    @FXML
+    private void paginaArtisti (){
+        // Popolo la lista dei brani e quella dei generi
+        listaBraniCustom = objSql.leggiLista("SELECT * FROM CANZONE");
+        listaTipi = objSql.leggiLista("SELECT AUTORE FROM CANZONE GROUP BY AUTORE");
+        PaginaPanePrincipale_labelMusiche.setText("Artisti");
+
+        setGrigliaMusicaArtisti();
+    }
+
+    private void setGrigliaMusicaArtisti(){
+        PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().clear();
+        PaginaPanePrincipale_vBoxGrigliaMusiche.setPadding(new Insets(10));
+
+        // Ciclo gli artisti che contengono almeno una canzone
+        for (Map<String, Object> genereMap : listaTipi) {
+            String nomeAutore = (String) genereMap.get("AUTORE");
+
+            // HBox principale per le card delle canzoni
+            HBox canzoniHBox = new HBox(15);
+            canzoniHBox.setPadding(new Insets(10, 0, 10, 0));
+
+            // Ciclo sui brani cercando quelli del genere corrente
+            for (Map<String, Object> rowBrano : listaBraniCustom) {
+                if (rowBrano.get("AUTORE") != null && rowBrano.get("AUTORE").equals(nomeAutore)) {
+                    VBox card = creaCard(rowBrano);
+                    canzoniHBox.getChildren().add(card);
+                }
+            }
+
+            // Se trovo una canzone, inizio a comporne la riga
+            if (!canzoniHBox.getChildren().isEmpty()) {
+                // Imposto l'etichetta del genere
+                Label genereLabel = new Label(nomeAutore);
+                genereLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 22px; ");
+
+                // Imposto lo scroll pane solo orizzontale, con hbox per le musiche
+                ScrollPane scrollPane = new ScrollPane();
+                scrollPane.setContent(canzoniHBox);
+                scrollPane.setFitToWidth(false);
+                scrollPane.setFitToHeight(true);
+                scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+                scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+
+                scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
+
+                // Aggiungo il tutto al Vbox principale
+                PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().addAll(genereLabel, scrollPane);
+            }
         }
     }
 
-    public void setGrigliaMusica (List<Map<String, Object>> rowCanzone) {
-        PaginaPanePrincipale_grigliaMusiche.getChildren().clear();
-        System.out.println(rowCanzone);
+    /* ---------- Fine - GESTIONE GRIGLIA GENERI ----------*/
 
-        for (Map<String, Object> brano : rowCanzone) {
-            VBox card = new VBox(10);
-            card.setAlignment(Pos.CENTER);
+    private VBox creaCard(Map<String, Object> rowBrano) {
+        VBox card = new VBox(10);
+        card.setAlignment(Pos.CENTER);
 
-            card.setStyle("""
+        card.setStyle("""
         -fx-background-color: transparent;
         -fx-background-radius: 15;
         -fx-padding: 10;
     """);
 
 
-            card.setPrefWidth(180);
-            card.setPrefHeight(180);
-            card.setId(Integer.toString((Integer) brano.get("ID_CANZONE")));
+        card.setPrefWidth(180);
+        card.setPrefHeight(180);
+        card.setId(Integer.toString((Integer) rowBrano.get("ID_CANZONE")));
 
-            card.setOnMouseClicked(event -> {
-                try {
-                    selezionaMusica(card.getId(), 0);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+        card.setOnMouseClicked(event -> {
+            try {
+                selezionaMusica(card.getId(), 0);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
-            // Imposto lo stile al passaggio del mouse
-            card.setOnMouseEntered(event -> {
-                card.setCursor(Cursor.HAND);
-                card.setStyle("""
-                -fx-background-color: #2a2a2a;
+        // Imposto lo stile al passaggio del mouse
+        card.setOnMouseEntered(event -> {
+            card.setCursor(Cursor.HAND);
+            card.setStyle("""
+                -fx-background-color: #3a3a3a;
                 -fx-background-radius: 5;
                 -fx-padding: 10;
                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);
                 """);
-            });
+        });
 
-            card.setOnMouseExited(event -> {
-                card.setCursor(Cursor.DEFAULT);
-                card.setStyle("""
+        card.setOnMouseExited(event -> {
+            card.setCursor(Cursor.DEFAULT);
+            card.setStyle("""
                  -fx-background-color: transparent;
                   -fx-background-radius: 5;
                   -fx-padding: 10;
                   """);
-            });
+        });
 
-            // Crea menu contestuale (tasto destro)
-            ContextMenu contextMenu = new ContextMenu();
-            MenuItem downloadItem = new MenuItem("Download");
+        // Crea menu contestuale (tasto destro)
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem downloadItem = new MenuItem("Download");
 
-            downloadItem.setOnAction(e -> {
-                int idCanzone = Integer.parseInt(card.getId());
+        downloadItem.setOnAction(e -> {
+            int idCanzone = Integer.parseInt(card.getId());
+            try {
                 scaricaFileCanzone(idCanzone);
-            });
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
-            contextMenu.getItems().add(downloadItem);
+        contextMenu.getItems().add(downloadItem);
 
-            card.setOnContextMenuRequested(e -> {
-                contextMenu.show(card, e.getScreenX(), e.getScreenY());
-            });
+        card.setOnContextMenuRequested(e -> {
+            contextMenu.show(card, e.getScreenX(), e.getScreenY());
+        });
 
 
+        // Controllo se eventualmente è un PNG o JPEG
+        String locPath = objGenerici.ritornaCopertina(Integer.parseInt(rowBrano.get("ID_CANZONE").toString()));
 
-            // Controllo se eventualmente è un PNG o JPEG
-            String locPath = objGenerici.ritornaCopertina(Integer.parseInt(brano.get("ID_CANZONE").toString()));
+        Image immagine = new Image(new File(locPath).toURI().toString());
+        ImageView copertina = new ImageView(immagine);
+        copertina.setFitWidth(150);
+        copertina.setFitHeight(150);
+        copertina.setPreserveRatio(true);
 
-            Image immagine = new Image(new File(locPath).toURI().toString());
-            ImageView copertina = new ImageView(immagine);
-            copertina.setFitWidth(150);
-            copertina.setFitHeight(150);
-            copertina.setPreserveRatio(true);
+        Label titolo = new Label((String) rowBrano.get("TITOLO"));
+        titolo.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;");
+        titolo.setWrapText(true);
+        titolo.setAlignment(Pos.CENTER);
 
-            Label titolo = new Label((String) brano.get("TITOLO"));
-            titolo.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;");
-            titolo.setWrapText(true);
-            titolo.setAlignment(Pos.CENTER);
+        Label autore = new Label((String) rowBrano.get("AUTORE"));
+        autore.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 12px;");
+        autore.setWrapText(true);
+        autore.setAlignment(Pos.CENTER);
 
-            Label autore = new Label((String) brano.get("AUTORE"));
-            autore.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 12px;");
-            autore.setWrapText(true);
-            autore.setAlignment(Pos.CENTER);
+        card.getChildren().addAll(copertina, titolo, autore);
+        return card;
+    }
 
-            card.getChildren().addAll(copertina, titolo, autore);
-            PaginaPanePrincipale_grigliaMusiche.getChildren().add(card);
-        }
+    /* ---------- Fine - GESTIONE CAMBIO PAGINA MUSICA - TUTTO - GENERI - AUTORI ----------*/
+
+    ReadOnlyDoubleProperty getScrollPaneWidth(){
+        return PaginaPrincipale_scrollPane.widthProperty();
+    }
+
+    private void scaricaFileCanzone(int parIdCanzone) throws IOException {
+        objGenerici.scaricaFileCanzone(PaginaPanePrincipale_vBoxGrigliaMusiche, objSql, parIdCanzone);
     }
 }
+
+

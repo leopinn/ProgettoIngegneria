@@ -17,7 +17,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="PaginaPaneUpload_anchorPane" prefHeight="714.0" prefWidth="1205.0" styleClass="PaginaPaneUpload_anchorPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUpload">
+<AnchorPane fx:id="PaginaPaneUpload_anchorPane" prefHeight="714.0" prefWidth="1205.0" styleClass="PaginaPaneUpload_anchorPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUpload">
     <children>
       <GridPane hgap="10.0" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <columnConstraints>
@@ -97,9 +98,9 @@
                                     <String fx:value="Jazz" />
                                     <String fx:value="Hip Hop" />
                                     <String fx:value="Classica" />
-                                    <String fx:value="Reggae" />
+                                    <String fx:value="Reggaetton" />
                                     <String fx:value="Blues" />
-                                    <String fx:value="Electronic" />
+                                    <String fx:value="Elettronica" />
                                     <String fx:value="Metal" />
                                     <String fx:value="Country" />
                                 </FXCollections>
