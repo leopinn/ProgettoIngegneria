@@ -12,10 +12,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -60,6 +62,7 @@ public class PaginaPrincipale implements Initializable {
     @FXML private TextField cercaTextField;
     @FXML private HBox PaginaPrincipale_hBox;
     @FXML private Button PaginaPrincipale_bottoneHome;
+    @FXML private StackPane PaginaPrincipale_stackPane;
 
     private Button pulsanteVideo;
     private List<Map<String, Object>> listaBrani, listaBraniMancanti;
@@ -129,7 +132,7 @@ public class PaginaPrincipale implements Initializable {
     }
 
     public void upload(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneUpload.fxml"));
+        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneUpload.fxml"));
         Parent registerPane = loader.load();
 
         // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
@@ -140,7 +143,32 @@ public class PaginaPrincipale implements Initializable {
             nascondiCommenti();
         }
 
-        PaginaPrincipale_borderPane.setCenter(registerPane);
+        PaginaPrincipale_borderPane.setCenter(registerPane);*/
+        // Imposto al centro dello stack pane paginaUtente, come sfondo
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneUtente.fxml"));
+        Parent utentePane = loader.load();
+
+        PaginaPaneUtente controller = loader.getController();
+        controller.setMainController(this);
+
+        PaginaPrincipale_stackPane.getChildren().setAll(utentePane);
+
+        // Apro successivamente paginaCanzone
+        loader = new FXMLLoader(getClass().getResource("PaginaPaneUpload.fxml"));
+        Parent canzonePane = loader.load();
+
+        PaginaPaneUpload controllerCanzone = loader.getController();
+        controllerCanzone.setMainController(PaginaPrincipale_stackPane);
+
+        // Applica sfocatura allo sfondo (paginaUtente)
+        Node background = PaginaPrincipale_stackPane.getChildren().get(0);
+        background.setEffect(new GaussianBlur(10));
+        background.setDisable(true);    // La pagina viene inizialmente utilizzata solo come sfondo, dunque la disabilito
+
+        // Aggiunge canzonePane sopra
+        PaginaPrincipale_stackPane.getChildren().add(canzonePane);
+        PaginaPrincipale_borderPane.setCenter(PaginaPrincipale_stackPane);
+
     }
 
     public void PaginaPaneImpostazioniAmministratore() throws IOException {

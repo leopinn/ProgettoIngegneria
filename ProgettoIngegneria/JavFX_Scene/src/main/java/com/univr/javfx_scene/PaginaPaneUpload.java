@@ -4,10 +4,12 @@ import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Popup;
 import javafx.stage.Window;
 import javafx.util.Duration;
@@ -23,7 +25,7 @@ import java.util.Map;
 import static com.univr.javfx_scene.PaginaPaneLogin.UTENTE_NOME;
 
 public class PaginaPaneUpload {
-    private PaginaPrincipale mainController;
+    private StackPane mainController;
     private String nomeUtente, autore, titolo, link_youtube, anno_composizione, genere, ruolo, strumenti;
     private int ID_CANZONE;
 
@@ -41,17 +43,25 @@ public class PaginaPaneUpload {
     @FXML private TextField textNuovoGenere;
 
 
-    public void setMainController(PaginaPrincipale controller) {
+    public void setMainController(StackPane controller) {
         this.mainController = controller;
         this.nomeUtente = UTENTE_NOME; // recupera il nome utente
     }
 
 
     // Metodo per tornare alla pagina principale
-    public void annulla() throws IOException, CloneNotSupportedException {
-        mainController.paginaPrincipale();
-    }
+    public void chiudiPaneUpload() throws IOException, CloneNotSupportedException {
+        // mainController.paginaPrincipale(); LP -> Modificata con layout più moderno
 
+        if (mainController.getChildren().size() > 1) {
+            mainController.getChildren().remove(mainController.getChildren().size() - 1);   // Rimuove l'ultimo pannello (paginaCanzone)
+
+            // Ripristina lo sfondo
+            Node sfondo = mainController.getChildren().get(0);
+            sfondo.setEffect(null);
+            sfondo.setDisable(false);
+        }
+    }
 
     // richiesta Upload Brano musicale
     public void richiediInserimentoCanzone(){
@@ -355,9 +365,11 @@ public class PaginaPaneUpload {
         popup.setY(finestra.getY() + finestra.getHeight() - 100);
 
         try {
-            mainController.paginaPrincipale(); // Torna al pane principale
+            chiudiPaneUpload();
         } catch (IOException ex) {
             ex.printStackTrace();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
         }
 
         FadeTransition fade = new FadeTransition(Duration.seconds(3), contenuto);

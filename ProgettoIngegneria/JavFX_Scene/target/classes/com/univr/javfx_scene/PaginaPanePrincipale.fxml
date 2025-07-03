@@ -13,7 +13,10 @@
    <children>
       <HBox fx:id="PaginaPanePrincipale_parteSuperiore" alignment="TOP_CENTER" prefHeight="300.0" styleClass="PaginaPanePrincipale_parteSuperiore" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-             <Label fx:id="PaginaPanePrincipale_labelMusiche" alignment="TOP_LEFT" prefHeight="39.0" prefWidth="203.0" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Esplora" />
+             <Label fx:id="PaginaPanePrincipale_labelMusiche" alignment="TOP_LEFT" prefHeight="39.0" prefWidth="300.0" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Esplora">
+               <padding>
+                  <Insets left="10.0" />
+               </padding></Label>
             <Region HBox.hgrow="ALWAYS" />
             <Button fx:id="PaginaPanePrincipale_bottoneTutto" mnemonicParsing="false" onAction="#paginaTutto" styleClass="PaginaPanePrincipale_bottoniSopra" text="Tutto" />
             <Button fx:id="PaginaPanePrincipale_bottoneGeneri" mnemonicParsing="false" onAction="#paginaGeneri" styleClass="PaginaPanePrincipale_bottoniSopra" text="Generi" />

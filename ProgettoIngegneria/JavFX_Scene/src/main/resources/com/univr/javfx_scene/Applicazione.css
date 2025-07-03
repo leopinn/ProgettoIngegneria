@@ -1,4 +1,4 @@
-{
+*{
     -primary: #6d24e1;
     -secondary: #f9f9f9;
     -fx-font-family: "Gotham-Medium", sans-serif;
@@ -9,29 +9,6 @@
     -fx-background-color:  #1e1f22;
 }
 
-TextField {
-    -fx-background-color: #f2f2f2;
-    -fx-text-fill: #333;
-    -fx-font-size: 16;
-    -fx-border-color: #cccccc;
-    -fx-border-radius: 4;
-    -fx-background-radius: 4;
-
-    -fx-pref-height: 30;
-    -fx-max-height: 30;
-}
-
-PasswordField {
-    -fx-background-color: #f2f2f2;
-    -fx-text-fill: #333;
-    -fx-font-size: 16;
-    -fx-border-color: #cccccc;
-    -fx-border-radius: 4;
-    -fx-background-radius: 4;
-
-    -fx-pref-height: 30;
-    -fx-max-height: 30;
-}
 
 .PaginaLogin_labelRichiestaAccount {
     -fx-background-color: #d4edda;       /* verde chiaro */
@@ -46,7 +23,7 @@ PasswordField {
     -fx-opacity: 0;
 }
 
-/* ----------------------------------------------------------------------------------------------------------- BOTTONI GENERICI ----------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------- STILI GENERICI ----------------------------------------------------------------- */
 
 .buttonViola{
     -fx-background-radius: 8;
@@ -87,11 +64,54 @@ PasswordField {
     -fx-background-color: derive(#E5484D, 20%);
 }
 
-.labelBianca {
+.labelBiancaPiccola{
     -fx-text-fill: #ffffff;
+    -fx-font-size: 12;
 }
-.labelBianca:hover {
+.labelBiancaPiccola:hover {
     -fx-cursor: hand;
+}
+
+.labelBiancaMedia {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14;
+}
+.labelBiancaMedia:hover {
+    -fx-cursor: hand;
+}
+
+.labelBiancaGrande {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18;
+}
+.labelBiancaGrande:hover {
+    -fx-cursor: hand;
+}
+
+.textFieldGenerico{
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+
+    -fx-text-fill: #222222;
+    -fx-font-size: 14px;
+
+    -fx-pref-height: 35;
+    -fx-max-height: 35;
+
+    -fx-prompt-text-fill: #999999;
+
+    -fx-cursor: text;
+    -fx-effect: none;
+    -fx-focus-color: transparent;
+}
+
+.textFieldGenerico:focused {
+    -fx-border-color: #6d24e1;
+    -fx-border-radius: 4;
+    -fx-effect: dropshadow(gaussian, rgba(109,36,225,0.3), 12, 0, 0, 0);
 }
 /* ----------------------------------------------------------------------------------------------------------- LOGIN ----------------------------------------------------------------- */
 
@@ -640,14 +660,15 @@ PasswordField {
 
 .PaginaPanePrincipale_labelMusiche{
     -fx-text-fill: #ffffff;
-    -fx-padding: 0 0 0 10;  /* top right bottom left */
     -fx-font-size: 32;
+    -fx-font-family: "Gotham-Medium", sans-serif;
 }
 
 .PaginaPanePrincipale_labelMusicheSopra{
     -fx-text-fill: #ffffff;
     -fx-padding: 40 0 0 46;  /* top right bottom left */
-    -fx-font-size: 32;
+    -fx-font-size: 42;
+    -fx-font-family: "Gotham-Medium", sans-serif;
 }
 
 .PaginaPrincipale_scrollPane > .viewport {
@@ -902,8 +923,8 @@ PasswordField {
     -fx-border-radius: 4;
     -fx-background-radius: 4;
 
-    -fx-pref-height: 30;
-    -fx-max-height: 30;
+    -fx-pref-height: 35;
+    -fx-max-height: 35;
     -fx-padding: 0 6 0 6;
 }
 
@@ -976,6 +997,69 @@ PasswordField {
 }
 
 
+
+
+
+
+
+.PaginaPaneUpload_vboxPrincipale{
+    -fx-background-color: #1f1f1f;
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.3), 10, 0.5, 0, 0);
+    -fx-background-radius: 8;
+
+    -fx-max-width: 1000;
+    -fx-min-width: 1000;
+
+    -fx-spacing: 10;
+    -fx-padding: 20;
+}
+
+.PaginaPaneUpload_anchorPane{
+    -fx-background-color: transparent;
+}
+
+.PaginaPaneUpload_vboxGenerica{
+    -fx-spacing: 5;
+}
+
+.PaginaPaneUpload_hboxGenerico{
+    -fx-pref-width: infinity;
+    -fx-pref-height: 150;
+    -fx-spacing: 10;
+}
+
+.PaginaPaneUpload_hboxCentrale{
+    -fx-pref-width: infinity;
+    -fx-pref-height: 100;
+    -fx-spacing: 10;
+}
+
+.PaginaPaneUpload_bottoneAggiungi{
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.15), 2, 0.5, 0, 1);
+    -fx-alignment: center;
+
+    -fx-pref-height: 35;
+    -fx-max-height: 35;
+}
+
+.PaginaPaneUpload_bottoneAggiungi:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.25), 4, 0.5, 0, 2);
+}
+
+.PaginaPaneUpload_bottoneAggiungi:pressed {
+    -fx-background-color: rgba(255, 255, 255, 0.4);
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.1), 1, 0.5, 0, 1);
+}
 
 
 /* ----------------------------------------------------------------------------------------------------------- GENERICI ----------------------------------------------------------------- */
@@ -1054,6 +1138,9 @@ PasswordField {
     -fx-background-insets: 0;
     -fx-border-width: 0;
 }
+
+
+
 
 /* ----------------------------------------------------------------------------------------------------------- COMMENTI ----------------------------------------------------------------- */
 

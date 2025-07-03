@@ -20,8 +20,8 @@
       </HBox>
       <HBox styleClass="PaginaIscrizione_hBoxField">
          <children>
-            <TextField fx:id="PaginaIscrizione_textNome" promptText="Nome" />
-            <TextField fx:id="PaginaIscrizione_textCognome" promptText="Cognome" />
+            <TextField fx:id="PaginaIscrizione_textNome" promptText="Nome" styleClass="textFieldGenerico" />
+            <TextField fx:id="PaginaIscrizione_textCognome" promptText="Cognome" styleClass="textFieldGenerico" />
          </children>
       </HBox>
       <HBox styleClass="PaginaIscrizione_hBoxLabel2">
@@ -32,8 +32,8 @@
       </HBox>
       <HBox styleClass="PaginaIscrizione_hBoxField">
          <children>
-            <TextField fx:id="PaginaIscrizione_textEmail" promptText="Email" />
-            <TextField fx:id="PaginaIscrizione_textRipetiEmail" promptText="Ripeti email" />
+            <TextField fx:id="PaginaIscrizione_textEmail" promptText="Email" styleClass="textFieldGenerico" />
+            <TextField fx:id="PaginaIscrizione_textRipetiEmail" promptText="Ripeti email" styleClass="textFieldGenerico" />
          </children>
       </HBox>
       <HBox styleClass="PaginaIscrizione_hBoxLabel2">
@@ -54,8 +54,8 @@
       </HBox>
       <HBox styleClass="PaginaIscrizione_hBoxField">
          <children>
-            <PasswordField fx:id="PaginaIscrizione_textPassword" promptText="Password" />
-            <PasswordField fx:id="PaginaIscrizione_textRipetiPassword" promptText="Ripeti password" />
+            <PasswordField fx:id="PaginaIscrizione_textPassword" promptText="Password" styleClass="textFieldGenerico" />
+            <PasswordField fx:id="PaginaIscrizione_textRipetiPassword" promptText="Ripeti password" styleClass="textFieldGenerico" />
          </children>
          <VBox.margin>
             <Insets />
@@ -69,7 +69,7 @@
       <HBox fx:id="PaginaIscrizione_hBoxBottom" alignment="CENTER" styleClass="PaginaLogin_hBox">
          <children>
             <Label styleClass="PaginaLogin_labelBottom" text="Sei già iscritto?" />
-            <Label onMouseClicked="#mostraPaginaLogin" styleClass="labelBianca" text="Accedi a UniSound." underline="true">
+            <Label onMouseClicked="#mostraPaginaLogin" styleClass="labelBiancaPiccola" text="Accedi a UniSound." underline="true">
                <padding>
                   <Insets bottom="20.0" top="10.0" />
                </padding></Label>

@@ -27,8 +27,8 @@
             <Insets top="5.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="PaginaLogin_nameTextField" promptText="Username" styleClass="PaginaLogin_textField" />
-      <PasswordField fx:id="PaginaLogin_passwordField" promptText="Password" styleClass="PaginaLogin_textField" />
+      <TextField fx:id="PaginaLogin_nameTextField" maxWidth="300.0" promptText="Username" styleClass="textFieldGenerico" />
+      <PasswordField fx:id="PaginaLogin_passwordField" maxWidth="300.0" promptText="Password" styleClass="textFieldGenerico" />
       <Button fx:id="PaginaLogin_bottoneLogin" defaultButton="true" minWidth="300.0" onAction="#invio" prefWidth="300.0" styleClass="buttonViola" text="Invia" />
       <Label fx:id="PaginaLogin_LabelPassDimenticata" styleClass="PaginaLogin_LabelPassDimenticata" text="Password dimenticata?">
          <VBox.margin>
@@ -38,7 +38,7 @@
       <HBox fx:id="PaginaLogin_hBox" alignment="CENTER" styleClass="PaginaLogin_hBox">
          <children>
             <Label fx:id="PaginaLogin_text1" styleClass="PaginaLogin_labelBottom" text="Non hai un account?" />
-            <Label fx:id="PaginaLogin_text2" onMouseClicked="#iscriviti" styleClass="labelBianca" text="Iscriviti a UniSound." underline="true">
+            <Label fx:id="PaginaLogin_text2" onMouseClicked="#iscriviti" styleClass="labelBiancaPiccola" text="Iscriviti a UniSound." underline="true">
                <padding>
                   <Insets bottom="20.0" top="10.0" />
                </padding></Label>

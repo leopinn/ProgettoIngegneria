@@ -22,7 +22,7 @@
                   <Label fx:id="PaginaPaneImpostazioni_labelRichiestaAccount" styleClass="PaginaImpostazioni_labelRichiestaAccount" text="Profilo salvato con successo!" />
                </children>
             </StackPane>
-            <Label styleClass="labelBianca" text="Nome Utente:">
+            <Label styleClass="labelBiancaPiccola" text="Nome Utente:">
                <font>
                   <Font size="16.0" />
                </font>
@@ -30,23 +30,23 @@
                   <Insets top="10.0" />
                </padding></Label>
             <Label fx:id="PaginaImpostazioni_labelNomeUtente" styleClass="PaginaImpostazioni_labelNomeUtente" text="Label" />
-            <Label styleClass="labelBianca" text="E-mail:">
+            <Label styleClass="labelBiancaPiccola" text="E-mail:">
                <font>
                   <Font size="16.0" />
                </font>
                <padding>
                   <Insets top="10.0" />
                </padding></Label>
-            <TextField fx:id="PaginaImpostazioni_textEmail" />
-            <Label styleClass="labelBianca" text="Password:">
+            <TextField fx:id="PaginaImpostazioni_textEmail" styleClass="textFieldGenerico" />
+            <Label styleClass="labelBiancaPiccola" text="Password:">
                <font>
                   <Font size="16.0" />
                </font>
                <padding>
                   <Insets top="10.0" />
                </padding></Label>
-            <PasswordField fx:id="PaginaImpostazioni_textPassword" />
-            <Label fx:id="PaginaPaneImpostazioni_labelAmministratore" alignment="TOP_LEFT" onMouseClicked="#mostraImpostazioniAmministratore" styleClass="labelBianca" text="Impostazioni amministratore" underline="true">
+            <PasswordField fx:id="PaginaImpostazioni_textPassword" styleClass="textFieldGenerico" />
+            <Label fx:id="PaginaPaneImpostazioni_labelAmministratore" alignment="TOP_LEFT" onMouseClicked="#mostraImpostazioniAmministratore" styleClass="labelBiancaMedia" text="Impostazioni amministratore" underline="true">
                <padding>
                   <Insets top="10.0" />
                </padding>
