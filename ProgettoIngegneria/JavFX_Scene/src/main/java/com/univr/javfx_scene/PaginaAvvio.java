@@ -24,8 +24,8 @@ public class PaginaAvvio extends Application {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("Applicazione.css").toExternalForm());
             stage.setScene(scene);
-            stage.setMinWidth(1280);
-            stage.setMinHeight(720);
+            stage.setMinWidth(1366);
+            stage.setMinHeight(768);
 
             Image iconaApplicazione = new Image(getClass().getResourceAsStream("/immagini/iconaApplicazione.png"));
             stage.getIcons().add(iconaApplicazione);

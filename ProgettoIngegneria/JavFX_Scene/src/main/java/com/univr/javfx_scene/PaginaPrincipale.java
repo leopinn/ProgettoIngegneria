@@ -132,18 +132,6 @@ public class PaginaPrincipale implements Initializable {
     }
 
     public void upload(ActionEvent actionEvent) throws IOException {
-        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneUpload.fxml"));
-        Parent registerPane = loader.load();
-
-        // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
-        PaginaPaneUpload controller = loader.getController();
-        controller.setMainController(this);  // <<< passaggio chiave
-
-        if (commentiPane != null) {
-            nascondiCommenti();
-        }
-
-        PaginaPrincipale_borderPane.setCenter(registerPane);*/
         // Imposto al centro dello stack pane paginaUtente, come sfondo
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneUtente.fxml"));
         Parent utentePane = loader.load();
@@ -157,8 +145,12 @@ public class PaginaPrincipale implements Initializable {
         loader = new FXMLLoader(getClass().getResource("PaginaPaneUpload.fxml"));
         Parent canzonePane = loader.load();
 
-        PaginaPaneUpload controllerCanzone = loader.getController();
-        controllerCanzone.setMainController(PaginaPrincipale_stackPane);
+        PaginaPaneUpload controllerUpload = loader.getController();
+        controllerUpload.setMainController(PaginaPrincipale_stackPane);
+
+        if (commentiPane != null) {
+            nascondiCommenti();
+        }
 
         // Applica sfocatura allo sfondo (paginaUtente)
         Node background = PaginaPrincipale_stackPane.getChildren().get(0);

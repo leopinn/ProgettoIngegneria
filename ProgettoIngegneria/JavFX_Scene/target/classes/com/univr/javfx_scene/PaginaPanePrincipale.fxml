@@ -11,7 +11,9 @@
 
 <AnchorPane fx:id="PaginaPrincipale_anchorPane" prefHeight="500.0" prefWidth="800.0" styleClass="PaginaPrincipale_anchorPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPanePrincipale">
    <children>
-      <HBox fx:id="PaginaPanePrincipale_parteSuperiore" alignment="TOP_CENTER" prefHeight="300.0" styleClass="PaginaPanePrincipale_parteSuperiore" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox fx:id="PaginaPanePrincipale_parteSuperiore"
+            alignment="TOP_CENTER" prefHeight="300.0" styleClass="PaginaPanePrincipale_parteSuperiore"
+            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
              <Label fx:id="PaginaPanePrincipale_labelMusiche" alignment="TOP_LEFT" prefHeight="39.0" prefWidth="300.0" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Esplora">
                <padding>
