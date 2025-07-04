@@ -56,8 +56,7 @@ public class PaginaPrincipale implements Initializable {
     @FXML private ImageView PaginaPrincipale_imageCopertina;
     @FXML private Label PaginaPrincipale_labelTitoloCanzone;
     @FXML private Label PaginaPrincipale_labelAutoreCanzone,PaginaPrincipale_minutaggioIniziale, PaginaPrincipale_minutaggioFinale;
-    @FXML private Slider PaginaPrincipale_sliderMusica;
-    @FXML private Slider PaginaPrincipale_sliderVolume;
+    @FXML private Slider PaginaPrincipale_sliderMusica, PaginaPrincipale_sliderVolume;
     @FXML private Button PaginaPrincipale_buttonPlay;
     @FXML private TextField cercaTextField;
     @FXML private HBox PaginaPrincipale_hBox;
@@ -73,11 +72,6 @@ public class PaginaPrincipale implements Initializable {
         try {
             paginaPrincipale();
 
-            // Modifica del volume in tempo reale
-            PaginaPrincipale_sliderVolume.valueProperty().addListener((obs, oldVal, newVal) -> {
-                mediaPlayer.setVolume(newVal.doubleValue() / 100.0);
-            });
-
             // Ricerca canzone in tempo reale
             cercaTextField.textProperty().addListener((obs, oldValue, newValue) -> {
                 try {
@@ -86,7 +80,10 @@ public class PaginaPrincipale implements Initializable {
                     throw new RuntimeException(e);
                 }
             });
-        } catch (IOException e) {
+
+            preparazioneSlider();
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -224,6 +221,7 @@ public class PaginaPrincipale implements Initializable {
     public void selezionaMusica(int parId, PaginaPanePrincipale controller) throws IOException {
         impostaDatiCanzone(parId);
         riproduciCanzone(parId, controller);
+        PaginaPrincipale_sliderMusica.setDisable(false);    // Abilito lo slider solo dal momento in cui parte una canzone
     }
 
     private void impostaDatiCanzone(int parId) throws IOException {
@@ -325,6 +323,7 @@ public class PaginaPrincipale implements Initializable {
             controller.riproduzioneCasuale();
         });
 
+        // Metodo chiamato ogni secondo, in modo da aggioranre i vari valori continuamente
         mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
             if (!PaginaPrincipale_sliderMusica.isValueChanging()) { // evita salti mentre l’utente trascina
                 PaginaPrincipale_sliderMusica.setValue(newTime.toMillis());
@@ -353,6 +352,36 @@ public class PaginaPrincipale implements Initializable {
 
     public void indietro() throws IOException {
         controller.canzonePrecedente();
+    }
+
+    // Questo metodo inizializza lo slider per permettere il riempimento in avanzamento musica
+    private void preparazioneSlider(){
+        PaginaPrincipale_sliderMusica.valueProperty().addListener((obs, oldVal, newVal) -> {
+            double locPercentuale = newVal.doubleValue() / PaginaPrincipale_sliderMusica.getMax();
+            int locPercentualeInt = (int) (locPercentuale * 100);
+
+            String style = String.format(
+                    "-fx-background-color: linear-gradient(to right, #6d24e1 0%%, #6d24e1 %d%%, #444444 %d%%, #444444 100%%);"
+                    , locPercentualeInt, locPercentualeInt);
+
+            PaginaPrincipale_sliderMusica.lookup(".track").setStyle(style);
+        });
+
+        PaginaPrincipale_sliderVolume.valueProperty().addListener((obs, oldVal, newVal) -> {
+            double locPercentuale = newVal.doubleValue() / PaginaPrincipale_sliderVolume.getMax();
+            int locPercentualeInt = (int) (locPercentuale * 100);
+
+            String style = String.format(
+                    "-fx-background-color: linear-gradient(to right, #6d24e1 0%%, #6d24e1 %d%%, #444444 %d%%, #444444 100%%);"
+                    , locPercentualeInt, locPercentualeInt);
+
+            PaginaPrincipale_sliderVolume.lookup(".track").setStyle(style);
+        });
+
+        // Modifica del volume in tempo reale
+        PaginaPrincipale_sliderVolume.valueProperty().addListener((obs, oldVal, newVal) -> {
+            mediaPlayer.setVolume(newVal.doubleValue() / 100.0);
+        });
     }
 
     public void sliderPressed(){

@@ -83,7 +83,7 @@
                   <HBox fx:id="PaginaPrincipale_hBoxPlayer" alignment="TOP_CENTER" maxWidth="1000" minHeight="30.0" minWidth="300.0" styleClass="PaginaPrincipale_hBoxPlayer">
                      <children>
                         <Label fx:id="PaginaPrincipale_minutaggioIniziale" alignment="CENTER_RIGHT" prefWidth="40" text="00:00" />
-                        <Slider fx:id="PaginaPrincipale_sliderMusica" onMousePressed="#sliderPressed" onMouseReleased="#sliderReleased" styleClass="PaginaPrincipale_sliderMusica" HBox.hgrow="ALWAYS" />
+                        <Slider fx:id="PaginaPrincipale_sliderMusica"  disable="true" onMousePressed="#sliderPressed" onMouseReleased="#sliderReleased" styleClass="PaginaPrincipale_sliderMusica" HBox.hgrow="ALWAYS" />
                         <Label fx:id="PaginaPrincipale_minutaggioFinale" alignment="CENTER_RIGHT" prefWidth="40" text="00:00" />
                      </children>
                   </HBox>
@@ -97,7 +97,7 @@
                         <Insets bottom="18.0" />
                      </HBox.margin>
                   </Button>
-                  <Slider fx:id="PaginaPrincipale_sliderVolume" onMouseReleased="#sliderMusicaReleased" prefHeight="0.0" prefWidth="120.0" styleClass="PaginaPrincipale_sliderMusica" value="100" />
+                  <Slider fx:id="PaginaPrincipale_sliderVolume" onMouseReleased="#sliderMusicaReleased" prefHeight="0.0" prefWidth="120.0" styleClass="PaginaPrincipale_sliderVolume" value="100" />
                </children>
                <HBox.margin>
                   <Insets top="20.0" />

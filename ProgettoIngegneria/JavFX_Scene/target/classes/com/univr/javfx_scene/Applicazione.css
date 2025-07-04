@@ -450,33 +450,37 @@
     -fx-opacity: 1.0;
 }
 
+.PaginaPrincipale_sliderVolume,
 .PaginaPrincipale_sliderMusica {
     -fx-padding: 0 0 20 0;
     -fx-pref-height: 6;
     -fx-background-color: transparent;
 }
-
+.PaginaPrincipale_sliderVolume .track{
+    -fx-background-color: #6d24e1 ;
+    -fx-background-insets: 0;
+    -fx-background-radius: 3px;
+    -fx-pref-height: 6px;
+}
 .PaginaPrincipale_sliderMusica .track {
-    -fx-background-color: #3e3e3e; /* barra di sfondo */
-    -fx-background-radius: 3;
-    -fx-pref-height: 4;
+    -fx-background-color: #444444;
+    -fx-background-insets: 0;
+    -fx-background-radius: 3px;
+    -fx-pref-height: 6px;
 }
-
+.PaginaPrincipale_sliderVolume .thumb,
 .PaginaPrincipale_sliderMusica .thumb {
-    -fx-background-color: white; /* il cerchio (handle) */
-    -fx-background-radius: 8;
-    -fx-pref-width: 12;
-    -fx-pref-height: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 3, 0, 0, 1);
-    -fx-border-width: 1;
+    -fx-background-color: white;
+    -fx-background-radius: 50%;
+    -fx-padding: 6px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 2, 0.2, 0, 1);
 }
-
+.PaginaPrincipale_sliderVolume .thumb:hover,
 .PaginaPrincipale_sliderMusica .thumb:hover {
     -fx-scale-x: 1.2;
     -fx-scale-y: 1.2;
     -fx-cursor: hand;
 }
-
 .PaginaPrincipale_sliderMusica .track:filled {
     -fx-background-color: #ffffff;
     -fx-background-insets: 0;
