@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -55,7 +56,6 @@ public class PaginaPrincipale implements Initializable {
     @FXML private ImageView PaginaPrincipale_imageCopertina;
     @FXML private Label PaginaPrincipale_labelTitoloCanzone;
     @FXML private Label PaginaPrincipale_labelAutoreCanzone,PaginaPrincipale_minutaggioIniziale, PaginaPrincipale_minutaggioFinale;
-    @FXML private Parent commentiPane;
     @FXML private Slider PaginaPrincipale_sliderMusica;
     @FXML private Slider PaginaPrincipale_sliderVolume;
     @FXML private Button PaginaPrincipale_buttonPlay;
@@ -125,9 +125,7 @@ public class PaginaPrincipale implements Initializable {
         PaginaPaneImpostazioni controller = loader.getController();
         controller.setMainController(this);  // <<< passaggio chiave
 
-        if (commentiPane != null) {
-            nascondiCommenti();
-        }
+        nascondiCommenti();
         PaginaPrincipale_borderPane.setCenter(registerPane);
     }
 
@@ -148,9 +146,7 @@ public class PaginaPrincipale implements Initializable {
         PaginaPaneUpload controllerUpload = loader.getController();
         controllerUpload.setMainController(PaginaPrincipale_stackPane, controllerUtente);
 
-        if (commentiPane != null) {
-            nascondiCommenti();
-        }
+        nascondiCommenti();
 
         // Applica sfocatura allo sfondo (paginaUtente)
         Node background = PaginaPrincipale_stackPane.getChildren().get(0);
@@ -184,7 +180,7 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_borderPane.setCenter(paneCanzone);
     }
 
-    public void mostraCommenti(int parId, int id_canzone) throws IOException {
+    public void mostraCommenti(int id_canzone) throws IOException {
         FXMLLoader loaderCommenti = new FXMLLoader(getClass().getResource("PaginaPaneCommenti.fxml"));
         Parent registerPane = loaderCommenti.load();
 
@@ -199,7 +195,9 @@ public class PaginaPrincipale implements Initializable {
     }
 
     public void nascondiCommenti() {
-        PaginaPrincipale_borderPane.setRight(null);
+        VBox locVBoxSpacer = new VBox();
+        locVBoxSpacer.setPrefWidth(10);
+        PaginaPrincipale_borderPane.setRight(locVBoxSpacer);
     }
 
     /* ---------- FINE - CAMBIO SCHERMATA ----------*/
@@ -207,8 +205,10 @@ public class PaginaPrincipale implements Initializable {
 
 
     public void aggiornaMusiche(String val) throws IOException {
-        List<Map<String, Object>> rowCanzone = objSql.leggiLista("SELECT * FROM CANZONE WHERE (TITOLO LIKE '" + val.trim().replace("'", "''").toLowerCase() + "%' OR AUTORE LIKE '" + val.trim().replace("'", "''").toLowerCase() + "%')COLLATE NOCASE");
-        controller.setGrigliaMusica(rowCanzone);
+        List<Map<String, Object>> listaBrani = objSql.leggiLista("SELECT * FROM CANZONE WHERE (TITOLO LIKE '"
+                + val.trim().replace("'", "''").toLowerCase()
+                + "%' OR AUTORE LIKE '" + val.trim().replace("'", "''").toLowerCase() + "%')COLLATE NOCASE");
+        controller.ricercaMusica(listaBrani, val);
     }
 
     public void logout(ActionEvent event) throws IOException {
@@ -248,7 +248,7 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_labelAutoreCanzone.setVisible(true);
 
         // Sezione commenti del brano
-        mostraCommenti(1, parId);
+        mostraCommenti(parId);
 
         // Aggiungi pulsante YT
         if (pulsanteVideo != null) {
@@ -265,10 +265,10 @@ public class PaginaPrincipale implements Initializable {
                     try {
                         Desktop.getDesktop().browse(new URI(locUrl));
                     } catch (IOException | URISyntaxException err) {
-                        System.out.println("Errore nell'apertura del browser");
+                        objGenerici.mostraPopupErrore(PaginaPrincipale_borderPane, "Attenzione!! Errore nella apertura del browser");
                     }
                 } else {
-                    System.out.println("Errore nell'apertura del browser");
+                    objGenerici.mostraPopupErrore(PaginaPrincipale_borderPane, "Attenzione!! Errore nella apertura del browser");
                 }
             });
 

@@ -673,7 +673,7 @@
 
 .PaginaPanePrincipale_labelMusicheSopra{
     -fx-text-fill: #ffffff;
-    -fx-padding: 40 0 0 46;  /* top right bottom left */
+    -fx-padding: 30 0 0 40;  /* top right bottom left */
     -fx-font-size: 42;
     -fx-font-family: "Gotham-Medium", sans-serif;
 }
@@ -1092,6 +1092,7 @@
 .context-menu {
     -fx-background-color: #2a2a2a;
     -fx-border-color: #3a3a3a;
+    -fx-text-fill: #cccccc;
     -fx-border-radius: 6;
     -fx-background-radius: 6;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 10, 0.3, 0, 3);
@@ -1100,16 +1101,20 @@
 
 .menu-item {
     -fx-background-color: transparent;
-    -fx-text-fill: #cccccc; /* Testo grigio chiaro di default */
     -fx-padding: 8 12;
     -fx-font-size: 13px;
     -fx-cursor: hand;
 }
-
+.menu-item > .label {
+    -fx-text-fill: #cccccc;
+}
+.menu-item:hover > .label,
+.menu-item:focused > .label {
+    -fx-text-fill: #ffffff;
+}
 .menu-item:hover,
 .menu-item:focused {
     -fx-background-color: #3d3d3d;
-    -fx-text-fill: #ffffff; /* Testo bianco solo su hover o focus */
 }
 
 .separator-menu-item {
@@ -1167,13 +1172,23 @@
 
 
 
-/* ----------------------------------------------------------------------------------------------------------- COMMENTI ----------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------- PANE COMMENTI ----------------------------------------------------------------- */
 
 .PaginaCommenti_anchorPane{
     -fx-background-color: #1f1f1f;
     -fx-background-radius: 10;
     -fx-spacing: 20;
 }
+
+.PaginaPaneCommenti_chiudiCommenti{
+    -fx-text-fill: #b1b1b1;
+    -fx-font-size: 14;
+}
+.PaginaPaneCommenti_chiudiCommenti:hover {
+    -fx-text-fill: #d0d0d0;
+    -fx-cursor: hand;
+}
+
 .PaginaPaneCommenti_vBox{
     -fx-padding: 5 5 5 5;
     -fx-spacing: 10;

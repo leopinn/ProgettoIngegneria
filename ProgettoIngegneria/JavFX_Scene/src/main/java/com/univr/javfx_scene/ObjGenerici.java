@@ -3,7 +3,6 @@ package com.univr.javfx_scene;
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Popup;
 import javafx.stage.Window;

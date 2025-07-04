@@ -16,10 +16,17 @@
     <children>
         <VBox fx:id="PaginaPaneCommenti_vBox" maxHeight="Infinity" prefWidth="350.0" styleClass="PaginaPaneCommenti_vBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Label fx:id="PaginaPaneCommenti_label" styleClass="PaginaPanePrincipale_labelMusiche" text="Commenti">
-               <padding>
-                  <Insets left="10.0" />
-               </padding></Label>
+            <HBox prefHeight="50.0" prefWidth="200.0">
+               <children>
+                      <Label fx:id="PaginaPaneCommenti_label" prefWidth="180" styleClass="PaginaPanePrincipale_labelMusiche" text="Commenti">
+                     <padding>
+                        <Insets top="14.0" />
+                     </padding>
+                  </Label>
+                  <Region prefWidth="10" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="PaginaPaneCommenti_chiudiCommenti" onMouseClicked="#chiudiCommenti" styleClass="PaginaPaneCommenti_chiudiCommenti" text="X" textAlignment="CENTER" />
+               </children>
+            </HBox>
                 <ScrollPane fitToWidth="true" styleClass="PaginaPrincipale_scrollPane" VBox.vgrow="ALWAYS">
                     <content>
                         <VBox fx:id="commentiContainer" prefWidth="1.0" spacing="5.0" styleClass="commentiContainer" VBox.vgrow="ALWAYS" />

@@ -399,4 +399,9 @@ public class PaginaPaneCommenti {
                }
         }
     }
+
+    @FXML
+    private void chiudiCommenti(){
+        mainController.nascondiCommenti();
+    }
 }
