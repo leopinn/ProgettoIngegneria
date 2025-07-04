@@ -32,10 +32,12 @@ public class PaginaPaneUtente implements Initializable {
         popolaLista();
     }
 
-    private void popolaLista() {
+    public void popolaLista() {
         // All'avvio carico tutte le musiche dell'utente (o tutte le musiche in generale se si tratta di un amministratore
         leggiCanzoni();
         if(locListaCanzoni.isEmpty()) return; // Se un utente non avesse canzoni dove lui è l'autore
+
+        PaginaPaneUtente_tabelView.getColumns().clear();
 
         // Creo le colonne
         TableColumn<CANZONE, Integer> colId = new TableColumn<>("ID_CANZONE");

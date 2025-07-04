@@ -136,8 +136,8 @@ public class PaginaPrincipale implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneUtente.fxml"));
         Parent utentePane = loader.load();
 
-        PaginaPaneUtente controller = loader.getController();
-        controller.setMainController(this);
+        PaginaPaneUtente controllerUtente = loader.getController();
+        controllerUtente.setMainController(this);
 
         PaginaPrincipale_stackPane.getChildren().setAll(utentePane);
 
@@ -146,7 +146,7 @@ public class PaginaPrincipale implements Initializable {
         Parent canzonePane = loader.load();
 
         PaginaPaneUpload controllerUpload = loader.getController();
-        controllerUpload.setMainController(PaginaPrincipale_stackPane);
+        controllerUpload.setMainController(PaginaPrincipale_stackPane, controllerUtente);
 
         if (commentiPane != null) {
             nascondiCommenti();

@@ -26,6 +26,8 @@ import static com.univr.javfx_scene.PaginaPaneLogin.UTENTE_NOME;
 
 public class PaginaPaneUpload {
     private StackPane mainController;
+    private PaginaPaneUtente paneUtenteControllore;
+
     private String nomeUtente, autore, titolo, link_youtube, anno_composizione, genere, ruolo, strumenti;
     private int ID_CANZONE;
 
@@ -43,16 +45,15 @@ public class PaginaPaneUpload {
     @FXML private TextField textNuovoGenere;
 
 
-    public void setMainController(StackPane controller) {
+    public void setMainController(StackPane controller, PaginaPaneUtente paneUtenteControllore) {
         this.mainController = controller;
+        this.paneUtenteControllore=paneUtenteControllore;
         this.nomeUtente = UTENTE_NOME; // recupera il nome utente
     }
 
 
     // Metodo per tornare alla pagina principale
     public void chiudiPaneUpload() throws IOException, CloneNotSupportedException {
-        // mainController.paginaPrincipale(); LP -> Modificata con layout più moderno
-
         if (mainController.getChildren().size() > 1) {
             mainController.getChildren().remove(mainController.getChildren().size() - 1);   // Rimuove l'ultimo pannello (paginaCanzone)
 
@@ -60,6 +61,8 @@ public class PaginaPaneUpload {
             Node sfondo = mainController.getChildren().get(0);
             sfondo.setEffect(null);
             sfondo.setDisable(false);
+
+            paneUtenteControllore.popolaLista();
         }
     }
 
