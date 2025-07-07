@@ -19,14 +19,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.time.Year;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.univr.javfx_scene.PaginaPaneLogin.UTENTE_NOME;
 
 public class PaginaPaneUpload {
     private StackPane mainController;
     private PaginaPaneUtente paneUtenteControllore;
+    private  ObjSql objSql = ObjSql.oggettoSql();
 
     private String nomeUtente, autore, titolo, link_youtube, anno_composizione, genere, ruolo, strumenti;
     private int ID_CANZONE;
@@ -35,8 +35,8 @@ public class PaginaPaneUpload {
     private File fileMusica, fileCopertina, filePdf;
 
 
-    @FXML private TextField PaginaPaneUpload_textTitolo, PaginaPaneUpload_textAutore, PaginaPaneUpload_textLink, PaginaPaneUpload_textAnno;
-    @FXML private ComboBox<String> PaginaPaneUpload_comboGenere;
+    @FXML private TextField PaginaPaneUpload_textTitolo, PaginaPaneUpload_textLink, PaginaPaneUpload_textAnno, PaginaPaneUpload_textNuovoAutore;
+    @FXML private ComboBox<String> PaginaPaneUpload_comboGenere, PaginaPaneUpload_comboAutore;
     @FXML private Label PaginaPaneUplaod_labelMusica, PaginaPaneUplaod_labelCopertina, PaginaPaneUplaod_labelPdf;
     @FXML private CheckBox checkboxUsaNomeUtente;
     @FXML private ComboBox<String> comboRuolo;
@@ -88,7 +88,7 @@ public class PaginaPaneUpload {
         if (checkboxUsaNomeUtente.isSelected()) {
             autore = nomeUtente;
         } else {
-            autore = PaginaPaneUpload_textAutore.getText();
+            autore = PaginaPaneUpload_comboAutore.getValue();
         }
 
         link_youtube = PaginaPaneUpload_textLink.getText();
@@ -121,8 +121,17 @@ public class PaginaPaneUpload {
     public void initialize() {
         // Inizializza la combo dei generi con una lista predefinita (se non già fatto altrove)
         PaginaPaneUpload_comboGenere.setItems(FXCollections.observableArrayList(
-                "Pop", "Rock", "Trap", "Jazz", "Hip Hop", "Classica", "Reggae", "Blues", "Electronic", "Metal", "Country"
+                "Pop", "Rock", "Trap", "Jazz", "Hip Hop", "Classica", "Reggaetton", "Blues", "Elettronica", "Metal", "Country"
         ));
+
+        List<Map<String, Object>> listaArtisti = objSql.leggiLista("SELECT * FROM CANZONE GROUP BY AUTORE");
+        // Estraggo solo i campi degli autori
+        List<String> listaNomiAutori = new ArrayList<String>();
+        for(Map<String, Object> rowArtisti : listaArtisti) {
+            listaNomiAutori.add(rowArtisti.get("AUTORE").toString());
+        }
+
+        PaginaPaneUpload_comboAutore.setItems(FXCollections.observableArrayList(listaNomiAutori));
 
         // Inizializza la ListView degli strumenti con strumenti predefiniti
         ObservableList<String> strumentiBase = FXCollections.observableArrayList(
@@ -134,11 +143,11 @@ public class PaginaPaneUpload {
 
         // Disattiva il campo autore se la checkbox è attiva
         checkboxUsaNomeUtente.selectedProperty().addListener((obs, oldVal, newVal) -> {
-            PaginaPaneUpload_textAutore.setDisable(newVal);
+            PaginaPaneUpload_comboAutore.setDisable(newVal);
             if (newVal) {
-                PaginaPaneUpload_textAutore.setText(nomeUtente);
+                PaginaPaneUpload_comboAutore.setValue(nomeUtente);
             } else {
-                PaginaPaneUpload_textAutore.clear();
+                PaginaPaneUpload_comboAutore.setValue("");
             }
         });
 
@@ -155,7 +164,7 @@ public class PaginaPaneUpload {
 
     //Permette all'utente di aggiungere generi musicali
     @FXML
-    public void aggiungiGenere() {
+    private void aggiungiGenere() {
         String nuovoGenere = textNuovoGenere.getText().trim();
 
         if (nuovoGenere.isEmpty()) {
@@ -178,9 +187,33 @@ public class PaginaPaneUpload {
         }
     }
 
+    @FXML
+    private void aggiungiAutore() {
+        String locNuovoAutore = PaginaPaneUpload_textNuovoAutore.getText().trim();
+
+        if (locNuovoAutore.isEmpty()) {
+            ObjGenerici.mostraPopupErrore(PaginaPaneUpload_textTitolo,"Inserisci un nome per il nuovo autore");
+            return;
+        }
+
+        // Controllo case-insensitive per evitare duplicati
+        boolean giàPresente = PaginaPaneUpload_comboGenere.getItems().stream()
+                .anyMatch(g -> g.equalsIgnoreCase(locNuovoAutore));
+
+        if (giàPresente) {
+            ObjGenerici.mostraPopupErrore(PaginaPaneUpload_textTitolo,"Questo autore esiste già");
+            return;
+        } else{
+            ObjGenerici.mostraPopupSuccesso(PaginaPaneUpload_textTitolo,"Elemento aggiunto");
+            PaginaPaneUpload_comboGenere.getItems().add(locNuovoAutore);
+            PaginaPaneUpload_comboGenere.setValue(locNuovoAutore);
+            textNuovoGenere.clear();
+        }
+    }
+
 
     @FXML
-    public void aggiungiStrumento() {
+    private void aggiungiStrumento() {
         String nuovoStrumento = textNuovoStrumento.getText().trim();
 
         if (nuovoStrumento.isEmpty()) {
@@ -216,7 +249,7 @@ public class PaginaPaneUpload {
         rowCanzone.put("LINK_YOUTUBE", link_youtube);
         rowCanzone.put("RUOLO", ruolo);
         rowCanzone.put("STRUMENTI", strumenti);
-        rowCanzone.put("UTENTE_INS", PaginaPaneLogin.UTENTE_NOME);
+        rowCanzone.put("UTENTE_INS", UTENTE_NOME);
         rowCanzone.put("ID_UTENTE", PaginaPaneLogin.ID_UTENTE);
 
         ObjSql objSql = ObjSql.oggettoSql();

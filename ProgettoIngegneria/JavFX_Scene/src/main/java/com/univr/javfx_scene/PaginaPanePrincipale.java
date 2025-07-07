@@ -35,7 +35,7 @@ public class PaginaPanePrincipale implements Initializable {
     private  ObjGenerici objGenerici;
 
     private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
-    private List<Map<String, Object>> listaBrani, listaBraniMancanti, listaTipi;
+    private List<Map<String, Object>> listaBrani, listaBraniTutto, listaBraniGeneri, listaBraniArtisti, listaBraniMancanti, listaTipi;
 
     @FXML private ScrollPane PaginaPrincipale_scrollPane;
     @FXML private Label PaginaPanePrincipale_labelMusiche;
@@ -62,35 +62,6 @@ public class PaginaPanePrincipale implements Initializable {
         inizializzaListaBrani();
     }
 
-    private void inizializzaListaBrani() {
-        listaBrani = objSql.leggiLista("SELECT * FROM CANZONE");
-        PaginaPanePrincipale_labelMusiche.setText("Esplora");
-        setGrigliaMusica();
-    }
-
-    public void setGrigliaMusica () {
-        impostaTab(0);
-
-        PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().clear();
-
-        // Creo un TilePane per avere una gestione automatica delle card
-        TilePane tilePane = new TilePane();
-        tilePane.setHgap(15);
-        tilePane.setVgap(15);
-        tilePane.setPrefColumns(4);  // Numero colonne preferite (opzionale)
-        tilePane.setTileAlignment(Pos.CENTER);
-
-
-        for (Map<String, Object> rowBrano : listaBrani) {
-            VBox card = creaCard(rowBrano);
-            tilePane.getChildren().add(card);
-        }
-        PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().add(tilePane);
-
-        refreshSchermata();
-    }
-
-
     // Metodo per trovare il brano a partire dall'ID_CANZONE mandato
     private Map<String, Object> trovaBrano(String parId, List<Map<String, Object>> parListaBrani){
         for (Map<String, Object> rowBrano:parListaBrani){
@@ -109,6 +80,28 @@ public class PaginaPanePrincipale implements Initializable {
     /* ---------- Inizio - GESTIONE MUSICA AUTOMATICA ----------*/
 
     private void selezionaMusica(String parId, int isCasuale) throws IOException {
+        // Se listaBrani è ancora da inizializzare, ossia se siamo appena passati da un tipo ad un altro (Tutto, Generi, Artisti)
+        if(listaBrani==null){
+            switch (tabCorrente) {
+                case 0:
+                    listaBrani=listaBraniTutto;
+                    break;
+                case 1:
+                    listaBrani = listaBraniGeneri;  // Se abbiamo appena premuto una card dentro Generi per la prima volta
+                    break;
+                case 2:
+                    listaBrani = listaBraniArtisti; // Se abbiamo appena premuto una card dentro Artisti per la prima volta
+                    break;
+                case 3:
+                    // Da gestire
+                    break;
+                default:
+                    listaBrani=listaBraniTutto;
+                    break;
+            }
+            listaBraniMancanti=listaBrani;
+        }
+
         Map<String, Object> rowBrano = trovaBrano(parId, listaBrani);
 
         if(rowBrano == null){
@@ -181,23 +174,42 @@ public class PaginaPanePrincipale implements Initializable {
 
     /* ---------- Fine - GESTIONE MUSICA AUTOMATICA ----------*/
 
+    /* ---------- Inizio - GESTIONE GRIGLIA TUTTO ----------*/
 
-
-
-
-
-    @FXML private void paginaConcerti() throws IOException {
-        impostaTab(3);
-
-    }
-
-
-    /* ---------- Inizio - GESTIONE GRIGLIA TUTO ----------*/
     @FXML private void paginaTutto() throws IOException {
         impostaTab(0);
         inizializzaListaBrani();
     }
-    /* ---------- Fine - GESTIONE GRIGLIA TUTO ----------*/
+
+    private void inizializzaListaBrani() {
+        listaBraniTutto = objSql.leggiLista("SELECT * FROM CANZONE");
+        PaginaPanePrincipale_labelMusiche.setText("Esplora");
+        setGrigliaMusicaTutto();
+    }
+
+    public void setGrigliaMusicaTutto () {
+        impostaTab(0);
+
+        PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().clear();
+
+        // Creo un TilePane per avere una gestione automatica delle card
+        TilePane tilePane = new TilePane();
+        tilePane.setHgap(15);
+        tilePane.setVgap(15);
+        tilePane.setPrefColumns(4);  // Numero colonne preferite (opzionale)
+        tilePane.setTileAlignment(Pos.CENTER);
+
+
+        for (Map<String, Object> rowBrano : listaBraniTutto) {
+            VBox card = creaCard(rowBrano);
+            tilePane.getChildren().add(card);
+        }
+        PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().add(tilePane);
+
+        refreshSchermata();
+    }
+
+    /* ---------- Fine - GESTIONE GRIGLIA TUTTO ----------*/
 
 
     /* ---------- Inizio - GESTIONE GRIGLIA GENERI ----------*/
@@ -206,8 +218,7 @@ public class PaginaPanePrincipale implements Initializable {
     private void paginaGeneri (){
         impostaTab(1);
         // Popolo la lista dei brani e quella dei generi
-        listaBrani = objSql.leggiLista("SELECT * FROM CANZONE");
-        listaBraniMancanti=listaBrani;
+        listaBraniGeneri = objSql.leggiLista("SELECT * FROM CANZONE");
         listaTipi = objSql.leggiLista("SELECT GENERE FROM CANZONE GROUP BY GENERE");
         PaginaPanePrincipale_labelMusiche.setText("Generi");
 
@@ -227,7 +238,7 @@ public class PaginaPanePrincipale implements Initializable {
             canzoniHBox.setPadding(new Insets(10, 0, 10, 0));
 
             // Ciclo sui brani cercando quelli del genere corrente
-            for (Map<String, Object> rowBrano : listaBrani) {
+            for (Map<String, Object> rowBrano : listaBraniGeneri) {
                 if (rowBrano.get("GENERE") != null && rowBrano.get("GENERE").equals(nomeGenere)) {
                     VBox card = creaCard(rowBrano);
                     canzoniHBox.getChildren().add(card);
@@ -262,14 +273,13 @@ public class PaginaPanePrincipale implements Initializable {
 
 
 
-    /* ---------- Inizio - GESTIONE GRIGLIA GENERI ----------*/
+    /* ---------- Inizio - GESTIONE GRIGLIA ARTISTI ----------*/
 
     @FXML
     private void paginaArtisti (){
         impostaTab(2);
         // Popolo la lista dei brani e quella dei generi
-        listaBrani = objSql.leggiLista("SELECT * FROM CANZONE");
-        listaBraniMancanti=listaBrani;
+        listaBraniArtisti = objSql.leggiLista("SELECT * FROM CANZONE");
         listaTipi = objSql.leggiLista("SELECT AUTORE FROM CANZONE GROUP BY AUTORE");
         PaginaPanePrincipale_labelMusiche.setText("Artisti");
 
@@ -289,7 +299,7 @@ public class PaginaPanePrincipale implements Initializable {
             canzoniHBox.setPadding(new Insets(10, 0, 10, 0));
 
             // Ciclo sui brani cercando quelli del genere corrente
-            for (Map<String, Object> rowBrano : listaBrani) {
+            for (Map<String, Object> rowBrano : listaBraniArtisti) {
                 if (rowBrano.get("AUTORE") != null && rowBrano.get("AUTORE").equals(nomeAutore)) {
                     VBox card = creaCard(rowBrano);
                     canzoniHBox.getChildren().add(card);
@@ -319,7 +329,18 @@ public class PaginaPanePrincipale implements Initializable {
         }
     }
 
-    /* ---------- Fine - GESTIONE GRIGLIA GENERI ----------*/
+    /* ---------- Fine - GESTIONE GRIGLIA ARTISTI ----------*/
+
+
+    /* ---------- Inizio - GESTIONE GRIGLIA CONCERTI ----------*/
+
+    @FXML private void paginaConcerti() throws IOException {
+        impostaTab(3);
+
+    }
+
+    /* ---------- Fine - GESTIONE GRIGLIA CONCERTI ----------*/
+
 
     private VBox creaCard(Map<String, Object> rowBrano) {
         VBox card = new VBox(10);
@@ -339,6 +360,9 @@ public class PaginaPanePrincipale implements Initializable {
         card.setOnMouseClicked(event -> {
             if(event.getButton()== MouseButton.PRIMARY){
                  try {
+                     /* Ogni volta che cambio una musica, devo sapere dove mi trovo, dunque la ricalcolo.
+                     Questo perchè potrei stare selezionando una musica da "Artisti" mentre in riproduzione ho una musica da "Generi" e questo fa confusione con le musica prox da riprodurre  */
+                     listaBrani=null;
                      selezionaMusica(card.getId(),0);
                  } catch (IOException e) {
                      throw new RuntimeException(e);
@@ -454,7 +478,7 @@ public class PaginaPanePrincipale implements Initializable {
                 PaginaPanePrincipale_labelMusiche.setText("Ricerca");
         }
 
-        setGrigliaMusica();
+        setGrigliaMusicaTutto();
     }
 }
 

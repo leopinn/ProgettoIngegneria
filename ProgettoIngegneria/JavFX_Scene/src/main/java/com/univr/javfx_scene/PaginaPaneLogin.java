@@ -3,12 +3,14 @@ package com.univr.javfx_scene;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -97,15 +99,26 @@ public class PaginaPaneLogin {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPrincipale.fxml"));
             Parent root = loader.load();
 
-            // Ottieni lo stage corrente dalla scena del bottone
+            // Ottengo lo stage corrente dalla scena del bottone
             stage = (Stage) ((Node)par_event.getSource()).getScene().getWindow();
 
-            // Crea una nuova scena con le stesse dimensioni attuali
-            Scene nuovaScene = new Scene(root, stage.getWidth(), stage.getHeight());
-
+            // Creo una nuova scena
+            Scene nuovaScene = new Scene(root);
             stage.setScene(nuovaScene);
+
+            // Questi passaggi servono per prendere le dimensioni dello schermo e creare uno "schermo intero appena più piccolo"
+            Screen screen = Screen.getPrimary();
+            Rectangle2D bounds = screen.getVisualBounds();
+
+            stage.setX(bounds.getMinX());
+            stage.setY(bounds.getMinY());
+            stage.setWidth(bounds.getWidth());
+            stage.setHeight(bounds.getHeight());
+
             stage.show();
 
+            // Una volta mostrata la scena, imposto la scena a schermo intero
+            stage.setMaximized(true);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -15,9 +15,10 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="Infinity" prefWidth="Infinity" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUpload">
+<?import javafx.scene.control.Tooltip?>
+<VBox alignment="CENTER" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUpload">
    <children>
-      <AnchorPane maxHeight="1000" maxWidth="300" VBox.vgrow="ALWAYS" styleClass="PaginaPaneUpload_anchorPanePrincipale">
+      <AnchorPane maxHeight="1000" maxWidth="300" styleClass="PaginaPaneUpload_anchorPanePrincipale" VBox.vgrow="ALWAYS">
          <children>
             <HBox fx:id="PaginaPaneUpload_hboxSuperiore" prefHeight="220" styleClass="PaginaPaneUpload_hboxSuperiore" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -72,11 +73,40 @@
                         <VBox prefHeight="109.0" prefWidth="275.0" styleClass="PaginaPaneUpload_vboxGenerica">
                            <children>
                               <Label styleClass="labelBiancaMedia" text="Autore *" />
-                              <TextField fx:id="PaginaPaneUpload_textAutore" promptText="Autore" styleClass="textFieldGenerico" />
-                              <HBox alignment="CENTER_RIGHT" spacing="10">
+                              <HBox spacing="5.0">
                                  <children>
-                                    <Label styleClass="labelBiancaPiccola" text="L'utente corrente è l'autore" underline="true" wrapText="true" />
-                                    <CheckBox fx:id="checkboxUsaNomeUtente" onAction="#abilitaDatiAggiuntivi" />
+                                    <ComboBox fx:id="PaginaPaneUpload_comboAutore" promptText="Autore" styleClass="PaginaPaneUpload_comboGenere">
+                                       <items>
+                                          <FXCollections fx:factory="observableArrayList">
+                                             <String fx:value="Pop" />
+                                             <String fx:value="Rock" />
+                                             <String fx:value="Trap" />
+                                             <String fx:value="Jazz" />
+                                             <String fx:value="Hip Hop" />
+                                             <String fx:value="Classica" />
+                                             <String fx:value="Reggaetton" />
+                                             <String fx:value="Blues" />
+                                             <String fx:value="Elettronica" />
+                                             <String fx:value="Metal" />
+                                             <String fx:value="Country" />
+                                          </FXCollections>
+                                       </items>
+                                    </ComboBox>
+                                    <CheckBox fx:id="checkboxUsaNomeUtente" ellipsisString="" onAction="#abilitaDatiAggiuntivi" styleClass="PaginaPaneUpload_checkbox" >
+                                       <tooltip>
+                                          <Tooltip text="Imposta utente corrente come autore" />
+                                       </tooltip>
+                                    </CheckBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="TOP_RIGHT" spacing="5.0">
+                                 <children>
+                                    <TextField fx:id="PaginaPaneUpload_textNuovoAutore" promptText="Nuovo autore..." styleClass="textFieldGenerico" HBox.hgrow="ALWAYS">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <Button alignment="TOP_LEFT" onAction="#aggiungiAutore" styleClass="PaginaPaneUpload_bottoneAggiungi" text="+" />
                                  </children>
                               </HBox>
                            </children>
@@ -84,7 +114,7 @@
                         <VBox prefHeight="109.0" prefWidth="222.0" styleClass="PaginaPaneUpload_vboxGenerica">
                            <children>
                               <Label styleClass="labelBiancaMedia" text="Genere *" />
-                              <ComboBox fx:id="PaginaPaneUpload_comboGenere" maxHeight="37.0" promptText="Scegli un genere" styleClass="PaginaPaneUpload_comboGenere">
+                              <ComboBox fx:id="PaginaPaneUpload_comboGenere" promptText="Genere" styleClass="PaginaPaneUpload_comboGenere">
                                  <items>
                                     <FXCollections fx:factory="observableArrayList">
                                        <String fx:value="Pop" />
@@ -101,11 +131,11 @@
                                     </FXCollections>
                                  </items>
                               </ComboBox>
-                              <HBox alignment="TOP_RIGHT">
+                              <HBox alignment="TOP_RIGHT" spacing="5.0">
                                  <children>
                                     <TextField fx:id="textNuovoGenere" promptText="Nuovo genere..." styleClass="textFieldGenerico" HBox.hgrow="ALWAYS">
                                        <HBox.margin>
-                                          <Insets right="10.0" />
+                                          <Insets />
                                        </HBox.margin>
                                     </TextField>
                                     <Button alignment="TOP_LEFT" onAction="#aggiungiGenere" styleClass="PaginaPaneUpload_bottoneAggiungi" text="+" />
@@ -165,11 +195,11 @@
                            <children>
                               <Label styleClass="labelBiancaMedia" text="Strumenti usati" />
                               <ListView fx:id="listStrumenti" prefHeight="115" prefWidth="Infinity" styleClass="PaginaPaneUpload_listView" visible="true" />
-                              <HBox prefHeight="100.0" prefWidth="200.0">
+                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                                  <children>
                                     <TextField fx:id="textNuovoStrumento" promptText="Nuovo strumento..." styleClass="textFieldGenerico" HBox.hgrow="ALWAYS">
                                        <HBox.margin>
-                                          <Insets right="10.0" />
+                                          <Insets />
                                        </HBox.margin>
                                     </TextField>
                                     <Button onAction="#aggiungiStrumento" styleClass="PaginaPaneUpload_bottoneAggiungi" text="+" />

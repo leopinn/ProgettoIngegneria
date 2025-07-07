@@ -15,9 +15,9 @@ public class ObjSql {
     private ObjSql() {
         try {
             connection = DriverManager.getConnection(DB_URL);
-            logger.info("Connessione al database stabilita.");
+            //logger.info("Connessione al database stabilita.");
         } catch (SQLException e) {
-            logger.warning("Errore connessione: " + e.getMessage());
+            //logger.warning("Errore connessione: " + e.getMessage());
         }
     }
 
@@ -101,9 +101,9 @@ public class ObjSql {
         String locQuery="DELETE FROM " + parTabella + " WHERE " + parChiave;
         try (PreparedStatement statement = connection.prepareStatement(locQuery)) {
             statement.executeUpdate();
-            logger.info(locQuery+"\n->eseguita con successo!");
+            //logger.info(locQuery+"\n->eseguita con successo!");
         } catch (SQLException e) {
-            logger.info(e.toString());
+            //logger.info(e.toString());
         }
     }
 
@@ -118,10 +118,10 @@ public class ObjSql {
             while (rs.next()) {
                 row=passaRiga(rs);
             }
-            logger.info(par_query+"\n->eseguita con successo!");
+            //logger.info(par_query+"\n->eseguita con successo!");
 
         } catch (SQLException e) {
-            logger.info(e.toString());
+            //logger.info(e.toString());
         }
 
         return row;
@@ -140,10 +140,10 @@ public class ObjSql {
                 row=passaRiga(rs);
                 lista.add(row);
             }
-            logger.info(par_query+"\n->eseguita con successo!");
+            //logger.info(par_query+"\n->eseguita con successo!");
 
         } catch (SQLException e) {
-            logger.info(e.toString());
+            //logger.info(e.toString());
         }
 
         return lista;

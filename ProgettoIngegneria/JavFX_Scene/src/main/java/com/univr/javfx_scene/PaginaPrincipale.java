@@ -46,10 +46,6 @@ public class PaginaPrincipale implements Initializable {
     public MediaPlayer mediaPlayer;
     public int ID_CANZONE;  // ID della canzone attualmente in ascolto
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-
     private PaginaPaneCommenti commentiController;      // Per gestire i commenti in certi range
 
     @FXML private BorderPane PaginaPrincipale_borderPane;
@@ -210,10 +206,15 @@ public class PaginaPrincipale implements Initializable {
 
     public void logout(ActionEvent event) throws IOException {
         playStop();
-        root = FXMLLoader.load(getClass().getResource("PaginaLogin.fxml"));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("Applicazione.css").toExternalForm());
+
+        Parent root = FXMLLoader.load(getClass().getResource("PaginaLogin.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();  // Mi recupero lo stage corrente
+
+        double locWidth = stage.getWidth();
+        double locHeight = stage.getHeight();
+
+        // Richiamo la scena con le dimensioni correnti
+        Scene scene = new Scene(root, locWidth, locHeight);
         stage.setScene(scene);
         stage.show();
     }
