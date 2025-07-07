@@ -909,21 +909,39 @@
     -fx-spacing: 10;
 }
 
-.styleLabel{
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 16;
-    -fx-padding: 10 0 0 0;  /* top right bottom left */
-}
+.PaginaPaneUpload_checkbox{
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
 
-.styleTextFieldYoutube{
-    -fx-text-fill: #0077ff;
-    -fx-font-size: 16;
-}
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
 
-.styleRose{
-    -fx-text-fill: #f70000;
-    -fx-font-size: 16;
-    -fx-padding: 10 0 0 0;  /* top right bottom left */
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.15), 2, 0.5, 0, 1);
+    -fx-alignment: center;
+}
+.PaginaPaneUpload_checkbox:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.25), 4, 0.5, 0, 2);
+}
+.PaginaPaneUpload_checkbox:armed {
+    -fx-background-color: rgba(255, 255, 255, 0.4);
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.1), 1, 0.5, 0, 1);
+}
+.PaginaPaneUpload_checkbox > .box {
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+    -fx-min-width: 33;
+    -fx-min-height: 35;
+}
+.PaginaPaneUpload_checkbox:selected > .box > .mark {
+    -fx-background-color: white;
+    -fx-alignment: center;
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+    -fx-translate-x: 8; /* Spsoto la spunta verso destra per centrare */
 }
 
 .PaginaPaneUpload_comboGenere {
@@ -1034,7 +1052,7 @@
     -fx-background-radius: 4;
 
     -fx-text-fill: white;
-    -fx-font-size: 12px;
+    -fx-font-size: 16px;
 
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.15), 2, 0.5, 0, 1);
@@ -1042,6 +1060,9 @@
 
     -fx-pref-height: 35;
     -fx-max-height: 35;
+
+    -fx-pref-width: 35;
+    -fx-max-width: 35;
 }
 
 .PaginaPaneUpload_bottoneAggiungi:hover {
