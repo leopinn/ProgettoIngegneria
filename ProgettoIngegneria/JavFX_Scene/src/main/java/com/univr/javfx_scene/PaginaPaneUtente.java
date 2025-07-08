@@ -1,15 +1,17 @@
 package com.univr.javfx_scene;
 
-import com.univr.javfx_scene.Classi.CANZONE;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -22,114 +24,151 @@ public class PaginaPaneUtente implements Initializable {
     }
 
     private  ObjSql objSql = ObjSql.oggettoSql();
-    private List<Map<String, Object>> locListaCanzoni;
+    private ObjGenerici objGenerici;
 
-    @FXML private TableView<CANZONE> PaginaPaneUtente_tabelView;
+    @FXML private AnchorPane PaginaPaneUtente_anteprimaCanzone;
+    @FXML private VBox PaginaPaneUtente_vboxCanzoni;
     @FXML private Label PaginaPaneUtente_label;
+    private List<Map<String, Object>> listaBrani;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        leggiBrani();
         popolaLista();
     }
 
-    public void popolaLista() {
-        // All'avvio carico tutte le musiche dell'utente (o tutte le musiche in generale se si tratta di un amministratore
-        leggiCanzoni();
-        if(locListaCanzoni.isEmpty()) return; // Se un utente non avesse canzoni dove lui è l'autore
-
-        PaginaPaneUtente_tabelView.getColumns().clear();
-
-        // Creo le colonne
-        TableColumn<CANZONE, Integer> colId = new TableColumn<>("ID_CANZONE");
-        colId.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID_CANZONE()));
-
-        TableColumn<CANZONE, String> colTitolo = new TableColumn<>("TITOLO");
-        colTitolo.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getTITOLO()));
-
-        TableColumn<CANZONE, String> colAutore = new TableColumn<>("AUTORE");
-        colAutore.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getAUTORE()));
-
-        TableColumn<CANZONE, String> colGenere = new TableColumn<>("GENERE");
-        colGenere.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getGENERE()));
-
-        TableColumn<CANZONE, Integer> colAnno = new TableColumn<>("ANNO_COMPOSIZIONE");
-        colAnno.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getANNO_COMPOSIZIONE()));
-
-        TableColumn<CANZONE, String> colYoutube = new TableColumn<>("LINK_YOUTUBE");
-        colYoutube.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getLINK_YOUTUBE()));
-
-        TableColumn<CANZONE, String> colMusica = new TableColumn<>("PERCORSO_MUSICA");
-        colMusica.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getPERCORSO_MUSICA()));
-
-        TableColumn<CANZONE, String> colPDF = new TableColumn<>("PERCORSO_PDF");
-        colPDF.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getPERCORSO_PDF()));
-
-        TableColumn<CANZONE, String> colCopertina = new TableColumn<>("PERCORSO_COPERTINA");
-        colCopertina.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getPERCORSO_COPERTINA()));
-
-        TableColumn<CANZONE, String> colutenteIns = new TableColumn<>("UTENTE_INS");
-        colutenteIns.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUTENTE_INS()));
-
-        TableColumn<CANZONE, Integer> colIdUtente = new TableColumn<>("ID_UTENTE");
-        colIdUtente.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID_UTENTE()));
-
-        PaginaPaneUtente_tabelView.getColumns().addAll(colId, colTitolo, colAutore, colGenere, colAnno, colYoutube, colMusica, colPDF, colCopertina, colutenteIns, colIdUtente);
-
-        // Dati da mostrare
-        ObservableList<CANZONE> locListaCanzoniObservable = FXCollections.observableArrayList();
-        for (Map<String, Object> riga : locListaCanzoni) {
-            CANZONE canzone = new CANZONE(
-                    Integer.parseInt(riga.get("ID_CANZONE").toString()),
-                    String.valueOf(riga.get("TITOLO")),
-                    String.valueOf(riga.get("AUTORE")),
-                    String.valueOf(riga.get("GENERE")),
-                    Integer.parseInt(riga.get("ANNO_COMPOSIZIONE").toString()),
-                    String.valueOf(riga.get("LINK_YOUTUBE")),
-                    String.valueOf(riga.get("PERCORSO_MUSICA")),
-                    String.valueOf(riga.get("PERCORSO_PDF")),
-                    String.valueOf(riga.get("PERCORSO_COPERTINA")),
-                    String.valueOf(riga.get("UTENTE_INS")),
-                    Integer.parseInt(riga.get("ID_UTENTE").toString())
-            );
-            locListaCanzoniObservable.add(canzone);
-        }
-
-
-        // Assegna i dati alla tabella
-        PaginaPaneUtente_tabelView.setItems(locListaCanzoniObservable);
-        PaginaPaneUtente_tabelView.setRowFactory(tv -> {
-            TableRow<CANZONE> row = new TableRow<>();
-            ContextMenu contextMenu = new ContextMenu();
-
-            MenuItem itemRimuoviCanzone = new MenuItem("✘ Rimuovi");
-            itemRimuoviCanzone.setOnAction(e -> {
-                CANZONE canzone = row.getItem();
-                String locWhere = " ID_CANZONE="+canzone.getID_CANZONE();
-                objSql.cancella("CANZONE", locWhere);
-                popolaLista();
-            });
-
-
-            contextMenu.getItems().addAll(itemRimuoviCanzone);
-            row.emptyProperty().addListener((obs, wasEmpty, isEmpty) -> {
-                row.setContextMenu(isEmpty ? null : contextMenu);
-            });
-
-            return row;
-        });
-    }
-
-    private void leggiCanzoni(){
+    private void leggiBrani(){
         String locQuery="";
 
         if(PaginaPaneLogin.UTENTE_NOME.equals("adm")) {
-            locQuery = "SELECT * FROM CANZONE";
-            PaginaPaneUtente_label.setText("Brani caricati sulla piattaforma");
+            locQuery = "SELECT * FROM CANZONE ORDER BY AUTORE ASC";
+            PaginaPaneUtente_label.setText("Canzoni caricate sulla piattaforma");
 
         } else {    // Le canzoni caricate dall'utente corrente
-            locQuery = "SELECT * FROM CANZONE WHERE ID_UTENTE = " + PaginaPaneLogin.ID_UTENTE;
+            locQuery = "SELECT * FROM CANZONE WHERE ID_UTENTE = " + PaginaPaneLogin.ID_UTENTE + " ORDER BY AUTORE ASC";
+            PaginaPaneUtente_label.setText("Le canzoni che hai caricato");
         }
 
-        locListaCanzoni= objSql.leggiLista(locQuery);
+        listaBrani= objSql.leggiLista(locQuery);
+    }
+
+    public void popolaLista() {
+        for (Map<String, Object> rowBrano : listaBrani) {
+            HBox riga = new HBox(10);
+            riga.setStyle("""
+                 -fx-background-color: #292929;
+                 -fx-background-radius: 12;
+                 -fx-border-radius: 12;
+                 -fx-padding: 10;
+                -fx-spacing: 10;
+                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0.2, 0, 2);
+                
+                -fx-min-height: 80;
+                -fx-pref-height: 80;
+                -fx-alignment: center;
+                """);
+
+            // Ricavo la copertina della canzone
+            String locPath = ObjGenerici.ritornaCopertina(Integer.parseInt(rowBrano.get("ID_CANZONE").toString()));
+            Image immagine = new Image(new File(locPath).toURI().toString());
+            ImageView copertina = new ImageView(immagine);
+            copertina.setFitWidth(60);
+            copertina.setFitHeight(60);
+            copertina.setPreserveRatio(false);
+
+            Rectangle contenitore = new Rectangle(60, 60);
+            contenitore.setArcWidth(10);
+            contenitore.setArcHeight(10);
+
+            copertina.setClip(contenitore); // In modo che l'immagine abbia i borsi smussati
+
+
+            Label nomeBrano = new Label(getSafe(rowBrano, "TITOLO") + " • " +
+                    getSafe(rowBrano, "AUTORE") + " • " +
+                    getSafe(rowBrano, "GENERE") + " • " +
+                    getSafe(rowBrano, "ANNO_COMPOSIZIONE"));
+
+            nomeBrano.setStyle(
+                    """
+                    -fx-text-fill: #cccccc;
+                    -fx-font-size: 16;
+                            """
+            );
+
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+
+            // Creo l'icona per cancellare una canzone
+            ImageView icona = new ImageView(getClass().getResource("/immagini/iconaCestino.png").toExternalForm());
+            icona.setFitWidth(25);
+            icona.setFitHeight(25);
+            icona.setPreserveRatio(true);
+            icona.setSmooth(true);
+
+            Label elimina = new Label();
+            elimina.setGraphic(icona);
+            elimina.setStyle("-fx-cursor: hand;");
+            elimina.setOnMouseClicked(event -> {
+                eliminaBrano(rowBrano, riga);
+            });
+
+            // Creo l'icona per visualizzare l'anteprima di una canzone
+            icona = new ImageView(getClass().getResource("/immagini/iconaAnteprima.png").toExternalForm());
+            icona.setFitWidth(25);
+            icona.setFitHeight(25);
+            icona.setPreserveRatio(true);
+            icona.setSmooth(true);
+
+            Label anteprima = new Label();
+            anteprima.setGraphic(icona);
+            anteprima.setStyle("-fx-cursor: hand;");
+            anteprima.setOnMouseClicked(event -> {
+                try {
+                    mostraAnteprimaBrano(Integer.parseInt(rowBrano.get("ID_CANZONE").toString()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            riga.getChildren().addAll(copertina, nomeBrano, spacer, anteprima, elimina);
+            PaginaPaneUtente_vboxCanzoni.getChildren().add(riga);
+        }
+    }
+
+    private void mostraAnteprimaBrano(int padIdCanzone) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneCanzone.fxml"));
+        Parent paneCanzone = loader.load();
+
+        PaginaPaneCanzone controller = loader.getController();
+        controller.mostraSchermataCanzone(padIdCanzone);
+
+        AnchorPane.setTopAnchor(paneCanzone, 0.0);
+        AnchorPane.setBottomAnchor(paneCanzone, 0.0);
+        AnchorPane.setLeftAnchor(paneCanzone, 0.0);
+        AnchorPane.setRightAnchor(paneCanzone, 0.0);
+
+        PaginaPaneUtente_anteprimaCanzone.getChildren().add(paneCanzone);
+    }
+
+    private String getSafe(Map<String, Object> map, String key) {
+        Object val = map.get(key);
+        return val != null ? val.toString() : "";
+    }
+
+    private void eliminaBrano(Map<String, Object> rowBrano, HBox parRigaCorrente) {
+        boolean locRisposta = objGenerici.yesNoMessage("Attenzione!!", "Cancellare il brano "+'"'+rowBrano.get("TITOLO").toString()+'"'+" e tutti i suoi dati?");
+        if(!locRisposta) {
+            return;
+        }
+
+        PaginaPaneUtente_vboxCanzoni.getChildren().remove(parRigaCorrente);
+        objSql.cancella("CANZONE", rowBrano.get("ID_CANZONE").toString());
+
+        /*
+        ##############################################################
+                GESTIRE CANCELLAZIONE DATI AGGIUNTIVI
+        ##############################################################
+         */
+
     }
 }

@@ -2,16 +2,20 @@ package com.univr.javfx_scene;
 
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Popup;
-import javafx.stage.Window;
+import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
+import javafx.stage.*;
 import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class ObjGenerici {
 
@@ -67,6 +71,27 @@ public class ObjGenerici {
         fade.setDelay(Duration.seconds(2));
 
         fade.play();
+    }
+
+    public static boolean yesNoMessage(String titolo, String messaggio) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(titolo);
+        alert.setHeaderText(null);
+        alert.setContentText(messaggio);
+
+        // Creo i pulsanti per scegliere si o no
+        ButtonType buttonYes = new ButtonType("✔ Sì");
+        ButtonType buttonNo = new ButtonType("✖ No");
+        alert.getButtonTypes().setAll(buttonYes, buttonNo);
+
+        // Applico lo stile
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(PaginaAvvio.class.getResource("Applicazione.css").toExternalForm());
+        dialogPane.getStyleClass().add("yesNoMessage");
+
+        // Prendo il risultato e lo restituisco
+        Optional<ButtonType> risultato = alert.showAndWait();
+        return risultato.isPresent() && risultato.get() == buttonYes;
     }
 
 

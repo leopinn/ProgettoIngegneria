@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="PaginaPaneUtente_anchoraPane" stylesheets="Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUtente">
-    <children>
-        <VBox fx:id="PaginaPaneUtente_vBox" styleClass="PaginaPaneUtente_vBox" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
-            <children>
-                <Label fx:id="PaginaPaneUtente_label" styleClass="PaginaPaneUtente_label" text="I tuoi brani" />
-                <TableView fx:id="PaginaPaneUtente_tabelView" styleClass="PaginaPaneUtente_tabelView" VBox.vgrow="ALWAYS">
-                    <columns>
-                    </columns>
-                </TableView>
-            </children>
-        </VBox>
-    </children>
+<AnchorPane prefHeight="634.0" prefWidth="1452.0" styleClass="PaginaPaneUtente_anchoraPane" stylesheets="Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUtente">
+   <children>
+      <Label fx:id="PaginaPaneUtente_label" prefWidth="1000" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Lista brani">
+         <padding>
+            <Insets left="20.0" top="30.0" />
+         </padding>
+      </Label>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <ScrollPane prefWidth="740" styleClass="PaginaPrincipale_scrollPane">
+               <content>
+                  <VBox fx:id="PaginaPaneUtente_vboxCanzoni" styleClass="PaginaPaneUtente_vboxCanzoni" />
+               </content>
+            </ScrollPane>
+            <AnchorPane fx:id="PaginaPaneUtente_anteprimaCanzone" styleClass="PaginaPaneUtente_anteprimaCanzone" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin></AnchorPane>
+         </children>
+      </HBox>
+   </children>
 
 </AnchorPane>

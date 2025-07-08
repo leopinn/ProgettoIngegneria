@@ -152,6 +152,28 @@
     -fx-border-radius: 8;
     -fx-effect: dropshadow(gaussian, rgba(109,36,225,0.3), 12, 0, 0, 0);
 }
+
+.yesNoMessage {
+    -fx-font-size: 14;
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: #cccccc;
+    -fx-line-spacing: 5;
+}
+.yesNoMessage .content.label {
+    -fx-text-fill: #cccccc;
+    -fx-line-spacing: 5;
+}
+.yesNoMessage .button {
+    -fx-background-color: #3a3a3a;
+    -fx-text-fill: #cccccc;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 6 12 6 12;
+}
+.yesNoMessage .button:hover {
+    -fx-background-color: #505050;
+}
+
 /* ----------------------------------------------------------------------------------------------------------- LOGIN ----------------------------------------------------------------- */
 
 .PaginaLogin_vBox{
@@ -1320,83 +1342,37 @@
 /* ----------------------------------------------------------------------------------------------------------- UTENTE ----------------------------------------------------------------- */
 
 .PaginaPaneUtente_anchoraPane{
+    -fx-spacing: 10;
+    -fx-background-radius: 15;
     -fx-background-color: #1f1f1f;
-    -fx-background-radius: 10;
 }
 
-.PaginaPaneUtente_label{
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 26;
-}
-
-.PaginaPaneUtente_vBox{
+.PaginaPaneUtente_vboxCanzoni{
     -fx-spacing: 10;
 }
 
-.PaginaPaneUtente_tabelView {
-    -fx-background-color: #1f1f1f;
-    -fx-table-cell-border-color: #2a2a2a;
-    -fx-border-color: #2a2a2a;
-    -fx-border-width: 1px;
-    -fx-font-size: 13px;
-}
-
-.PaginaPaneUtente_tabelView .column-header-background {
-    -fx-background-color: #2a2a2a;
-}
-
-.PaginaPaneUtente_tabelView .column-header,.PaginaPaneUtente_tabelView .filler {
+.PaginaPaneUtente_anteprimaCanzone{
     -fx-background-color: transparent;
-    -fx-size: 28px;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-spacing: 8;
+    -fx-effect: dropshadow(gaussian, rgb(204, 204, 204), 12, 0, 0, 0);
+
+    -fx-alignment: center;
 }
 
-.PaginaPaneUtente_tabelView .column-header .label {
-    -fx-text-fill: #cccccc;
-    -fx-font-weight: bold;
-}
+.PaginaPaneUtente_labelAnteprima{
+    -fx-background-image: url("../../../immagini/iconaAnteprima.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: 100% 100%;
+    -fx-background-color: transparent;
 
-.PaginaPaneUtente_tabelView .table-cell {
-    -fx-padding: 6 10 6 10; /* top, right, bottom, left */
-    -fx-text-fill: inherit;
-    -fx-alignment: CENTER_LEFT;
-    -fx-wrap-text: false;
-}
-
-.PaginaPaneUtente_tabelView .table-row-cell {
-    -fx-cell-size: 32px; /* forza l'altezza minima della riga */
-    -fx-background-color: #1f1f1f;
-    -fx-text-fill: #dddddd;
-    -fx-border-color: transparent transparent #2a2a2a transparent;
-    -fx-border-width: 0 0 1px 0;
-}
-
-.PaginaPaneUtente_tabelView .table-row-cell:odd {
-    -fx-background-color: #252525;
-}
-
-.PaginaPaneUtente_tabelView .table-row-cell:selected {
-    -fx-background-color: #3a3a3a;
-    -fx-text-fill: #ffffff;
-}
-
-.PaginaPaneUtente_tabelView .scroll-bar:vertical,
-.PaginaPaneUtente_tabelView .scroll-bar:horizontal {
-    -fx-background-color: #1f1f1f;
-}
-
-.PaginaPaneUtente_tabelView .scroll-bar .thumb {
-    -fx-background-color: #3a3a3a;
-    -fx-background-radius: 4;
-}
-
-.PaginaPaneUtente_tabelView .scroll-bar .track {
-    -fx-background-color: #2a2a2a;
-}
-
-.PaginaPaneUtente_anchoraPane{
-    -fx-spacing: 10;
-    -fx-background-radius: 10;
-    -fx-background-color: #1f1f1f;
+    -fx-min-width: 30;
+    -fx-min-height: 30;
+    -fx-max-width: 30;
+    -fx-max-height: 30;
+    -fx-padding: 10 10 10 10;
 }
 
 /* ----------------------------------------------------------------------------------------------------------- CANZONE ----------------------------------------------------------------- */
