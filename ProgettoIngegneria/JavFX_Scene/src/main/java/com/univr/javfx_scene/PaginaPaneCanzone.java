@@ -3,6 +3,7 @@ package com.univr.javfx_scene;
 import com.univr.javfx_scene.Classi.ModificaCanzone;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 
@@ -41,7 +42,9 @@ public class PaginaPaneCanzone {
     private HBox PaginaPaneCanzone_hBoxUp;
     @FXML
     private VBox paginaContenuto; // Assicurati che esista nel tuo FXML
-    @FXML private Button btnDownloadSpartito;
+    //@FXML private Button btnDownloadSpartito;
+    @FXML private VBox boxDocumenti;
+    @FXML private VBox boxMedia;
 
     private PaginaPrincipale mainController;
 
@@ -85,11 +88,13 @@ public class PaginaPaneCanzone {
                 getSafe(rowCanzone, "ANNO_COMPOSIZIONE");
 
         PaginaPaneCanzone_altriDati.setText(locDatiAggiuntivi);
-        PaginaPaneCanzone_labelYoutube.setText(getSafe(rowCanzone, "LINK_YOUTUBE"));
 
         // Imposto il colore di sfondo basandomi sul colore predominante della copertina3
         Color coloreMedio = calcolaColoreMedio();
         applicaGradiente(PaginaPaneCanzone_hBoxUp, coloreMedio);
+
+        popolaDocumentiAllegati();
+        popolaFileMultimediali();
     }
 
     public Color calcolaColoreMedio() {
@@ -169,6 +174,90 @@ public class PaginaPaneCanzone {
         popup.show();
     }
 
+
+    // Recupera Documenti Allegatii
+    private void popolaDocumentiAllegati() {
+        File dirDoc = new File(System.getProperty("user.dir") + "/upload/pdf/");
+        System.out.println("Controllo documenti in: " + dirDoc.getAbsolutePath());
+
+        if (dirDoc.exists() && dirDoc.isDirectory()) {
+            File[] files = dirDoc.listFiles((dir, name) ->
+                    name.toLowerCase().endsWith(".pdf") && name.startsWith(String.valueOf(ID_CANZONE))
+            );
+
+            if (files == null || files.length == 0) {
+                System.out.println("⚠️ Nessun file PDF per canzone " + ID_CANZONE);
+                return;
+            }
+
+            for (File file : files) {
+                System.out.println("📄 File PDF: " + file.getName());
+
+                HBox fileRow = new HBox(10);
+                fileRow.setAlignment(Pos.CENTER_LEFT);
+
+                Label nome = new Label(file.getName());
+                nome.setStyle("-fx-text-fill: white;");
+                Region spacer = new Region();
+                HBox.setHgrow(spacer, Priority.ALWAYS);
+
+                Button apri = new Button("📄");
+                apri.setOnAction(e -> apriFile(file));
+
+                Button scarica = new Button("⬇");
+                scarica.setOnAction(e -> apriFile(file));
+
+                fileRow.getChildren().addAll(nome, spacer, apri, scarica);
+                boxDocumenti.getChildren().add(fileRow);
+            }
+        } else {
+            System.out.println("❌ Cartella non trovata: " + dirDoc.getAbsolutePath());
+        }
+    }
+
+
+    // Recupera File Multimediali
+    private void popolaFileMultimediali() {
+        File dirMedia = new File(System.getProperty("user.dir") + "/upload/musiche/");
+        System.out.println("Controllo file multimediali in: " + dirMedia.getAbsolutePath());
+
+        if (dirMedia.exists() && dirMedia.isDirectory()) {
+            File[] files = dirMedia.listFiles((dir, name) ->
+                    (name.toLowerCase().endsWith(".mp3") || name.toLowerCase().endsWith(".mp4")) &&
+                            name.startsWith(String.valueOf(ID_CANZONE))
+            );
+
+            if (files == null || files.length == 0) {
+                System.out.println("⚠️ Nessun file multimediale per canzone " + ID_CANZONE);
+                return;
+            }
+
+            for (File file : files) {
+                System.out.println("🎵 File media: " + file.getName());
+
+                HBox mediaRow = new HBox(10);
+                mediaRow.setAlignment(Pos.CENTER_LEFT);
+
+                Label label = new Label(file.getName());
+                label.setStyle("-fx-text-fill: white;");
+                Region spacer = new Region();
+                HBox.setHgrow(spacer, Priority.ALWAYS);
+
+                Button play = new Button("▶");
+                play.setOnAction(e -> apriFile(file));
+
+                Button download = new Button("⬇");
+                download.setOnAction(e -> apriFile(file));
+
+                mediaRow.getChildren().addAll(label, spacer, play, download);
+                boxMedia.getChildren().add(mediaRow);
+            }
+        } else {
+            System.out.println("❌ Cartella non trovata: " + dirMedia.getAbsolutePath());
+        }
+    }
+
+
     @FXML
     private void apriLinkYoutube() {
         String locUrl = rowCanzone.get("LINK_YOUTUBE").toString();
@@ -217,8 +306,19 @@ public class PaginaPaneCanzone {
         }
     }
 
+    private void apriFile(File file) {
+        try {
+            if (file.exists()) Desktop.getDesktop().open(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+            ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelYoutube, "Errore nell'apertura:\n" + file.getAbsolutePath());
+        }
+    }
+
+
+/*
     @FXML
     public void initialize() {
         btnDownloadSpartito.setOnAction(e -> downloadSpartito());
-    }
+    } */
 }
