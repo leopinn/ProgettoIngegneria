@@ -5,12 +5,9 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.TextArea;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -36,10 +33,15 @@ public class PaginaPaneCanzone {
     private int ID_CANZONE;
     private Map<String, Object> rowCanzone;
 
-    @FXML private ImageView PaginaPaneCanzone_copertina;
-    @FXML private Label PaginaPaneCanzone_titolo, PaginaPaneCanzone_altriDati, PaginaPaneCanzone_labelYoutube;
-    @FXML private HBox PaginaPaneCanzone_hBoxUp;
-    @FXML private VBox paginaContenuto; // Assicurati che esista nel tuo FXML
+    @FXML
+    private ImageView PaginaPaneCanzone_copertina;
+    @FXML
+    private Label PaginaPaneCanzone_titolo, PaginaPaneCanzone_altriDati, PaginaPaneCanzone_labelYoutube;
+    @FXML
+    private HBox PaginaPaneCanzone_hBoxUp;
+    @FXML
+    private VBox paginaContenuto; // Assicurati che esista nel tuo FXML
+    @FXML private Button btnDownloadSpartito;
 
     private PaginaPrincipale mainController;
 
@@ -62,7 +64,7 @@ public class PaginaPaneCanzone {
         // Imposta immagine copertina
 
         // Imposto la copertina, titolo e autore
-        String locPath =objGenerici.ritornaCopertina(parIdCanzone);
+        String locPath = objGenerici.ritornaCopertina(parIdCanzone);
 
         Image immagine = new Image(new File(locPath).toURI().toString());
         PaginaPaneCanzone_copertina.setImage(immagine);
@@ -88,66 +90,6 @@ public class PaginaPaneCanzone {
         // Imposto il colore di sfondo basandomi sul colore predominante della copertina3
         Color coloreMedio = calcolaColoreMedio();
         applicaGradiente(PaginaPaneCanzone_hBoxUp, coloreMedio);
-
-        // ===================== NUOVE SEZIONI =========================
-
-        VBox contenitoreExtra = new VBox(15);
-        contenitoreExtra.setPadding(new Insets(20));
-
-        // Documenti Allegati
-        Label labelDocumenti = new Label("Documenti Allegati");
-        Button btnCaricaDocumento = new Button("Carica Documento");
-        btnCaricaDocumento.setOnAction(e -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Seleziona Documento");
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Documenti", "*.pdf", "*.docx", "*.txt")
-            );
-            File file = fileChooser.showOpenDialog(null);
-            if (file != null) {
-                System.out.println("Documento caricato: " + file.getName());
-                // TODO: gestisci salvataggio o visualizzazione
-            }
-        });
-
-        // File Multimediali
-        Label labelMedia = new Label("File Multimediali");
-        Button btnCaricaMedia = new Button("Carica MP3/MP4");
-        btnCaricaMedia.setOnAction(e -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Seleziona File Multimediale");
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Audio/Video", "*.mp3", "*.mp4")
-            );
-            File file = fileChooser.showOpenDialog(null);
-            if (file != null) {
-                System.out.println("File multimediale caricato: " + file.getName());
-                // TODO: gestisci salvataggio o visualizzazione
-            }
-        });
-
-        Label labelYoutube = new Label("Link YouTube:");
-        TextField campoYoutube = new TextField();
-        campoYoutube.setPromptText("Inserisci link YouTube");
-
-        // Note sui documenti
-        Label labelNote = new Label("Note sui documenti");
-        TextArea areaNote = new TextArea();
-        areaNote.setPromptText("Scrivi qui i tuoi commenti...");
-        areaNote.setWrapText(true);
-
-
-
-
-        // Aggiunta al contenitore
-        contenitoreExtra.getChildren().addAll(
-                labelDocumenti, btnCaricaDocumento,
-                labelMedia, btnCaricaMedia, labelYoutube, campoYoutube,
-                labelNote, areaNote
-        );
-
-        // Aggiunta al contenitore principale della pagina
-        paginaContenuto.getChildren().add(contenitoreExtra);
     }
 
     public Color calcolaColoreMedio() {
@@ -239,5 +181,44 @@ public class PaginaPaneCanzone {
         } else {
             ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelYoutube, "Desktop non supportato, impossibile aprire il browser!");
         }
+    }
+
+    @FXML
+    private void downloadSpartito() {
+        try {
+            // Percorso reale del file da scaricare/aprire
+            File file = new File("canzoni/" + ID_CANZONE + "/spartito.pdf"); // <-- sostituisci con percorso corretto
+
+            if (file.exists()) {
+                Desktop.getDesktop().open(file); // apre il file con il programma predefinito
+            } else {
+                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelYoutube, "File spartito non trovato:\n" + file.getAbsolutePath());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelYoutube, "Errore nell'apertura del file spartito.");
+        }
+    }
+
+    @FXML
+    private void openSpartito() {
+        // Esempio di apertura file PDF
+        try {
+            File file = new File("canzoni/" + ID_CANZONE + "/spartito.pdf");// <-- modifica percorso
+            if (file.exists()) {
+                Desktop.getDesktop().open(file);
+            } else {
+                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelYoutube, "File non trovato: " + file.getAbsolutePath());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelYoutube, "Errore nell'apertura del file PDF");
+        }
+    }
+
+    @FXML
+    public void initialize() {
+        btnDownloadSpartito.setOnAction(e -> downloadSpartito());
     }
 }

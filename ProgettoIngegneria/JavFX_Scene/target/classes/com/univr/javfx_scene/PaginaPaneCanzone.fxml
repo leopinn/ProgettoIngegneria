@@ -36,22 +36,60 @@
                                 </VBox>
                             </children>
                         </HBox>
-
-                        <HBox fx:id="PaginaPaneCanzone_hBoxBottom" alignment="BOTTOM_LEFT" prefHeight="100.0" styleClass="PaginaPaneCanzone_hBoxBottom">
-                            <children>
-                                <Label styleClass="PaginaPaneCanzone_altriDati" text="Link Youtube: ">
-                                    <HBox.margin>
-                                        <Insets left="32.0" top="15.0" />
-                                    </HBox.margin>
-                                </Label>
-                                <Label fx:id="PaginaPaneCanzone_labelYoutube" onMouseClicked="#apriLinkYoutube" styleClass="PaginaPaneCanzone_labelYoutube" text="youtube.com/link">
-                                    <HBox.margin>
-                                        <Insets top="15" />
-                                    </HBox.margin>
-                                </Label>
-                            </children>
-                        </HBox>
                     </children>
+                    
+                    <HBox fx:id="PaginaPaneCanzone_hBoxBottom" alignment="BOTTOM_LEFT" spacing="10">
+                        <children>
+                            <Label text="Link YouTube:" style="-fx-text-fill: white;" />
+                            <Label fx:id="PaginaPaneCanzone_labelYoutube"
+                                   text="youtube.com/link"
+                                   onMouseClicked="#apriLinkYoutube"
+                                   style="-fx-text-fill: #4da3ff; -fx-underline: true; -fx-cursor: hand;" />
+                        </children>
+                    </HBox>
+
+                    <HBox spacing="30" alignment="TOP_CENTER" style="-fx-padding: 30 40 30 40;">
+                        <!-- Sezione Documenti Allegati -->
+                        <VBox fx:id="boxDocumenti" spacing="10" prefWidth="280"
+                              style="-fx-background-color: #2e2e2e; -fx-padding: 15; -fx-background-radius: 10;">
+                            <Label text="Documenti allegati" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Spartito.pdf" style="-fx-text-fill: white;" HBox.hgrow="ALWAYS"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button text="📄" onAction="#openSpartito"/>
+                                <Button fx:id="btnDownloadSpartito" text="⬇" onAction="#downloadSpartito"/>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Sezione File Multimediali -->
+                        <VBox fx:id="boxMedia" spacing="10" prefWidth="280"
+                              style="-fx-background-color: #2e2e2e; -fx-padding: 15; -fx-background-radius: 10;">
+                            <Label text="File multimediali" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Canzone.mp3" style="-fx-text-fill: white;" HBox.hgrow="ALWAYS"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button text="▶"/>
+                                <Button text="⬇"/>
+                            </HBox>
+
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Video.mp4" style="-fx-text-fill: white;" HBox.hgrow="ALWAYS"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button text="▶"/>
+                                <Button text="⬇"/>
+                            </HBox>
+
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="YouTube Link" style="-fx-text-fill: white;" HBox.hgrow="ALWAYS"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button text="🌐" onAction="#apriLinkYoutube"/>
+                            </HBox>
+                        </VBox>
+                    </HBox>
+
+
                     <padding>
                         <Insets bottom="10.0" />
                     </padding>
