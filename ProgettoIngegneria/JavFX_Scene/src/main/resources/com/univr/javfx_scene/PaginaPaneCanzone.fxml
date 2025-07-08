@@ -36,22 +36,25 @@
                                 </VBox>
                             </children>
                         </HBox>
-
-                        <HBox fx:id="PaginaPaneCanzone_hBoxBottom" alignment="BOTTOM_LEFT" prefHeight="100.0" styleClass="PaginaPaneCanzone_hBoxBottom">
-                            <children>
-                                <Label styleClass="PaginaPaneCanzone_altriDati" text="Link Youtube: ">
-                                    <HBox.margin>
-                                        <Insets left="32.0" top="15.0" />
-                                    </HBox.margin>
-                                </Label>
-                                <Label fx:id="PaginaPaneCanzone_labelYoutube" onMouseClicked="#apriLinkYoutube" styleClass="PaginaPaneCanzone_labelYoutube" text="youtube.com/link">
-                                    <HBox.margin>
-                                        <Insets top="15" />
-                                    </HBox.margin>
-                                </Label>
-                            </children>
-                        </HBox>
                     </children>
+
+                    <HBox spacing="30" alignment="TOP_CENTER" style="-fx-padding: 30 40 30 40;">
+
+                        <!-- Documenti Allegati -->
+                        <VBox fx:id="boxDocumenti" spacing="10" prefWidth="280"
+                              style="-fx-background-color: #2e2e2e; -fx-padding: 15; -fx-background-radius: 10;">
+                            <Label text="Documenti allegati" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                            <!-- I file PDF verranno aggiunti qui dal controller -->
+                        </VBox>
+
+                        <!-- File Multimediali -->
+                        <VBox fx:id="boxMedia" spacing="10" prefWidth="280"
+                              style="-fx-background-color: #2e2e2e; -fx-padding: 15; -fx-background-radius: 10;">
+                            <Label text="File multimediali" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                            <!-- File audio/video aggiunti qui -->
+                        </VBox>
+
+                    </HBox>
                     <padding>
                         <Insets bottom="10.0" />
                     </padding>
