@@ -10,15 +10,15 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.Tooltip?>
-<VBox alignment="CENTER" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUpload">
+<VBox alignment="CENTER" prefHeight="500" prefWidth="500" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUpload">
    <children>
-      <AnchorPane maxHeight="1000" maxWidth="300" styleClass="PaginaPaneUpload_anchorPanePrincipale" VBox.vgrow="ALWAYS">
+      <AnchorPane maxHeight="700" maxWidth="300" styleClass="PaginaPaneUpload_anchorPanePrincipale" VBox.vgrow="ALWAYS">
          <children>
             <HBox fx:id="PaginaPaneUpload_hboxSuperiore" prefHeight="220" styleClass="PaginaPaneUpload_hboxSuperiore" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -92,14 +92,14 @@
                                           </FXCollections>
                                        </items>
                                     </ComboBox>
-                                    <CheckBox fx:id="checkboxUsaNomeUtente" ellipsisString="" onAction="#abilitaDatiAggiuntivi" styleClass="PaginaPaneUpload_checkbox" >
+                                    <CheckBox fx:id="checkboxUsaNomeUtente" ellipsisString="" onAction="#abilitaDatiAggiuntivi" styleClass="PaginaPaneUpload_checkbox">
                                        <tooltip>
                                           <Tooltip text="Imposta utente corrente come autore" />
                                        </tooltip>
                                     </CheckBox>
                                  </children>
                               </HBox>
-                              <HBox alignment="TOP_RIGHT" spacing="5.0">
+                              <HBox alignment="CENTER" spacing="5.0">
                                  <children>
                                     <TextField fx:id="PaginaPaneUpload_textNuovoAutore" promptText="Nuovo autore..." styleClass="textFieldGenerico" HBox.hgrow="ALWAYS">
                                        <HBox.margin>
@@ -131,7 +131,7 @@
                                     </FXCollections>
                                  </items>
                               </ComboBox>
-                              <HBox alignment="TOP_RIGHT" spacing="5.0">
+                              <HBox alignment="CENTER" spacing="5.0">
                                  <children>
                                     <TextField fx:id="textNuovoGenere" promptText="Nuovo genere..." styleClass="textFieldGenerico" HBox.hgrow="ALWAYS">
                                        <HBox.margin>
@@ -195,7 +195,7 @@
                            <children>
                               <Label styleClass="labelBiancaMedia" text="Strumenti usati" />
                               <ListView fx:id="listStrumenti" prefHeight="115" prefWidth="Infinity" styleClass="PaginaPaneUpload_listView" visible="true" />
-                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                                  <children>
                                     <TextField fx:id="textNuovoStrumento" promptText="Nuovo strumento..." styleClass="textFieldGenerico" HBox.hgrow="ALWAYS">
                                        <HBox.margin>

@@ -13,9 +13,9 @@
    <children>
       <HBox fx:id="PaginaPanePrincipale_parteSuperiore" alignment="TOP_CENTER" prefHeight="300.0" styleClass="PaginaPanePrincipale_parteSuperiore" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-             <Label fx:id="PaginaPanePrincipale_labelMusiche" alignment="TOP_LEFT" prefWidth="500.0" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Esplora">
+             <Label fx:id="PaginaPanePrincipale_labelMusiche" alignment="TOP_LEFT" prefHeight="100.0" prefWidth="500.0" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Esplora">
                <padding>
-                  <Insets left="10.0" />
+                  <Insets left="40.0" top="30.0" />
                </padding></Label>
             <Region HBox.hgrow="ALWAYS" />
             <Button fx:id="PaginaPanePrincipale_bottoneTutto" mnemonicParsing="false" onAction="#paginaTutto" styleClass="PaginaPanePrincipale_bottoniSopra" text="Tutto" />

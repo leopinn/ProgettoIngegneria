@@ -56,7 +56,7 @@
             <HBox fx:id="PaginaImpostazioni_hBox" alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" styleClass="PaginaImpostazioni_hBox">
                <children>
                   <Button fx:id="PaginaImpostazioni_bottoneAnnulla" mnemonicParsing="false" onAction="#annulla" styleClass="buttonRosso" text="Annulla" />
-                  <Button fx:id="PaginaImpostazioni_bottoneSalva" mnemonicParsing="false" onAction="#salvaProfilo" styleClass="buttonVerde" text="Salva profilo" />
+                  <Button fx:id="PaginaImpostazioni_bottoneSalva" mnemonicParsing="false" onAction="#salvaProfilo" styleClass="buttonVerde" text="Salva" />
                </children>
             </HBox>
          </children>

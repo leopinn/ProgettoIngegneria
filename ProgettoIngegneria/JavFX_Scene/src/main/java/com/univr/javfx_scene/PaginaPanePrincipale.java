@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Window;
 import javafx.util.Duration;
 import javafx.stage.Popup;
@@ -352,7 +353,6 @@ public class PaginaPanePrincipale implements Initializable {
         -fx-padding: 10;
     """);
 
-
         card.setPrefWidth(180);
         card.setPrefHeight(180);
         card.setId(Integer.toString((Integer) rowBrano.get("ID_CANZONE")));
@@ -426,7 +426,14 @@ public class PaginaPanePrincipale implements Initializable {
         ImageView copertina = new ImageView(immagine);
         copertina.setFitWidth(150);
         copertina.setFitHeight(150);
-        copertina.setPreserveRatio(true);
+        copertina.setPreserveRatio(false);
+
+        Rectangle contenitore = new Rectangle(150, 150);
+        contenitore.setArcWidth(10);
+        contenitore.setArcHeight(10);
+
+        copertina.setClip(contenitore); // In modo che l'immagine abbia i borsi smussati
+
 
         Label titolo = new Label((String) rowBrano.get("TITOLO"));
         titolo.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;");
@@ -464,6 +471,9 @@ public class PaginaPanePrincipale implements Initializable {
         PaginaPanePrincipale_parteSuperiore.layout();
     }
 
+
+    /* ---------- Inizio - GESTIONE RICERCA CANZONE ----------*/
+
     public void ricercaMusica(List<Map<String, Object>> parListaBrani, String parChiaveRicerca) throws IOException {
         listaBrani=parListaBrani;
         PaginaPanePrincipale_labelMusiche.setText("");
@@ -478,8 +488,27 @@ public class PaginaPanePrincipale implements Initializable {
                 PaginaPanePrincipale_labelMusiche.setText("Ricerca");
         }
 
-        setGrigliaMusicaTutto();
+        setGrigliaMusicaRicerca(parListaBrani);
     }
+
+    public void setGrigliaMusicaRicerca (List<Map<String, Object>> listaCanzone) {
+        PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().clear();
+
+        // Creo un TilePane per avere una gestione automatica delle card
+        TilePane tilePane = new TilePane();
+        tilePane.setHgap(15);
+        tilePane.setVgap(15);
+        tilePane.setPrefColumns(4);
+        tilePane.setTileAlignment(Pos.CENTER);
+
+        for (Map<String, Object> rowBrano : listaCanzone) {
+            VBox card = creaCard(rowBrano);
+            tilePane.getChildren().add(card);
+        }
+        PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().add(tilePane);
+    }
+
+    /* ---------- Fine - GESTIONE RICERCA CANZONE ----------*/
 }
 
 

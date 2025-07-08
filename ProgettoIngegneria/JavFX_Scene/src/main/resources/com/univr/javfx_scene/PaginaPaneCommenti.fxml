@@ -10,27 +10,40 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="PaginaCommenti_anchorPane" styleClass="PaginaCommenti_anchorPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneCommenti">
+<AnchorPane fx:id="PaginaCommenti_anchorPane" prefHeight="762.0" prefWidth="350.0" styleClass="PaginaCommenti_anchorPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneCommenti">
 
     <children>
-        <VBox fx:id="PaginaPaneCommenti_vBox" maxHeight="Infinity" prefWidth="350.0" styleClass="PaginaPaneCommenti_vBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox prefHeight="300.0" styleClass="PaginaPanePrincipale_parteSuperiore" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+                <Label fx:id="PaginaPaneCommenti_label" prefWidth="230" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Commenti">
+               <padding>
+                  <Insets top="30" />
+               </padding>
+            </Label>
+            <Region prefHeight="280.0" prefWidth="82.0" HBox.hgrow="ALWAYS" />
+            <Label fx:id="PaginaPaneCommenti_chiudiCommenti" onMouseClicked="#chiudiCommenti" styleClass="PaginaPaneCommenti_chiudiCommenti" text="X" textAlignment="CENTER">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+         </children>
+      </HBox>
+        <VBox fx:id="PaginaPaneCommenti_vBox" maxHeight="Infinity" prefWidth="350.0" styleClass="PaginaPaneCommenti_vBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
             <children>
-            <HBox prefHeight="50.0" prefWidth="200.0">
-               <children>
-                      <Label fx:id="PaginaPaneCommenti_label" prefWidth="180" styleClass="PaginaPanePrincipale_labelMusiche" text="Commenti">
-                     <padding>
-                        <Insets top="14.0" />
-                     </padding>
-                  </Label>
-                  <Region prefWidth="10" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="PaginaPaneCommenti_chiudiCommenti" onMouseClicked="#chiudiCommenti" styleClass="PaginaPaneCommenti_chiudiCommenti" text="X" textAlignment="CENTER" />
-               </children>
-            </HBox>
-                <ScrollPane fitToWidth="true" styleClass="PaginaPrincipale_scrollPane" VBox.vgrow="ALWAYS">
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" styleClass="PaginaPrincipale_scrollPane" VBox.vgrow="ALWAYS">
                     <content>
                         <VBox fx:id="commentiContainer" prefWidth="1.0" spacing="5.0" styleClass="commentiContainer" VBox.vgrow="ALWAYS" />
                     </content>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
                 </ScrollPane>
             <HBox fx:id="PaginaPaneCommenti_hBoxMinutaggio" alignment="CENTER" minHeight="50.0" prefHeight="50.0" prefWidth="340.0" styleClass="PaginaPaneCommenti_hBoxMinutaggio">
                <children>
@@ -51,8 +64,5 @@
             </children>
         </VBox>
     </children>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
 
 </AnchorPane>

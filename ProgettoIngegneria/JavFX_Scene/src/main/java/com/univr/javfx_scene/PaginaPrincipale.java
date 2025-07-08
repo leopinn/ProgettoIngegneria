@@ -234,8 +234,8 @@ public class PaginaPrincipale implements Initializable {
 
         // Imposto bordi tondeggianti
         Rectangle clip = new Rectangle(60, 60);
-        clip.setArcWidth(5);
-        clip.setArcHeight(5);
+        clip.setArcWidth(10);
+        clip.setArcHeight(10);
         PaginaPrincipale_imageCopertina.setClip(clip);
 
         // Imposto titolo e autore

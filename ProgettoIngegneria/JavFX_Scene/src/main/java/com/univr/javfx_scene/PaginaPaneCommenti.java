@@ -1,31 +1,20 @@
 package com.univr.javfx_scene;
 
-import com.univr.javfx_scene.Classi.UTENTI;
-import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Popup;
-import javafx.stage.Window;
 import javafx.util.Duration;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.univr.javfx_scene.ObjGenerici.mostraPopupSuccesso;
-
 public class PaginaPaneCommenti {
-    private static ObjSql objSql = ObjSql.oggettoSql();
+    private final ObjSql objSql = ObjSql.oggettoSql();
     private int ID_CANZONE;
     private List<Map<String, Object>> listaCommenti, listaCommentiRange;    // Messa pubblica per averla disponibile in tutta la gestione commenti
     private Map<String, Object> rowCommento, rowCanzone;            // Il commento attualmente selezionato e la canzone attuale in riproduzione
@@ -200,12 +189,12 @@ public class PaginaPaneCommenti {
         testoLabel.setStyle("-fx-font-size: 14; -fx-line-spacing: 5; -fx-text-fill: #ffffff");
 
         Label testoRispondi = new Label("Rispondi");
-        testoRispondi.setStyle("-fx-text-fill: #4A90E2 ; -fx-underline: false; -fx-font-size: 12; -fx-padding: 4 0 4 0;");
+        testoRispondi.setStyle("-fx-text-fill: #b1b1b1 ; -fx-underline: false; -fx-font-size: 12; -fx-padding: 4 0 4 0;");
         testoRispondi.setOnMouseClicked(event -> {
             rispondiCommento((Integer) commento.get("ID_COMMENTO"));
         });
-        testoRispondi.setOnMouseEntered(event -> {testoRispondi.setStyle("-fx-text-fill: #4A90E2 ; -fx-underline: true; -fx-font-size: 12; -fx-padding: 4 0 4 0; -fx-cursor: hand;");});
-        testoRispondi.setOnMouseExited(event -> {testoRispondi.setStyle("-fx-text-fill: #4A90E2 ; -fx-underline: false; -fx-font-size: 12; -fx-padding: 4 0 4 0; -fx-cursor: default;");});
+        testoRispondi.setOnMouseEntered(event -> {testoRispondi.setStyle("-fx-text-fill: #b1b1b1 ; -fx-underline: true; -fx-font-size: 12; -fx-padding: 4 0 4 0; -fx-cursor: hand;");});
+        testoRispondi.setOnMouseExited(event -> {testoRispondi.setStyle("-fx-text-fill: #b1b1b1 ; -fx-underline: false; -fx-font-size: 12; -fx-padding: 4 0 4 0; -fx-cursor: default;");});
 
         HBox rispondiBox = new HBox(testoRispondi);
         rispondiBox.setAlignment(Pos.CENTER_RIGHT);
@@ -326,21 +315,12 @@ public class PaginaPaneCommenti {
         }
 
         private void impostaTextArea(int parValore){
-        String locCampiPersonalizzati;
         if(parValore == 0) {
-            locCampiPersonalizzati= "    -fx-border-color: #6d24e1;";
+            commentoTextArea.setPromptText("Scrivi un commento...");
         }else{  // Se è una risposta
-            locCampiPersonalizzati= "    -fx-border-color: #4A90E2;";
+            commentoTextArea.setPromptText("Rispondi al commento...");
         }
-            commentoTextArea.setStyle("  -fx-background-color: #2c2c2c;\n" +
-                    "    -fx-text-fill: #f9f9f9;\n" +
-                    "    -fx-font-family: \"Gotham-Medium\";\n" +
-                    "    -fx-font-size: 16;\n" +
-                    "    -fx-line-spacing: 5;\n" +
-                    "    -fx-padding: 6;\n" +
-                    "    -fx-background-radius: 6;\n" +
-                    "    -fx-border-radius: 6;" +
-                    locCampiPersonalizzati);
+        commentoTextArea.setStyle(commentoTextArea.getStyle() + "; -fx-border-width: 2.001;");  // Mi tocca usare questo trucchetto per forzare un repaint, se no rimanevano parti di testo nello sfondo trasparente...
     }
 
     //Banner per controllo degli errori
