@@ -43,15 +43,31 @@
                         <!-- Documenti Allegati -->
                         <VBox fx:id="boxDocumenti" spacing="10" prefWidth="280"
                               style="-fx-background-color: #2e2e2e; -fx-padding: 15; -fx-background-radius: 10;">
-                            <Label text="Documenti allegati" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
-                            <!-- I file PDF verranno aggiunti qui dal controller -->
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                    <children>
+                                        <Label text="Documenti allegati" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Button fx:id="btnCaricaDocumento" text="📤" onAction="#caricaDocumento"/>
+                                    </children>
+                                </HBox>
+                                <!-- I file PDF verranno aggiunti qui dal controller -->
+                            </children>
                         </VBox>
-
+                        
                         <!-- File Multimediali -->
                         <VBox fx:id="boxMedia" spacing="10" prefWidth="280"
                               style="-fx-background-color: #2e2e2e; -fx-padding: 15; -fx-background-radius: 10;">
-                            <Label text="File multimediali" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
-                            <!-- File audio/video aggiunti qui -->
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                    <children>
+                                        <Label text="File multimediali" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Button fx:id="btnCaricaMedia" text="📤" onAction="#caricaMediaFile"/>
+                                    </children>
+                                </HBox>
+                                <!-- I file audio/video verranno aggiunti qui dal controller -->
+                            </children>
                         </VBox>
 
                     </HBox>
