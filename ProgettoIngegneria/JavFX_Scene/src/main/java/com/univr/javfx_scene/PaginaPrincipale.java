@@ -205,7 +205,7 @@ public class PaginaPrincipale implements Initializable {
     }
 
     public void logout(ActionEvent event) throws IOException {
-        playStop();
+        mediaPlayer.stop();
 
         Parent root = FXMLLoader.load(getClass().getResource("PaginaLogin.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();  // Mi recupero lo stage corrente

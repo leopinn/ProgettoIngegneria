@@ -98,39 +98,62 @@ public class PaginaPaneUtente implements Initializable {
             Region spacer = new Region();
             HBox.setHgrow(spacer, Priority.ALWAYS);
 
-            // Creo l'icona per cancellare una canzone
-            ImageView icona = new ImageView(getClass().getResource("/immagini/iconaCestino.png").toExternalForm());
-            icona.setFitWidth(25);
-            icona.setFitHeight(25);
-            icona.setPreserveRatio(true);
-            icona.setSmooth(true);
+            // Imposto in primis le icone
+            Image imageCestino = new Image(getClass().getResource("/immagini/iconaCestino.png").toExternalForm());
+            Image imageCestinoHover = new Image(getClass().getResource("/immagini/iconaCestinoHover.png").toExternalForm());
+            Image imageAnteprima = new Image(getClass().getResource("/immagini/iconaAnteprima.png").toExternalForm());
+            Image imageAnteprimaHover = new Image(getClass().getResource("/immagini/iconaAnteprimaHover.png").toExternalForm());
 
-            Label elimina = new Label();
-            elimina.setGraphic(icona);
-            elimina.setStyle("-fx-cursor: hand;");
-            elimina.setOnMouseClicked(event -> {
-                eliminaBrano(rowBrano, riga);
-            });
+            // Creo l'icona normale
+            ImageView iconaCestino = new ImageView(imageCestino);
+            iconaCestino.setFitWidth(25);
+            iconaCestino.setFitHeight(25);
+            iconaCestino.setPreserveRatio(true);
+            iconaCestino.setSmooth(true);
 
-            // Creo l'icona per visualizzare l'anteprima di una canzone
-            icona = new ImageView(getClass().getResource("/immagini/iconaAnteprima.png").toExternalForm());
-            icona.setFitWidth(25);
-            icona.setFitHeight(25);
-            icona.setPreserveRatio(true);
-            icona.setSmooth(true);
+            // Creo l'icona hover
+            ImageView iconaCestinoHover = new ImageView(imageCestinoHover);
+            iconaCestinoHover.setFitWidth(25);
+            iconaCestinoHover.setFitHeight(25);
+            iconaCestinoHover.setPreserveRatio(true);
+            iconaCestinoHover.setSmooth(true);
 
-            Label anteprima = new Label();
-            anteprima.setGraphic(icona);
-            anteprima.setStyle("-fx-cursor: hand;");
-            anteprima.setOnMouseClicked(event -> {
+            Label labelElimina = new Label();
+            labelElimina.setGraphic(iconaCestino);
+            labelElimina.setStyle("-fx-cursor: hand;");
+            labelElimina.setOnMouseClicked(event -> eliminaBrano(rowBrano, riga));
+            labelElimina.setOnMouseEntered(event -> labelElimina.setGraphic(iconaCestinoHover));
+            labelElimina.setOnMouseExited(event -> labelElimina.setGraphic(iconaCestino));
+
+
+            // Creo l'icona normale
+            ImageView iconaAnteprima = new ImageView(imageAnteprima);
+            iconaAnteprima.setFitWidth(25);
+            iconaAnteprima.setFitHeight(25);
+            iconaAnteprima.setPreserveRatio(true);
+            iconaAnteprima.setSmooth(true);
+
+            // Creo l'icona hover
+            ImageView iconaAnteprimaHover = new ImageView(imageAnteprimaHover);
+            iconaAnteprimaHover.setFitWidth(25);
+            iconaAnteprimaHover.setFitHeight(25);
+            iconaAnteprimaHover.setPreserveRatio(true);
+            iconaAnteprimaHover.setSmooth(true);
+
+            Label labelAnteprima = new Label();
+            labelAnteprima.setGraphic(iconaAnteprima);
+            labelAnteprima.setStyle("-fx-cursor: hand;");
+            labelAnteprima.setOnMouseClicked(event -> {
                 try {
                     mostraAnteprimaBrano(Integer.parseInt(rowBrano.get("ID_CANZONE").toString()));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             });
+            labelAnteprima.setOnMouseEntered(event -> labelAnteprima.setGraphic(iconaAnteprimaHover));
+            labelAnteprima.setOnMouseExited(event -> labelAnteprima.setGraphic(iconaAnteprima));
 
-            riga.getChildren().addAll(copertina, nomeBrano, spacer, anteprima, elimina);
+            riga.getChildren().addAll(copertina, nomeBrano, spacer, labelAnteprima, labelElimina);
             PaginaPaneUtente_vboxCanzoni.getChildren().add(riga);
         }
     }

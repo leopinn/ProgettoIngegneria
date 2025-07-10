@@ -485,7 +485,7 @@ public class PaginaPanePrincipale implements Initializable {
             if (parChiaveRicerca.isEmpty())  // Se ha terminato la sua ricerca
                 PaginaPanePrincipale_labelMusiche.setText("Esplora");
             else    // Se sta cercando
-                PaginaPanePrincipale_labelMusiche.setText("Ricerca");
+                PaginaPanePrincipale_labelMusiche.setText("Ricerca ...");
         }
 
         setGrigliaMusicaRicerca(parListaBrani);
