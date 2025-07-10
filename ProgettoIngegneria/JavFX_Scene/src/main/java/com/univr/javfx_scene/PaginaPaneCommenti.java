@@ -5,10 +5,16 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+
+import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -177,68 +183,95 @@ public class PaginaPaneCommenti {
     }
 
     private VBox creaVBoxCommento(Map<String, Object> commento, boolean isFiglio) {
-        String autore;
-        Label autoreLabel;
+            String autore;
+            Label autoreLabel;
 
-        VBox box = new VBox();
-        box.setSpacing(2);
-        box.getStyleClass().add("commento");
+            VBox contenutoBox = new VBox();
+            contenutoBox.setSpacing(2);
+            contenutoBox.getStyleClass().add("commento");
 
-        // Se l'utente che commenta è l'autore della canzone
-        if(rowCanzone.get("AUTORE").toString().equals(commento.get("NOME").toString())) {
-            autore = commento.get("NOME").toString() + " " + commento.get("COGNOME").toString()+ " (autore)";
-            autoreLabel = new Label(autore);
-            autoreLabel.setStyle("-fx-text-fill: #E5484D; -fx-font-weight: bold; -fx-font-size: 16; -fx-padding: 0 0 4 0;");
-        } else {
-            autore = commento.get("NOME").toString() + " " + commento.get("COGNOME").toString();
-            autoreLabel = new Label(autore);
-            autoreLabel.setStyle("-fx-text-fill: #6d24e1; -fx-font-weight: bold; -fx-font-size: 16; -fx-padding: 0 0 4 0;");
-        }
+            // Controllo autore
+            if (rowCanzone.get("AUTORE").toString().equals(commento.get("NOME").toString())) {
+                autore = commento.get("NOME").toString() + " " + commento.get("COGNOME").toString() + " (autore)";
+                autoreLabel = new Label(autore);
+                autoreLabel.setStyle("-fx-text-fill: #E5484D; -fx-font-weight: bold; -fx-font-size: 16; -fx-padding: 0 0 4 0;");
+            } else {
+                autore = commento.get("NOME").toString() + " " + commento.get("COGNOME").toString();
+                autoreLabel = new Label(autore);
+                autoreLabel.setStyle("-fx-text-fill: #6d24e1; -fx-font-weight: bold; -fx-font-size: 16; -fx-padding: 0 0 4 0;");
+            }
 
-        Label testoLabel = new Label(commento.get("TESTO").toString());
-        testoLabel.setWrapText(true);
-        testoLabel.setMaxWidth(400);
-        testoLabel.setStyle("-fx-font-size: 14; -fx-line-spacing: 5; -fx-text-fill: #ffffff");
+            Label testoLabel = new Label(commento.get("TESTO").toString());
+            testoLabel.setWrapText(true);
+            testoLabel.setMaxWidth(400);
+            testoLabel.setStyle("-fx-font-size: 14; -fx-line-spacing: 5; -fx-text-fill: #ffffff");
 
-        Label testoRispondi = new Label("Rispondi");
-        testoRispondi.setStyle("-fx-text-fill: #b1b1b1 ; -fx-underline: false; -fx-font-size: 12; -fx-padding: 4 0 4 0;");
-        testoRispondi.setOnMouseClicked(event -> {
-            rispondiCommento((Integer) commento.get("ID_COMMENTO"));
-        });
-        testoRispondi.setOnMouseEntered(event -> {testoRispondi.setStyle("-fx-text-fill: #b1b1b1 ; -fx-underline: true; -fx-font-size: 12; -fx-padding: 4 0 4 0; -fx-cursor: hand;");});
-        testoRispondi.setOnMouseExited(event -> {testoRispondi.setStyle("-fx-text-fill: #b1b1b1 ; -fx-underline: false; -fx-font-size: 12; -fx-padding: 4 0 4 0; -fx-cursor: default;");});
-
-        HBox rispondiBox = new HBox(testoRispondi);
-        rispondiBox.setAlignment(Pos.CENTER_RIGHT);
-
-        box.getChildren().addAll(autoreLabel, testoLabel, rispondiBox);
-
-        if (isFiglio) {
-            // Applica stile e margine per farla apparire più stretta e allineata a destra
-            box.setMaxWidth(400); // più stretta
-            box.setStyle("-fx-background-color: #292929; -fx-padding: 6 12 6 12; -fx-background-radius: 8;");
-            VBox.setMargin(box, new Insets(0, 0, 3, 60)); // margine sinistro per "indentare" a destra
-        } else {
-            box.setMaxWidth(Double.MAX_VALUE); // padre prende tutta la larghezza disponibile
-            VBox.setMargin(box, new Insets(0, 0, 3, 0)); // spaziatura tra i commenti
-        }
-
-        if (commento.get("ID_UTENTE").equals(objGenerici.getID_UTENTE()) || objGenerici.getUTENTE_NOME().equals("adm")) {
-            ContextMenu contextMenu = new ContextMenu();
-            MenuItem eliminaCommento = new MenuItem("✘ Elimina commento");
-            eliminaCommento.setId(commento.get("ID_COMMENTO").toString());
-            eliminaCommento.setOnAction(event -> {
-                cancellaCommentoSelezionato(eliminaCommento.getId());
+            Label testoRispondi = new Label("Rispondi");
+            testoRispondi.setStyle("-fx-text-fill: #b1b1b1 ; -fx-underline: false; -fx-font-size: 12; -fx-padding: 4 0 4 0;");
+            testoRispondi.setOnMouseClicked(event -> {
+                rispondiCommento((Integer) commento.get("ID_COMMENTO"));
             });
-            contextMenu.getItems().add(eliminaCommento);
-
-            box.setOnContextMenuRequested(event -> {
-                contextMenu.show(box, event.getScreenX(), event.getScreenY());
+            testoRispondi.setOnMouseEntered(event -> {
+                testoRispondi.setStyle("-fx-text-fill: #b1b1b1 ; -fx-underline: true; -fx-font-size: 12; -fx-padding: 4 0 4 0; -fx-cursor: hand;");
             });
-        }
+            testoRispondi.setOnMouseExited(event -> {
+                testoRispondi.setStyle("-fx-text-fill: #b1b1b1 ; -fx-underline: false; -fx-font-size: 12; -fx-padding: 4 0 4 0; -fx-cursor: default;");
+            });
 
-        return box;
-    }
+            HBox rispondiBox = new HBox(testoRispondi);
+            rispondiBox.setAlignment(Pos.CENTER_RIGHT);
+
+            contenutoBox.getChildren().addAll(autoreLabel, testoLabel, rispondiBox);
+
+            // Foto profilo tonda
+            ImageView fotoProfilo = new ImageView();
+            String pathFoto = ObjGenerici.ritornaFotoProfilo(String.valueOf(commento.get("ID_UTENTE")));
+            if (pathFoto.isEmpty()) pathFoto = ObjGenerici.ritornaFotoProfilo("fotoProfiloBase");
+
+            Image image = new Image(new File(pathFoto).toURI().toString());
+            fotoProfilo.setImage(image);
+            fotoProfilo.setFitWidth(40); // usa 10 se sei sicuro, ma è molto piccolo
+            fotoProfilo.setFitHeight(40);
+            fotoProfilo.setPreserveRatio(false);
+
+            Circle clip = new Circle(20, 20, 20); // raggio = metà larghezza/altezza
+            fotoProfilo.setClip(clip);
+
+            // HBox principale che contiene immagine e contenuto
+            HBox box = new HBox(10); // Spaziatura tra immagine e contenuto
+            box.getChildren().addAll(fotoProfilo, contenutoBox);
+            box.setAlignment(Pos.TOP_LEFT);
+            HBox.setHgrow(contenutoBox, Priority.ALWAYS);
+            box.setMaxWidth(Double.MAX_VALUE);
+
+            // Stili
+            if (isFiglio) {
+                contenutoBox.setMaxWidth(400);
+                contenutoBox.setStyle("-fx-background-color: #292929; -fx-padding: 6 12 6 12; -fx-background-radius: 8;");
+                VBox.setMargin(box, new Insets(0, 0, 3, 60));
+            } else {
+                contenutoBox.setMaxWidth(Double.MAX_VALUE);
+                VBox.setMargin(box, new Insets(0, 0, 3, 0));
+            }
+
+            // Context menu se è l'autore del commento o admin
+            if (commento.get("ID_UTENTE").equals(objGenerici.getID_UTENTE()) || objGenerici.getUTENTE_NOME().equals("adm")) {
+                ContextMenu contextMenu = new ContextMenu();
+                MenuItem eliminaCommento = new MenuItem("✘ Elimina commento");
+                eliminaCommento.setId(commento.get("ID_COMMENTO").toString());
+                eliminaCommento.setOnAction(event -> {
+                    cancellaCommentoSelezionato(eliminaCommento.getId());
+                });
+                contextMenu.getItems().add(eliminaCommento);
+                box.setOnContextMenuRequested(event -> {
+                    contextMenu.show(box, event.getScreenX(), event.getScreenY());
+                });
+            }
+            VBox boxFinale = new VBox(10);
+            boxFinale.getChildren().addAll(box);
+
+            return boxFinale;
+        }
 
     private VBox creaVBoxCommentoMinutaggio(Map<String, Object> commento) {
         String autore;
