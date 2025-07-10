@@ -24,7 +24,7 @@ public class PaginaPaneUtente implements Initializable {
     }
 
     private  ObjSql objSql = ObjSql.oggettoSql();
-    private ObjGenerici objGenerici;
+    private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();
 
     @FXML private AnchorPane PaginaPaneUtente_anteprimaCanzone;
     @FXML private VBox PaginaPaneUtente_vboxCanzoni;
@@ -40,12 +40,12 @@ public class PaginaPaneUtente implements Initializable {
     private void leggiBrani(){
         String locQuery="";
 
-        if(PaginaPaneLogin.UTENTE_NOME.equals("adm")) {
+        if(objGenerici.getUTENTE_NOME().equals("adm")) {
             locQuery = "SELECT * FROM CANZONE ORDER BY AUTORE ASC";
             PaginaPaneUtente_label.setText("Canzoni caricate sulla piattaforma");
 
         } else {    // Le canzoni caricate dall'utente corrente
-            locQuery = "SELECT * FROM CANZONE WHERE ID_UTENTE = " + PaginaPaneLogin.ID_UTENTE + " ORDER BY AUTORE ASC";
+            locQuery = "SELECT * FROM CANZONE WHERE ID_UTENTE = " + objGenerici.getID_UTENTE() + " ORDER BY AUTORE ASC";
             PaginaPaneUtente_label.setText("Le canzoni che hai caricato");
         }
 

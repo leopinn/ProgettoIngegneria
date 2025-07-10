@@ -16,21 +16,13 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class PaginaPaneImpostazioni implements Initializable {
-
     private  ObjSql objSql = ObjSql.oggettoSql();
+    private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();
 
-    @FXML
-    private Label PaginaImpostazioni_labelNomeUtente;
-    @FXML
-    private TextField PaginaImpostazioni_textEmail;
-    @FXML
-    private PasswordField PaginaImpostazioni_textPassword;
-    @FXML
-    private Label PaginaPaneImpostazioni_labelRichiestaAccount;
-    @FXML
-    private StackPane PaginaPaneImpostazioni_stackPane;
-    @FXML
-    private Label PaginaPaneImpostazioni_labelAmministratore;
+    @FXML private Label PaginaImpostazioni_labelNomeUtente, PaginaPaneImpostazioni_labelRichiestaAccount,PaginaPaneImpostazioni_labelAmministratore;
+    @FXML private TextField PaginaImpostazioni_textEmail;
+    @FXML private PasswordField PaginaImpostazioni_textPassword;
+    @FXML private StackPane PaginaPaneImpostazioni_stackPane;
 
     private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
 
@@ -40,11 +32,11 @@ public class PaginaPaneImpostazioni implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        PaginaImpostazioni_labelNomeUtente.setText(PaginaPaneLogin.UTENTE_NOME);
-        PaginaImpostazioni_textEmail.setText(PaginaPaneLogin.UTENTE_EMAIL);
+        PaginaImpostazioni_labelNomeUtente.setText(objGenerici.getUTENTE_NOME());
+        PaginaImpostazioni_textEmail.setText(objGenerici.getUTENTE_EMAIL());
 
         // Controllo se l'utente non è amministratore, nascondo le impostazioni
-        Map<String, Object> rowUtente=objSql.leggi(String.format("SELECT * FROM UTENTI WHERE ID_UTENTE=%s", PaginaPaneLogin.ID_UTENTE));
+        Map<String, Object> rowUtente=objSql.leggi(String.format("SELECT * FROM UTENTI WHERE ID_UTENTE=%s", objGenerici.getID_UTENTE()));
         if(Integer.parseInt(rowUtente.get("RUOLO").toString())!=1)
             PaginaPaneImpostazioni_labelAmministratore.setVisible(false);
     }
@@ -54,11 +46,11 @@ public class PaginaPaneImpostazioni implements Initializable {
         Map<String, Object> rowUtente = new LinkedHashMap<>();
 
         email=PaginaImpostazioni_textEmail.getText();
-        if(!email.equals(PaginaPaneLogin.UTENTE_EMAIL)) {
+        if(!email.equals(objGenerici.getUTENTE_EMAIL())) {
             rowUtente.put("EMAIL", email);
         }
 
-        String query= String.format("SELECT PASSWORD FROM UTENTI WHERE ID_UTENTE=%s", PaginaPaneLogin.ID_UTENTE);
+        String query= String.format("SELECT PASSWORD FROM UTENTI WHERE ID_UTENTE=%s", objGenerici.getID_UTENTE());
 
         Map<String, Object> loc_row = objSql.leggi(query);
         password=PaginaImpostazioni_textPassword.getText();
@@ -69,9 +61,9 @@ public class PaginaPaneImpostazioni implements Initializable {
         }
 
         if(!rowUtente.isEmpty()){
-            String where = "WHERE ID_UTENTE="+PaginaPaneLogin.ID_UTENTE;
+            String where = "WHERE ID_UTENTE="+objGenerici.getID_UTENTE();
             objSql.aggiorna("UTENTI", where, rowUtente);
-            PaginaPaneLogin.UTENTE_EMAIL=email; // Aggiorno la variabile globale
+            objGenerici.putUTENTE_EMAIL(email); // Aggiorno la variabile globale
             mostraLabelIscrizione();
         }
     }

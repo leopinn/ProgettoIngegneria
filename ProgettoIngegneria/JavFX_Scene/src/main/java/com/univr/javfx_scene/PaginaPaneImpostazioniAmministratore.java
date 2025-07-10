@@ -12,15 +12,16 @@ import java.net.URL;
 import java.util.*;
 
 public class PaginaPaneImpostazioniAmministratore implements Initializable {
+    private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();
+    private  ObjSql objSql = ObjSql.oggettoSql();
+
     private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
 
     public void setMainController(PaginaPrincipale controller) {
         this.mainController = controller;
     }
-    private  ObjSql objSql = ObjSql.oggettoSql();
 
-    @FXML
-    private TableView<UTENTI> PaginaPaneImpostazioniAmministrazione_tabelView;
+    @FXML private TableView<UTENTI> PaginaPaneImpostazioniAmministrazione_tabelView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -87,7 +88,7 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
                 UTENTI utente = row.getItem();
                 // Per evitare che l'amministratore possa auto autorizzarsi o sospendersi
                 if (utente != null) {
-                    if(Integer.parseInt(utente.getID_UTENTE())==PaginaPaneLogin.ID_UTENTE){
+                    if(Integer.parseInt(utente.getID_UTENTE())==objGenerici.getID_UTENTE()){
                         mostraMessaggio("Attenzione!!","Impossibile modificare se stessi");
                         return;
                     }
@@ -108,7 +109,7 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
             eliminaItem.setOnAction(e -> {
                 UTENTI utente = row.getItem();
                 if (utente != null) {
-                    if(Integer.parseInt(utente.getID_UTENTE())==PaginaPaneLogin.ID_UTENTE){
+                    if(Integer.parseInt(utente.getID_UTENTE())==objGenerici.getID_UTENTE()){
                         mostraMessaggio("Attenzione!!","Impossibile modificare se stessi");
                         return;
                     }

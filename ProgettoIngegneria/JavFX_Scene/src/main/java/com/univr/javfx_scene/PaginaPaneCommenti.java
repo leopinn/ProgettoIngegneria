@@ -15,6 +15,8 @@ import java.util.Map;
 
 public class PaginaPaneCommenti {
     private final ObjSql objSql = ObjSql.oggettoSql();
+    private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();
+
     private int ID_CANZONE;
     private List<Map<String, Object>> listaCommenti, listaCommentiRange;    // Messa pubblica per averla disponibile in tutta la gestione commenti
     private Map<String, Object> rowCommento, rowCanzone;            // Il commento attualmente selezionato e la canzone attuale in riproduzione
@@ -24,7 +26,6 @@ public class PaginaPaneCommenti {
     @FXML private VBox commentiContainer;
     @FXML private VBox PaginaPaneCommenti_vBoxMinutaggio;
     @FXML private TextArea commentoTextArea;
-
     @FXML private TextField PaginaPaneCommenti_testoInizio, PaginaPaneCommenti_testoFine;
 
     private VBox commentoMostrato = null;
@@ -33,6 +34,58 @@ public class PaginaPaneCommenti {
     private PaginaPrincipale mainController;
     public void setMainController(PaginaPrincipale mainController) {this.mainController=mainController;}
 
+    // Carica i commenti presenti nel db per quella canzone
+    public void caricaCommenti(int id_canzone) {
+        impostaTextField();
+        ID_CANZONE = id_canzone;
+
+        rowCanzone = objSql.leggi("SELECT * FROM CANZONE WHERE ID_CANZONE = " + ID_CANZONE);
+
+        commentiContainer.getChildren().clear();
+
+        // Carica tutti i commenti della canzone
+        listaCommenti = objSql.leggiLista("SELECT ID_COMMENTO,ID_CANZONE, UTENTI.ID_UTENTE, ID_PADRE, TESTO, RANGE_INIZIO, RANGE_FINE, UTENTI.NOME, UTENTI.COGNOME "+
+                "FROM COMMENTI "+
+                "INNER JOIN UTENTI ON UTENTI.ID_UTENTE=COMMENTI.ID_UTENTE "+
+                "WHERE ID_CANZONE = " + id_canzone + " AND (RANGE_INIZIO IS NULL OR RANGE_INIZIO='') AND (RANGE_FINE IS NULL OR RANGE_FINE='') ORDER BY ID_COMMENTO ASC");
+
+        // Leggo la lista dei commenti a minutaggio
+        listaCommentiRange = objSql.leggiLista("SELECT ID_COMMENTO,ID_CANZONE, UTENTI.ID_UTENTE, ID_PADRE, TESTO, RANGE_INIZIO, RANGE_FINE, UTENTI.NOME, UTENTI.COGNOME "+
+                "FROM COMMENTI "+
+                "INNER JOIN UTENTI ON UTENTI.ID_UTENTE=COMMENTI.ID_UTENTE "+
+                "WHERE ID_CANZONE = " + id_canzone + " AND (RANGE_INIZIO IS NOT NULL OR RANGE_INIZIO!='') AND (RANGE_FINE IS NOT NULL OR RANGE_FINE!='') ORDER BY ID_COMMENTO ASC");
+
+        if (listaCommenti == null) return;
+
+        // Filtra i commenti principali (padri) con ID_PADRE = null
+        for (Map<String, Object> commento : listaCommenti) {
+            if (commento.get("ID_PADRE") != null) continue; // solo padri
+
+            VBox commentoBox = creaVBoxCommento(commento, false);
+            commentiContainer.getChildren().add(commentoBox);
+
+            // Carica le risposte (figli)
+            for (Map<String, Object> risposta : listaCommenti) {
+                Object idPadre = risposta.get("ID_PADRE");
+                if (idPadre != null && idPadre.equals(commento.get("ID_COMMENTO"))) {
+                    VBox rispostaBox = creaVBoxCommento(risposta, true);
+                    commentiContainer.getChildren().add(rispostaBox);
+                }
+            }
+        }
+    }
+
+    private void impostaTextField(){
+        PaginaPaneCommenti_testoInizio.setTextFormatter(new TextFormatter<>(change -> {
+            String nuovoTesto = change.getControlNewText();
+            return nuovoTesto.matches("\\d*") ? change : null;
+        }));
+        PaginaPaneCommenti_testoFine.setTextFormatter(new TextFormatter<>(change -> {
+            String nuovoTesto = change.getControlNewText();
+            return nuovoTesto.matches("\\d*") ? change : null;
+        }));
+    }
+
     @FXML
     public void inviaCommento(ActionEvent event) {
         // codice da eseguire quando si clicca "Invia"
@@ -40,7 +93,7 @@ public class PaginaPaneCommenti {
 
         if (testo.trim().isEmpty()) {return;}
 
-        int utente = PaginaPaneLogin.ID_UTENTE;
+        int utente = objGenerici.getID_UTENTE();
 
 
         Map<String, Object> locRowCommento = new LinkedHashMap<>();
@@ -123,47 +176,6 @@ public class PaginaPaneCommenti {
         commentoTextArea.setText("");
     }
 
-    // Carica i commenti presenti nel db per quella canzone
-    public void caricaCommenti(int id_canzone) {
-        ID_CANZONE = id_canzone;
-
-        rowCanzone = objSql.leggi("SELECT * FROM CANZONE WHERE ID_CANZONE = " + ID_CANZONE);
-
-        commentiContainer.getChildren().clear();
-
-        // Carica tutti i commenti della canzone
-        listaCommenti = objSql.leggiLista("SELECT ID_COMMENTO,ID_CANZONE, UTENTI.ID_UTENTE, ID_PADRE, TESTO, RANGE_INIZIO, RANGE_FINE, UTENTI.NOME, UTENTI.COGNOME "+
-                "FROM COMMENTI "+
-                "INNER JOIN UTENTI ON UTENTI.ID_UTENTE=COMMENTI.ID_UTENTE "+
-                "WHERE ID_CANZONE = " + id_canzone + " AND (RANGE_INIZIO IS NULL OR RANGE_INIZIO='') AND (RANGE_FINE IS NULL OR RANGE_FINE='') ORDER BY ID_COMMENTO ASC");
-
-        // Leggo la lista dei commenti a minutaggio
-        listaCommentiRange = objSql.leggiLista("SELECT ID_COMMENTO,ID_CANZONE, UTENTI.ID_UTENTE, ID_PADRE, TESTO, RANGE_INIZIO, RANGE_FINE, UTENTI.NOME, UTENTI.COGNOME "+
-                "FROM COMMENTI "+
-                "INNER JOIN UTENTI ON UTENTI.ID_UTENTE=COMMENTI.ID_UTENTE "+
-                "WHERE ID_CANZONE = " + id_canzone + " AND (RANGE_INIZIO IS NOT NULL OR RANGE_INIZIO!='') AND (RANGE_FINE IS NOT NULL OR RANGE_FINE!='') ORDER BY ID_COMMENTO ASC");
-
-        if (listaCommenti == null) return;
-
-        // Filtra i commenti principali (padri) con ID_PADRE = null
-        for (Map<String, Object> commento : listaCommenti) {
-            if (commento.get("ID_PADRE") != null) continue; // solo padri
-
-            VBox commentoBox = creaVBoxCommento(commento, false);
-            commentiContainer.getChildren().add(commentoBox);
-
-            // Carica le risposte (figli)
-            for (Map<String, Object> risposta : listaCommenti) {
-                Object idPadre = risposta.get("ID_PADRE");
-                if (idPadre != null && idPadre.equals(commento.get("ID_COMMENTO"))) {
-                    VBox rispostaBox = creaVBoxCommento(risposta, true);
-                    commentiContainer.getChildren().add(rispostaBox);
-                }
-            }
-        }
-    }
-
-
     private VBox creaVBoxCommento(Map<String, Object> commento, boolean isFiglio) {
         String autore;
         Label autoreLabel;
@@ -211,7 +223,7 @@ public class PaginaPaneCommenti {
             VBox.setMargin(box, new Insets(0, 0, 3, 0)); // spaziatura tra i commenti
         }
 
-        if (commento.get("ID_UTENTE").equals(PaginaPaneLogin.ID_UTENTE) || PaginaPaneLogin.UTENTE_NOME.equals("adm")) {
+        if (commento.get("ID_UTENTE").equals(objGenerici.getID_UTENTE()) || objGenerici.getUTENTE_NOME().equals("adm")) {
             ContextMenu contextMenu = new ContextMenu();
             MenuItem eliminaCommento = new MenuItem("✘ Elimina commento");
             eliminaCommento.setId(commento.get("ID_COMMENTO").toString());
@@ -256,7 +268,7 @@ public class PaginaPaneCommenti {
         box.setMaxWidth(Double.MAX_VALUE); // padre prende tutta la larghezza disponibile
         VBox.setMargin(box, new Insets(0, 0, 3, 0)); // spaziatura tra i commenti
 
-        if (commento.get("ID_UTENTE").equals(PaginaPaneLogin.ID_UTENTE) || PaginaPaneLogin.UTENTE_NOME.equals("adm")) {
+        if (commento.get("ID_UTENTE").equals(objGenerici.getID_UTENTE()) || objGenerici.getUTENTE_NOME().equals("adm")) {
             ContextMenu contextMenu = new ContextMenu();
             MenuItem eliminaCommento = new MenuItem("✘ Elimina commento");
             eliminaCommento.setId(commento.get("ID_COMMENTO").toString());

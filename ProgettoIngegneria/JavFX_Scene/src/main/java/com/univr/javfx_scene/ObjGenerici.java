@@ -18,6 +18,54 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ObjGenerici {
+    private static ObjGenerici instance;
+
+    private int ID_UTENTE;
+    private String UTENTE_NOME, UTENTE_EMAIL;
+
+    int a;
+
+    // Inizializzo il costruttore
+    public ObjGenerici(int idUtente, String utenteNome, String utenteEmail) {
+        ID_UTENTE = idUtente;
+        UTENTE_NOME = utenteNome;
+        UTENTE_EMAIL = utenteEmail;
+
+        instance=this;
+    }
+
+    // Metodo statico per ottenere l'istanza
+    public static ObjGenerici oggettoGenerico() {
+        return instance;
+    }
+
+    /* ---------- Inizio - UTILIZZO VARIABILI GLOBALI ----------*/
+
+    public int getID_UTENTE() {
+        return ID_UTENTE;
+    }
+
+    public String getUTENTE_NOME() {
+        return UTENTE_NOME;
+    }
+
+    public String getUTENTE_EMAIL() {
+        return UTENTE_EMAIL;
+    }
+
+    public void putID_UTENTE(int parID_UTENTE) {
+        ID_UTENTE=parID_UTENTE;
+    }
+
+    public void putUTENTE_NOME(String parUTENTE_NOME) {
+        UTENTE_NOME=parUTENTE_NOME;
+    }
+
+    public void putUTENTE_EMAIL(String parUTENTE_EMAIL) {
+        UTENTE_EMAIL=parUTENTE_EMAIL;
+    }
+    /* ---------- Fine - UTILIZZO VARIABILI GLOBALI ----------*/
+
 
     /* ---------- Inizio - GESTIONE POPUP ----------*/
 

@@ -38,13 +38,13 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 public class PaginaPrincipale implements Initializable {
-
     private  ObjSql objSql = ObjSql.oggettoSql();
-    private  ObjGenerici objGenerici;
+    private  final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();
 
     private PaginaPanePrincipale controller;
     public MediaPlayer mediaPlayer;
     public int ID_CANZONE;  // ID della canzone attualmente in ascolto
+    private int isCommentiNascosti=0;       //0=no, 1=si nascosti.
 
     private PaginaPaneCommenti commentiController;      // Per gestire i commenti in certi range
 
@@ -61,7 +61,6 @@ public class PaginaPrincipale implements Initializable {
 
     private Button pulsanteVideo;
     private List<Map<String, Object>> listaBrani, listaBraniMancanti;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -185,12 +184,14 @@ public class PaginaPrincipale implements Initializable {
 
         PaginaPrincipale_borderPane.setRight(registerPane);
         BorderPane.setMargin(registerPane, new Insets(0, 10, 0, 10)); // top, right, bottom, left
+        isCommentiNascosti=0;
     }
 
     public void nascondiCommenti() {
         VBox locVBoxSpacer = new VBox();
         locVBoxSpacer.setPrefWidth(10);
         PaginaPrincipale_borderPane.setRight(locVBoxSpacer);
+        isCommentiNascosti=1;
     }
 
     /* ---------- FINE - CAMBIO SCHERMATA ----------*/
@@ -246,8 +247,9 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_labelAutoreCanzone.setText(rowBrano.get("AUTORE").toString());
         PaginaPrincipale_labelAutoreCanzone.setVisible(true);
 
-        // Sezione commenti del brano
-        mostraCommenti(parId);
+        // Sezione commenti del brano. Se riproduzione casuale, non li mostor
+        if(isCommentiNascosti==0)
+            mostraCommenti(parId);
 
         // Aggiungi pulsante YT
         if (pulsanteVideo != null) {

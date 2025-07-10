@@ -20,24 +20,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class PaginaPaneIscrizione {
-
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-
     private String nome, cognome, email, ripetiEmail, password, ripetiPassword;
     private LocalDate dataNascita;
 
-    @FXML
-    TextField PaginaIscrizione_textNome, PaginaIscrizione_textCognome, PaginaIscrizione_textEmail, PaginaIscrizione_textRipetiEmail;
-    @FXML
-    PasswordField PaginaIscrizione_textPassword, PaginaIscrizione_textRipetiPassword;
-    @FXML
-    DatePicker PaginaIscrizione_dataNascita;
-    @FXML
-    Label PaginaIscrizione_labelErrore;
-    @FXML
-    VBox paginaIscrizione_vBox;
+    @FXML private TextField PaginaIscrizione_textNome, PaginaIscrizione_textCognome, PaginaIscrizione_textEmail, PaginaIscrizione_textRipetiEmail;
+    @FXML private PasswordField PaginaIscrizione_textPassword, PaginaIscrizione_textRipetiPassword;
+    @FXML private DatePicker PaginaIscrizione_dataNascita;
+    @FXML private Label PaginaIscrizione_labelErrore;
+    @FXML private VBox paginaIscrizione_vBox;
 
     private PaginaLogin mainController;
 

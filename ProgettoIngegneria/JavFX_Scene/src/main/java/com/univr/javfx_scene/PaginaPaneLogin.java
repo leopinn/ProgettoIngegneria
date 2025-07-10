@@ -18,23 +18,21 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public class PaginaPaneLogin {
+    // Dichiaro l'oggetto generico che poi inizializzo
+    private ObjGenerici objGenerici;
+
     // Dichiarazione variabili pubbliche
-    public static int ID_UTENTE;
-    public static String UTENTE_NOME;
-    public static String UTENTE_EMAIL;
-
-    @FXML
-    TextField PaginaLogin_nameTextField;
-
-    @FXML
-    PasswordField PaginaLogin_passwordField;
+    private static int ID_UTENTE;
+    private static String UTENTE_PASSWORD;
+    private static String UTENTE_NOME;
+    private static String UTENTE_EMAIL;
 
     private Stage stage;
 
-    @FXML
-    private Label PaginaLogin_labelErrore;
-    @FXML
-    private PaginaLogin mainController;
+    @FXML private Label PaginaLogin_labelErrore;
+    @FXML private PaginaLogin mainController;
+    @FXML private TextField PaginaLogin_nameTextField;
+    @FXML private PasswordField PaginaLogin_passwordField;
 
     public void setMainController(PaginaLogin controller) {
         this.mainController = controller;
@@ -52,6 +50,7 @@ public class PaginaPaneLogin {
             return;
         }
 
+        // Login avvenuto con successo
         login(event, loc_username, loc_password);
     }
 
@@ -83,9 +82,12 @@ public class PaginaPaneLogin {
         // Se è andato tutto a buon fine, salvo in variabili globali ID_UTENTE e NOME
         int loc_chiave = (int) loc_row.get("ID_UTENTE");
         String loc_username = (String) loc_row.get("NOME");
-        ID_UTENTE=loc_chiave;
-        UTENTE_NOME=loc_username;
-        UTENTE_EMAIL = (String) loc_row.get("EMAIL");
+        int idUtente=loc_chiave;
+        String utenteNome=loc_username;
+        String utenteEmail = (String) loc_row.get("EMAIL");
+
+        // Inizializzo l'oggetto generico
+        objGenerici=new ObjGenerici(idUtente, utenteNome, utenteEmail);
 
         return 0;
     }

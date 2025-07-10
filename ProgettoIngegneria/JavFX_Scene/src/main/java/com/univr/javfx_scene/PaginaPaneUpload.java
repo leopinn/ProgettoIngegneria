@@ -21,12 +21,12 @@ import java.nio.file.StandardCopyOption;
 import java.time.Year;
 import java.util.*;
 
-import static com.univr.javfx_scene.PaginaPaneLogin.UTENTE_NOME;
-
 public class PaginaPaneUpload {
+    private  ObjSql objSql = ObjSql.oggettoSql();
+    private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();
+
     private StackPane mainController;
     private PaginaPaneUtente paneUtenteControllore;
-    private  ObjSql objSql = ObjSql.oggettoSql();
 
     private String nomeUtente, autore, titolo, link_youtube, anno_composizione, genere, ruolo, strumenti;
     private int ID_CANZONE;
@@ -35,20 +35,16 @@ public class PaginaPaneUpload {
     private File fileMusica, fileCopertina, filePdf;
 
 
-    @FXML private TextField PaginaPaneUpload_textTitolo, PaginaPaneUpload_textLink, PaginaPaneUpload_textAnno, PaginaPaneUpload_textNuovoAutore;
-    @FXML private ComboBox<String> PaginaPaneUpload_comboGenere, PaginaPaneUpload_comboAutore;
+    @FXML private TextField PaginaPaneUpload_textTitolo, PaginaPaneUpload_textLink, PaginaPaneUpload_textAnno, PaginaPaneUpload_textNuovoAutore,textNuovoStrumento, textNuovoGenere;
+    @FXML private ComboBox<String> PaginaPaneUpload_comboGenere, PaginaPaneUpload_comboAutore, comboRuolo;
     @FXML private Label PaginaPaneUplaod_labelMusica, PaginaPaneUplaod_labelCopertina, PaginaPaneUplaod_labelPdf;
     @FXML private CheckBox checkboxUsaNomeUtente;
-    @FXML private ComboBox<String> comboRuolo;
     @FXML private ListView<String> listStrumenti;
-    @FXML private TextField textNuovoStrumento;
-    @FXML private TextField textNuovoGenere;
-
 
     public void setMainController(StackPane controller, PaginaPaneUtente paneUtenteControllore) {
         this.mainController = controller;
         this.paneUtenteControllore=paneUtenteControllore;
-        this.nomeUtente = UTENTE_NOME; // recupera il nome utente
+        this.nomeUtente = objGenerici.getUTENTE_NOME(); // recupera il nome utente
     }
 
 
@@ -249,8 +245,8 @@ public class PaginaPaneUpload {
         rowCanzone.put("LINK_YOUTUBE", link_youtube);
         rowCanzone.put("RUOLO", ruolo);
         rowCanzone.put("STRUMENTI", strumenti);
-        rowCanzone.put("UTENTE_INS", UTENTE_NOME);
-        rowCanzone.put("ID_UTENTE", PaginaPaneLogin.ID_UTENTE);
+        rowCanzone.put("UTENTE_INS", objGenerici.getUTENTE_NOME());
+        rowCanzone.put("ID_UTENTE", objGenerici.getID_UTENTE());
 
         ObjSql objSql = ObjSql.oggettoSql();
         int risultato = objSql.inserisci("CANZONE", rowCanzone);

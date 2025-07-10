@@ -33,7 +33,7 @@ import javafx.stage.DirectoryChooser;
 public class PaginaPanePrincipale implements Initializable {
 
     private  ObjSql objSql = ObjSql.oggettoSql();
-    private  ObjGenerici objGenerici;
+    private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();;
 
     private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
     private List<Map<String, Object>> listaBrani, listaBraniTutto, listaBraniGeneri, listaBraniArtisti, listaBraniMancanti, listaTipi;
@@ -78,8 +78,13 @@ public class PaginaPanePrincipale implements Initializable {
         listaBraniMancanti.remove(trovaBrano(parId, listaBraniMancanti));
     }
 
+    private void aggiungiBrano(String parId){
+        listaBraniMancanti.add(trovaBrano(parId, listaBrani));
+    }
+
     /* ---------- Inizio - GESTIONE MUSICA AUTOMATICA ----------*/
 
+    // isCasuale=0 -> no. isCasuale=1 -> è casuale
     private void selezionaMusica(String parId, int isCasuale) throws IOException {
         // Se listaBrani è ancora da inizializzare, ossia se siamo appena passati da un tipo ad un altro (Tutto, Generi, Artisti)
         if(listaBrani==null){
@@ -94,7 +99,7 @@ public class PaginaPanePrincipale implements Initializable {
                     listaBrani = listaBraniArtisti; // Se abbiamo appena premuto una card dentro Artisti per la prima volta
                     break;
                 case 3:
-                    // Da gestire
+                    // Da gestire concerti
                     break;
                 default:
                     listaBrani=listaBraniTutto;
@@ -156,9 +161,11 @@ public class PaginaPanePrincipale implements Initializable {
     }
 
     public void canzonePrecedente() throws IOException {
+        // Se non ci sono altre canzoni precedenti, continuo a ripetere la stessa
         if(codaBrani.indexOf(canzoneCorrente) == 0) {
             selezionaMusica(String.valueOf(canzoneCorrente), 1);
         } else {
+            aggiungiBrano(String.valueOf(canzoneCorrente));  // Prima di riprodurre la musica, ripristino la successiva
             selezionaMusica(codaBrani.get(codaBrani.indexOf(canzoneCorrente) - 1).toString(), 1);
         }
     }
@@ -174,6 +181,11 @@ public class PaginaPanePrincipale implements Initializable {
     }
 
     /* ---------- Fine - GESTIONE MUSICA AUTOMATICA ----------*/
+
+
+
+
+
 
     /* ---------- Inizio - GESTIONE GRIGLIA TUTTO ----------*/
 
