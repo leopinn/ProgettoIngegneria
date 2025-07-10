@@ -1,26 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="PaginaPaneImpostazioniAmministrazione_anchoraPane"
-            prefHeight="400.0" prefWidth="600.0"
-            styleClass="PaginaPaneImpostazioniAmministrazione_anchoraPane"
-            stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneImpostazioniAmministratore">
+<VBox alignment="CENTER" prefHeight="500" prefWidth="500" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneImpostazioniAmministratore">
    <children>
-      <VBox fx:id="PaginaPaneImpostazioniAmministrazione_vBox" prefHeight="200.0" prefWidth="100.0"
-            styleClass="PaginaPaneImpostazioniAmministrazione_vBox" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0"
-            AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
-         <children>
-            <Label fx:id="PaginaPaneImpostazioniAmministrazione_label" styleClass="PaginaPaneImpostazioniAmministrazione_label" text="Lista utenti registrati" />
-            <TableView fx:id="PaginaPaneImpostazioniAmministrazione_tabelView" styleClass="PaginaPaneImpostazioniAmministrazione_tabelView" VBox.vgrow="ALWAYS">
-              <columns>
-              </columns>
-            </TableView>
-         </children>
-      </VBox>
+      <AnchorPane maxHeight="700.0" maxWidth="300.0" styleClass="PaginaPaneUpload_anchorPanePrincipale" VBox.vgrow="ALWAYS">
+   <children>
+            <HBox prefHeight="300.0" styleClass="PaginaPanePrincipale_parteSuperiore" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+            <Label fx:id="PaginaPaneImpostazioniAmministrazione_label" prefWidth="500.0" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Lista utenti registrati">
+               <padding>
+                  <Insets left="20.0" top="30.0" />
+               </padding>
+            </Label>
+               </children>
+            </HBox>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="PaginaPrincipale_scrollPane" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="150.0">
+         <content>
+            <VBox fx:id="PaginaPaneImpostazioniAmministrazione_vBox" styleClass="PaginaPaneUtente_vboxCanzoni" />
+         </content>
+      </ScrollPane>
+            <HBox alignment="CENTER_RIGHT" prefHeight="80.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#indietro" styleClass="buttonRosso" text="Indietro" />
+               </children>
+            </HBox>
    </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
 </AnchorPane>
+   </children>
+</VBox>
