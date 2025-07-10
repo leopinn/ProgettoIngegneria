@@ -95,7 +95,7 @@ public class ObjGenerici {
     }
 
 
-    private static void generaPopUp(Label contenuto, Node parNodo){
+    public static void generaPopUp(Label contenuto, Node parNodo){
         Popup popup = new Popup();
         popup.getContent().add(contenuto);
         popup.setAutoFix(true);
@@ -160,6 +160,8 @@ public class ObjGenerici {
             locPath = "impostazioni/fotoProfilo/" + parNome + ".png";
         if(!new File(locPath).exists())
             locPath = "impostazioni/fotoProfilo/" + parNome + ".jpeg";
+        if(!new File(locPath).exists())
+            locPath="impostazioni/fotoProfilo/fotoProfiloBase.png";     // Foto standard di base
         if(!new File(locPath).exists())
             locPath="";
         return locPath;

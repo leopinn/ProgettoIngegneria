@@ -130,6 +130,16 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_borderPane.setCenter(PaginaPrincipale_stackPane);
     }
 
+    public void PaginaPaneImpostazioniAmministratore() throws IOException {
+        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneImpostazioniAmministratore.fxml"));
+        Parent registerPane = loader.load();
+
+        PaginaPaneImpostazioniAmministratore controller = loader.getController();
+        controller.setMainController(this);  // <<< passaggio chiave
+
+        PaginaPrincipale_borderPane.setCenter(registerPane);*/
+    }
+
     public void upload(ActionEvent actionEvent) throws IOException {
         // Imposto al centro dello stack pane paginaUtente, come sfondo
         PaginaPrincipale_stackPane.getChildren().clear();   // Ogni volta che chiamo upload, meglio pulire lo stack
@@ -160,16 +170,6 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_stackPane.getChildren().add(canzonePane);
         PaginaPrincipale_borderPane.setCenter(PaginaPrincipale_stackPane);
 
-    }
-
-    public void PaginaPaneImpostazioniAmministratore() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneImpostazioniAmministratore.fxml"));
-        Parent registerPane = loader.load();
-
-        PaginaPaneImpostazioniAmministratore controller = loader.getController();
-        controller.setMainController(this);  // <<< passaggio chiave
-
-        PaginaPrincipale_borderPane.setCenter(registerPane);
     }
 
     public void paginaCanzone() throws IOException {

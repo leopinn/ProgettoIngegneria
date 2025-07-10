@@ -2,9 +2,12 @@ package com.univr.javfx_scene;
 
 import com.univr.javfx_scene.Classi.UTENTI;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -23,7 +26,7 @@ public class PaginaPaneImpostazioni implements Initializable {
     private  ObjSql objSql = ObjSql.oggettoSql();
     private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();
 
-    @FXML private Label PaginaImpostazioni_labelNomeUtente, PaginaPaneImpostazioni_labelRichiestaAccount,PaginaPaneImpostazioni_labelAmministratore;
+    @FXML private Label PaginaImpostazioni_labelNomeUtente, PaginaPaneImpostazioni_labelAmministratore;
     @FXML private TextField PaginaImpostazioni_textEmail;
     @FXML private PasswordField PaginaImpostazioni_textPassword;
     @FXML private HBox PaginaPaneImpostazioni_hboxImmagine;
@@ -66,9 +69,6 @@ public class PaginaPaneImpostazioni implements Initializable {
 
     private void caricaImmagineUtente(){
         String locPath= ObjGenerici.ritornaFotoProfilo(String.valueOf(objGenerici.getID_UTENTE()));
-
-        if(locPath.isEmpty())
-            locPath= ObjGenerici.ritornaFotoProfilo("fotoProfiloBase");
 
         Image immagine = new Image(new File(locPath).toURI().toString());
         PaginaPaneImpostazioni_fotoProfiloUtente.setImage(immagine);
@@ -167,6 +167,15 @@ public class PaginaPaneImpostazioni implements Initializable {
     }
 
     public void mostraImpostazioniAmministratore() throws IOException {
-        mainController.PaginaPaneImpostazioniAmministratore();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneImpostazioniAmministratore.fxml"));
+        Parent registerPane = loader.load();
+
+        PaginaPaneImpostazioniAmministratore controller = loader.getController();
+        controller.setMainController(this, stackPaneMainController);
+
+        // Aggiunge impostazioniPane sopra
+        stackPaneMainController.getChildren().add(registerPane);
+       // mainControlle.setCenter(stackPaneMainController);
+        //mainController.PaginaPaneImpostazioniAmministratore()
     }
 }
