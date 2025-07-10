@@ -53,6 +53,8 @@ public class PaginaPaneUtente implements Initializable {
     }
 
     public void popolaLista() {
+        PaginaPaneUtente_vboxCanzoni.getChildren().clear();
+
         for (Map<String, Object> rowBrano : listaBrani) {
             HBox riga = new HBox(10);
             riga.setStyle("""

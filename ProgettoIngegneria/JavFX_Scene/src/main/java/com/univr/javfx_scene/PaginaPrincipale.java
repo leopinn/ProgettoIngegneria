@@ -47,6 +47,7 @@ public class PaginaPrincipale implements Initializable {
     private int isCommentiNascosti=0;       //0=no, 1=si nascosti.
 
     private PaginaPaneCommenti commentiController;      // Per gestire i commenti in certi range
+    private Parent PaginaPanePrincipaleParent;          // per impilarci sopra altre schermate
 
     @FXML private BorderPane PaginaPrincipale_borderPane;
     @FXML private ImageView PaginaPrincipale_imageCopertina;
@@ -88,14 +89,17 @@ public class PaginaPrincipale implements Initializable {
     /* ---------- INIZIO - CAMBIO SCHERMATA ----------*/
 
     public void paginaPrincipale() throws IOException {
+        PaginaPrincipale_stackPane.getChildren().clear();   // Ogni volta che torno in home pulisco lo stack pane
+
         FXMLLoader loaderPrincipale = new FXMLLoader(getClass().getResource("PaginaPanePrincipale.fxml"));
-        Parent registerPane = loaderPrincipale.load();
+        PaginaPanePrincipaleParent = loaderPrincipale.load();
 
         // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
         controller = loaderPrincipale.getController();
         controller.setMainController(this);  // <<< passaggio chiave
 
-        PaginaPrincipale_borderPane.setCenter(registerPane);
+        PaginaPrincipale_stackPane.getChildren().add(PaginaPanePrincipaleParent);
+        PaginaPrincipale_borderPane.setCenter(PaginaPrincipale_stackPane);
     }
 
     public void paginaUtente() throws IOException {
@@ -111,18 +115,25 @@ public class PaginaPrincipale implements Initializable {
 
     public void impostazioni() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneImpostazioni.fxml"));
-        Parent registerPane = loader.load();
+        Parent impostazioniPane = loader.load();
 
-        // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
-        PaginaPaneImpostazioni controller = loader.getController();
-        controller.setMainController(this);  // <<< passaggio chiave
+        PaginaPaneImpostazioni controllerImpostazioni = loader.getController();
+        controllerImpostazioni.setMainController(this, PaginaPrincipale_stackPane);  // Passaggio chiave
 
-        nascondiCommenti();
-        PaginaPrincipale_borderPane.setCenter(registerPane);
+        // Applica sfocatura allo sfondo (pagina principale)
+        Node background = PaginaPrincipale_stackPane.getChildren().get(0);
+        background.setEffect(new GaussianBlur(10));
+        background.setDisable(true);        // Disabilito la schermata di sfondo
+
+        // Aggiunge impostazioniPane sopra
+        PaginaPrincipale_stackPane.getChildren().add(impostazioniPane);
+        PaginaPrincipale_borderPane.setCenter(PaginaPrincipale_stackPane);
     }
 
     public void upload(ActionEvent actionEvent) throws IOException {
         // Imposto al centro dello stack pane paginaUtente, come sfondo
+        PaginaPrincipale_stackPane.getChildren().clear();   // Ogni volta che chiamo upload, meglio pulire lo stack
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneUtente.fxml"));
         Parent utentePane = loader.load();
 
@@ -206,7 +217,8 @@ public class PaginaPrincipale implements Initializable {
     }
 
     public void logout(ActionEvent event) throws IOException {
-        mediaPlayer.stop();
+        if(mediaPlayer!=null)   // Questo nel caso in cui non fosse stata ancora avviata una musica prima del logout
+            mediaPlayer.stop();
 
         Parent root = FXMLLoader.load(getClass().getResource("PaginaLogin.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();  // Mi recupero lo stage corrente

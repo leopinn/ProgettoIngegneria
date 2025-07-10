@@ -4,55 +4,63 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="PaginaImpostazioni_anchorPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneImpostazioni">
+<VBox alignment="CENTER" prefHeight="500" prefWidth="500" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneImpostazioni">
    <children>
-      <ScrollPane fx:id="PaginaImpostazioni_scrollPane" hbarPolicy="NEVER" prefHeight="494.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <VBox fx:id="PaginaImpostazioni_vBox" prefHeight="200.0" prefWidth="100.0" styleClass="PaginaImpostazioni_vBox" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="50.0">
+      <AnchorPane maxHeight="700" maxWidth="300" styleClass="PaginaPaneUpload_anchorPanePrincipale" VBox.vgrow="ALWAYS">
+   <children>
+      <HBox prefHeight="300.0" styleClass="PaginaPanePrincipale_parteSuperiore" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <StackPane fx:id="PaginaPaneImpostazioni_stackPane" managed="false" prefHeight="50.0" prefWidth="200.0">
+            <Label prefHeight="100.0" prefWidth="500.0" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Impostazioni utente">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin></Label>
+         </children>
+      </HBox>
+      <VBox fx:id="PaginaImpostazioni_vBox" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="PaginaImpostazioni_vBox" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="150.0">
+         <children>
+            <HBox fx:id="PaginaPaneImpostazioni_hboxImmagine" prefHeight="200" prefWidth="Infinity" spacing="20.0">
                <children>
-                  <Label fx:id="PaginaPaneImpostazioni_labelRichiestaAccount" styleClass="PaginaImpostazioni_labelRichiestaAccount" text="Profilo salvato con successo!" />
+                  <ImageView fx:id="PaginaPaneImpostazioni_fotoProfiloUtente" fitHeight="150" fitWidth="150" pickOnBounds="true" preserveRatio="true" />
+                  <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="119.0" spacing="10.0">
+                     <children>
+                        <Label fx:id="PaginaImpostazioni_labelNomeUtente" alignment="TOP_LEFT" minWidth="500" styleClass="PaginaPaneCanzone_titolo" text="Nome" />
+                     </children>
+                  </VBox>
                </children>
-            </StackPane>
-            <Label styleClass="labelBiancaPiccola" text="Nome Utente:">
+            </HBox>
+            <Label styleClass="labelBiancaMedia" text="E-mail:">
                <font>
                   <Font size="16.0" />
                </font>
-               <padding>
-                  <Insets top="10.0" />
-               </padding></Label>
-            <Label fx:id="PaginaImpostazioni_labelNomeUtente" styleClass="PaginaImpostazioni_labelNomeUtente" text="Label" />
-            <Label styleClass="labelBiancaPiccola" text="E-mail:">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <padding>
-                  <Insets top="10.0" />
-               </padding></Label>
-            <TextField fx:id="PaginaImpostazioni_textEmail" styleClass="textFieldGenerico" />
-            <Label styleClass="labelBiancaPiccola" text="Password:">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <padding>
-                  <Insets top="10.0" />
-               </padding></Label>
-            <PasswordField fx:id="PaginaImpostazioni_textPassword" styleClass="textFieldGenerico" />
-            <Label fx:id="PaginaPaneImpostazioni_labelAmministratore" alignment="TOP_LEFT" onMouseClicked="#mostraImpostazioniAmministratore" styleClass="labelBiancaMedia" text="Impostazioni amministratore" underline="true">
                <padding>
                   <Insets top="10.0" />
                </padding>
+            </Label>
+            <TextField fx:id="PaginaImpostazioni_textEmail" maxWidth="400.0" styleClass="textFieldGenerico" />
+            <Label styleClass="labelBiancaMedia" text="Password:">
                <font>
                   <Font size="16.0" />
-               </font></Label>
+               </font>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </Label>
+            <PasswordField fx:id="PaginaImpostazioni_textPassword" maxWidth="400.0" styleClass="textFieldGenerico" />
+            <Label fx:id="PaginaPaneImpostazioni_labelAmministratore" alignment="TOP_LEFT" onMouseClicked="#mostraImpostazioniAmministratore" styleClass="labelBiancaMedia" text="Impostazioni amministratore" underline="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </Label>
             <HBox fx:id="PaginaImpostazioni_hBox" alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" styleClass="PaginaImpostazioni_hBox">
                <children>
                   <Button fx:id="PaginaImpostazioni_bottoneAnnulla" mnemonicParsing="false" onAction="#annulla" styleClass="buttonRosso" text="Annulla" />
@@ -63,3 +71,5 @@
       </VBox>
    </children>
 </AnchorPane>
+   </children>
+</VBox>

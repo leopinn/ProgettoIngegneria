@@ -6,11 +6,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
 import javafx.stage.*;
 import javafx.util.Duration;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -152,6 +149,19 @@ public class ObjGenerici {
             locPath = "upload/copertine/" + parId + ".png";
         if(!new File(locPath).exists())
             locPath = "upload/copertine/" + parId + ".jpeg";
+        if(!new File(locPath).exists())
+            locPath="";
+        return locPath;
+    }
+
+    public static String ritornaFotoProfilo(String parNome){
+        String locPath = "impostazioni/fotoProfilo/" + parNome + ".jpg";
+        if(!new File(locPath).exists())
+            locPath = "impostazioni/fotoProfilo/" + parNome + ".png";
+        if(!new File(locPath).exists())
+            locPath = "impostazioni/fotoProfilo/" + parNome + ".jpeg";
+        if(!new File(locPath).exists())
+            locPath="";
         return locPath;
     }
 
