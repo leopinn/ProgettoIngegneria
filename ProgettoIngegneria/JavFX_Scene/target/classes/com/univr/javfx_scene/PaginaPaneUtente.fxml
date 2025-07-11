@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.Separator?>
 <AnchorPane prefHeight="634.0" prefWidth="1452.0" styleClass="PaginaPaneUtente_anchoraPane" stylesheets="Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUtente">
    <children>
       <Label fx:id="PaginaPaneUtente_label" prefWidth="1000" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Lista brani">
@@ -14,6 +15,7 @@
             <Insets left="20.0" top="30.0" />
          </padding>
       </Label>
+      <Separator orientation="HORIZONTAL" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
          <children>
             <ScrollPane prefWidth="740" styleClass="PaginaPrincipale_scrollPane">
