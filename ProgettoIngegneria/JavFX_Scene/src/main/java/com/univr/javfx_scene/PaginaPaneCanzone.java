@@ -6,7 +6,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -41,8 +40,8 @@ public class PaginaPaneCanzone {
     private VBox boxDocumenti;
     @FXML
     private VBox boxMedia;
-
-
+    @FXML
+    private VBox paginaContenuto;
 
     public void setMainController(PaginaPrincipale controller) {
         this.mainController = controller;
@@ -91,9 +90,20 @@ public class PaginaPaneCanzone {
         Color coloreMedio = calcolaColoreMedio();
         applicaGradiente(PaginaPaneCanzone_hBoxUp, coloreMedio);
 
+        // Imposta larghezza massima in modo dinamico per le box documenti e file allegati (metà larghezza contenuto)
+        paginaContenuto.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            double halfWidth = newWidth.doubleValue() / 2;
+            boxDocumenti.setMaxWidth(halfWidth);
+            boxMedia.setMaxWidth(halfWidth);
+        });
+
+        // Imposta larghezza iniziale subito
+        double initialWidth = paginaContenuto.getWidth();
+        boxDocumenti.setMaxWidth(initialWidth / 2);
+        boxMedia.setMaxWidth(initialWidth / 2);
+
         popolaDocumentiAllegati();
         popolaFileMultimediali();
-        //aggiungiBottoniCaricamento();
     }
 
     // Utilizzato per calcolare il colore del Background
@@ -189,12 +199,12 @@ public class PaginaPaneCanzone {
             );
 
             if (files == null || files.length == 0) {
-                System.out.println("⚠️ Nessun file PDF per canzone " + ID_CANZONE);
+                System.out.println("Nessun file PDF per canzone " + ID_CANZONE);
                 return;
             }
 
             for (File file : files) {
-                System.out.println("📄 File PDF: " + file.getName());
+                System.out.println("File PDF: " + file.getName());
 
                 HBox fileRow = new HBox(10);
                 fileRow.setAlignment(Pos.CENTER_LEFT);
@@ -214,7 +224,7 @@ public class PaginaPaneCanzone {
                 boxDocumenti.getChildren().add(fileRow);
             }
         } else {
-            System.out.println("❌ Cartella non trovata: " + dirDoc.getAbsolutePath());
+            System.out.println("Cartella non trovata: " + dirDoc.getAbsolutePath());
         }
     }
 
@@ -235,7 +245,7 @@ public class PaginaPaneCanzone {
 
             if (files != null && files.length > 0) {
                 for (File file : files) {
-                    System.out.println("🎵 File media: " + file.getName());
+                    System.out.println("File media: " + file.getName());
 
                     HBox mediaRow = new HBox(10);
                     mediaRow.setAlignment(Pos.CENTER_LEFT);
@@ -278,7 +288,7 @@ public class PaginaPaneCanzone {
         }
 
         if (!contenutoAggiunto) {
-            System.out.println("⚠️ Nessun file multimediale o link YouTube per canzone " + ID_CANZONE);
+            System.out.println("Nessun file multimediale o link YouTube per canzone " + ID_CANZONE);
         }
     }
 
@@ -359,45 +369,12 @@ public class PaginaPaneCanzone {
         return "";
     }
 
-    /*
-    // Bottone che permette agli utenti di caricare i File
-    private void aggiungiBottoniCaricamento() {
-        // 🔹 DOCUMENTI
-        HBox intestazioneDoc = new HBox(10);
-        intestazioneDoc.setAlignment(Pos.CENTER_LEFT);
-
-        Label titoloDoc = new Label("Documenti allegati");
-        titoloDoc.setStyle("-fx-font-weight: bold; -fx-text-fill: white;");
-
-        Button caricaDoc = new Button("📤");
-        caricaDoc.setTooltip(new Tooltip("Carica documento PDF"));
-        caricaDoc.setOnAction(e -> caricaDocumento());
-
-        intestazioneDoc.getChildren().addAll(titoloDoc, caricaDoc);
-        boxDocumenti.getChildren().add(0, intestazioneDoc); // Inserito in cima
-
-        // 🔹 MULTIMEDIA
-        HBox intestazioneMedia = new HBox(10);
-        intestazioneMedia.setAlignment(Pos.CENTER_LEFT);
-
-        Label titoloMedia = new Label("File multimediali");
-        titoloMedia.setStyle("-fx-font-weight: bold; -fx-text-fill: white;");
-
-        Button caricaMedia = new Button("📤");
-        caricaMedia.setTooltip(new Tooltip("Carica file multimediale"));
-        caricaMedia.setOnAction(e -> caricaMediaFile());
-
-        intestazioneMedia.getChildren().addAll(titoloMedia, caricaMedia);
-        boxMedia.getChildren().add(0, intestazioneMedia); // Inserito in cima
-    }
-*/
-
     // Gestione del caricamento dei Documenti inseriti dall'utente
     @FXML
     private void caricaDocumento() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleziona documento PDF");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("File PDF", "*.pdf"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("File PDF", "*.pdf", "*.txt", "*.doc"));
 
         File fileScelto = fileChooser.showOpenDialog(null);
         if (fileScelto != null) {
@@ -419,8 +396,7 @@ public class PaginaPaneCanzone {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleziona file multimediale");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Audio e Video", "*.mp3", "*.mp4"),
-                new FileChooser.ExtensionFilter("Tutti i file", "*.*")
+                new FileChooser.ExtensionFilter("Audio e Video", "*.mp3", "*.mp4", "*.midi")
         );
 
         File fileScelto = fileChooser.showOpenDialog(null);

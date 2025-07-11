@@ -1,0 +1,15 @@
+ESEMPIO ORGANIZZAZIONE FILE NELLE CARTELLE:
+musiche
+	1#ostia_lido.mp3
+
+pdf
+	1#ostia_lido.pdf
+
+copertine
+	1#ostia_lido.jpg
+
+
+GESTIONE DATABASE E FILE:
+- Inserisco la riga nel database, contenente autore, titolo, genere, link, anno;
+- Successivamente leggo la chiave primaria e spsoto i file (mp3, pdf e la copertina)nelle corrispettive cartelle. Se la chiave primaria e "141", allora i file verranno salvati con "141#nome_file.mp3" ecc;
+- Spostati i file, faccio un update al database, salvandomi in "PERCORSO_MUSICA" ecc, il nome del file "141#nome_file.mp3" (Questo per fare una ricerca più rapida successivamente).
