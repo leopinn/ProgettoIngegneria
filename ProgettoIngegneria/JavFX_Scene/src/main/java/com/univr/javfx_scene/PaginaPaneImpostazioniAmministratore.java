@@ -34,115 +34,10 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        /*// All'avvio carico gli utenti registrati al programma, quelli che devono essere accettati ecc.
-        List<Map<String, Object>> locListaUtente;
-        String locQuery = "SELECT * FROM UTENTI";
+        impostaLista();
+    }
 
-        locListaUtente= objSql.leggiLista(locQuery);
-        if(locListaUtente.isEmpty()) return; // Non dovrebbe succedere, ma metto un controllo
-
-        // Creo le colonne
-        TableColumn<UTENTI, String> locColID = new TableColumn<>("ID_UTENTE");
-        locColID.setCellValueFactory(cellData -> cellData.getValue().ID_UTENTEProperty());
-
-        TableColumn<UTENTI, String> locColNome = new TableColumn<>("NOME");
-        locColNome.setCellValueFactory(cellData -> cellData.getValue().NOMEProperty());
-
-        TableColumn<UTENTI, String> locColCognome = new TableColumn<>("COGNOME");
-        locColCognome.setCellValueFactory(cellData -> cellData.getValue().COGNOMEProperty());
-
-        TableColumn<UTENTI, String> locColEmail = new TableColumn<>("EMAIL");
-        locColEmail.setCellValueFactory(cellData -> cellData.getValue().EMAILProperty());
-
-        TableColumn<UTENTI, String> locColDataNascita = new TableColumn<>("DATA_NASCITA");
-        locColDataNascita.setCellValueFactory(cellData -> cellData.getValue().DATA_NASCITAProperty());
-
-        TableColumn<UTENTI, String> locColPassword = new TableColumn<>("PASSWORD");
-        locColPassword.setCellValueFactory(cellData -> cellData.getValue().PASSWORDProperty());
-
-        TableColumn<UTENTI, String> locColRuolo = new TableColumn<>("RUOLO");
-        locColRuolo.setCellValueFactory(cellData -> cellData.getValue().RUOLOProperty());
-
-        TableColumn<UTENTI, String> locColStato = new TableColumn<>("STATO");
-        locColStato.setCellValueFactory(cellData -> cellData.getValue().STATOProperty());
-
-        PaginaPaneImpostazioniAmministrazione_tabelView.getColumns().addAll(
-                locColID, locColNome, locColCognome, locColEmail, locColDataNascita, locColPassword, locColRuolo, locColStato
-        );
-
-        // Dati da mostrare
-        ObservableList<UTENTI> locListaUtenti = FXCollections.observableArrayList();
-        for (Map<String, Object> riga : locListaUtente) {
-            UTENTI ut = new UTENTI(
-                    new SimpleStringProperty(String.valueOf(riga.get("ID_UTENTE"))),
-                    new SimpleStringProperty(String.valueOf(riga.get("NOME"))),
-                    new SimpleStringProperty(String.valueOf(riga.get("COGNOME"))),
-                    new SimpleStringProperty(String.valueOf(riga.get("EMAIL"))),
-                    new SimpleStringProperty(String.valueOf(riga.get("DATA_NASCITA"))),
-                    new SimpleStringProperty(String.valueOf(riga.get("PASSWORD"))),
-                    new SimpleStringProperty(String.valueOf(riga.get("RUOLO"))),
-                    new SimpleStringProperty(String.valueOf(riga.get("STATO")))
-            );
-            locListaUtenti.add(ut);
-        }
-
-        // Assegna i dati alla tabella
-        PaginaPaneImpostazioniAmministrazione_tabelView.setItems(locListaUtenti);
-        PaginaPaneImpostazioniAmministrazione_tabelView.setRowFactory(tv -> {
-            TableRow<UTENTI> row = new TableRow<>();
-            ContextMenu contextMenu = new ContextMenu();
-
-            MenuItem autorizzaItem = new MenuItem("✔ Autorizza");
-            autorizzaItem.setOnAction(e -> {
-                UTENTI utente = row.getItem();
-                // Per evitare che l'amministratore possa auto autorizzarsi o sospendersi
-                if (utente != null) {
-                    if(Integer.parseInt(utente.getID_UTENTE())==objGenerici.getID_UTENTE()){
-                        mostraMessaggio("Attenzione!!","Impossibile modificare se stessi");
-                        return;
-                    }
-
-                    String locWhere = "WHERE ID_UTENTE="+utente.getID_UTENTE();
-
-                    Map<String, Object> rowUtente=objSql.leggi(String.format("SELECT * FROM UTENTI WHERE ID_UTENTE=%s", utente.getID_UTENTE()));
-                    if(rowUtente.isEmpty()) return;
-
-                    rowUtente.put("STATO", 1);
-                    objSql.aggiorna("UTENTI",locWhere, rowUtente);
-                    mostraMessaggio("Attenzione!!",String.format("Utente %s autorizzato con successo",utente.getNOME()));
-                    utente.setSTATO(rowUtente.get("STATO").toString());
-                }
-            });
-
-            MenuItem eliminaItem = new MenuItem("✘ Sospendi");
-            eliminaItem.setOnAction(e -> {
-                UTENTI utente = row.getItem();
-                if (utente != null) {
-                    if(Integer.parseInt(utente.getID_UTENTE())==objGenerici.getID_UTENTE()){
-                        mostraMessaggio("Attenzione!!","Impossibile modificare se stessi");
-                        return;
-                    }
-
-                    String locWhere = "WHERE ID_UTENTE="+utente.getID_UTENTE();
-
-                    Map<String, Object> rowUtente=objSql.leggi(String.format("SELECT * FROM UTENTI WHERE ID_UTENTE=%s", utente.getID_UTENTE()));
-                    if(rowUtente.isEmpty()) return;
-
-                    rowUtente.put("STATO", 2);
-                    objSql.aggiorna("UTENTI",locWhere, rowUtente);
-                    mostraMessaggio("Attenzione!!",String.format("Utente %s sospeso con successo",utente.getNOME()));
-                    utente.setSTATO(rowUtente.get("STATO").toString());
-                }
-            });
-
-            contextMenu.getItems().addAll(autorizzaItem, eliminaItem);
-
-            row.emptyProperty().addListener((obs, wasEmpty, isEmpty) -> {
-                row.setContextMenu(isEmpty ? null : contextMenu);
-            });
-
-            return row;
-        });*/
+    private void impostaLista(){
         leggiUtenti();
         popolaLista();
     }
@@ -203,31 +98,53 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
             HBox.setHgrow(spacer, Priority.ALWAYS);
 
             // Imposto in primis le icone
-            Image imageCestino = new Image(getClass().getResource("/immagini/iconaCestino.png").toExternalForm());
-            Image imageCestinoHover = new Image(getClass().getResource("/immagini/iconaCestinoHover.png").toExternalForm());
+            Image imageSospendi = new Image(getClass().getResource("/immagini/iconaSospendi.png").toExternalForm());
+            Image imageSospendiHover = new Image(getClass().getResource("/immagini/iconaSospendiHover.png").toExternalForm());
+            Image imageAutorizza = new Image(getClass().getResource("/immagini/iconaAutorizza.png").toExternalForm());
+            Image imageAutorizzaHover = new Image(getClass().getResource("/immagini/iconaAutorizzaHover.png").toExternalForm());
 
-            // Creo l'icona normale
-            ImageView iconaCestino = new ImageView(imageCestino);
-            iconaCestino.setFitWidth(25);
-            iconaCestino.setFitHeight(25);
-            iconaCestino.setPreserveRatio(true);
-            iconaCestino.setSmooth(true);
 
-            // Creo l'icona hover
-            ImageView iconaCestinoHover = new ImageView(imageCestinoHover);
-            iconaCestinoHover.setFitWidth(25);
-            iconaCestinoHover.setFitHeight(25);
-            iconaCestinoHover.setPreserveRatio(true);
-            iconaCestinoHover.setSmooth(true);
+            ImageView icona, iconaHover;
 
-            Label labelElimina = new Label();
-            labelElimina.setGraphic(iconaCestino);
-            labelElimina.setStyle("-fx-cursor: hand;");
-            labelElimina.setOnMouseClicked(event -> sospendiUtente(rowUtente, riga));
-            labelElimina.setOnMouseEntered(event -> labelElimina.setGraphic(iconaCestinoHover));
-            labelElimina.setOnMouseExited(event -> labelElimina.setGraphic(iconaCestino));
+            // In base allo stato dell'utente, capisco quale icona prendere
+            if(Integer.parseInt(rowUtente.get("STATO").toString())==2){
+                icona = new ImageView(imageAutorizza);
+                iconaHover = new ImageView(imageAutorizzaHover);
+            } else {
+                icona = new ImageView(imageSospendi);
+                iconaHover = new ImageView(imageSospendiHover);
+            }
 
-            riga.getChildren().addAll(copertina, nomeBrano, spacer, labelElimina);
+            icona.setFitWidth(25);
+            icona.setFitHeight(25);
+            icona.setPreserveRatio(true);
+            icona.setSmooth(true);
+
+            iconaHover.setFitWidth(25);
+            iconaHover.setFitHeight(25);
+            iconaHover.setPreserveRatio(true);
+            iconaHover.setSmooth(true);
+
+
+            Label label = new Label();
+
+            label.setGraphic(icona);
+            label.setStyle("-fx-cursor: hand;");
+            label.setOnMouseEntered(event -> label.setGraphic(iconaHover));
+            label.setOnMouseExited(event -> label.setGraphic(icona));
+            if(Integer.parseInt(rowUtente.get("STATO").toString())==2){
+                label.setOnMouseClicked(event -> {
+                    autorizzautente(rowUtente, riga);
+                    impostaLista();
+                });
+            } else {
+                label.setOnMouseClicked(event -> {
+                    sospendiUtente(rowUtente, riga);
+                    impostaLista();
+                });
+            }
+
+            riga.getChildren().addAll(copertina, nomeBrano, spacer, label);
             PaginaPaneImpostazioniAmministrazione_vBox.getChildren().add(riga);
         }
     }
@@ -240,7 +157,17 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
             rowUtente.put("STATO", 2);
             objSql.aggiorna("UTENTI", locWhere, rowUtente);
             objGenerici.mostraPopupSuccesso(PaginaPaneImpostazioniAmministrazione_vBox, "Attenzione!!\nUtente "+rowUtente.get("NOME").toString()+" sospeso con successo");
-            //rowUtente.setSTATO(rowUtente.get("STATO").toString());
+        }
+    }
+
+    private void autorizzautente(Map<String, Object> rowUtente, HBox riga) {
+        if (rowUtente != null) {
+            String locWhere = "WHERE ID_UTENTE=" + rowUtente.get("ID_UTENTE").toString();
+
+            // Imposto lo stato in AUTORIZZATO
+            rowUtente.put("STATO", 1);
+            objSql.aggiorna("UTENTI", locWhere, rowUtente);
+            objGenerici.mostraPopupSuccesso(PaginaPaneImpostazioniAmministrazione_vBox, "Attenzione!!\nUtente "+rowUtente.get("NOME").toString()+" autorizzato con successo");
         }
     }
 
@@ -250,7 +177,6 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
             stackPaneMainController.getChildren().remove(stackPaneMainController.getChildren().size() - 1);
         }
     }
-
 
     private String getSafe(Map<String, Object> map, String key) {
         Object val = map.get(key);

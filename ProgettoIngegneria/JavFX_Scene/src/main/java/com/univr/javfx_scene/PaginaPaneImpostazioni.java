@@ -175,7 +175,5 @@ public class PaginaPaneImpostazioni implements Initializable {
 
         // Aggiunge impostazioniPane sopra
         stackPaneMainController.getChildren().add(registerPane);
-       // mainControlle.setCenter(stackPaneMainController);
-        //mainController.PaginaPaneImpostazioniAmministratore()
     }
 }

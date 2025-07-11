@@ -161,6 +161,8 @@ public class PaginaPanePrincipale implements Initializable {
     }
 
     public void canzonePrecedente() throws IOException {
+        if(codaBrani.isEmpty()){ return; }
+
         // Se non ci sono altre canzoni precedenti, continuo a ripetere la stessa
         if(codaBrani.indexOf(canzoneCorrente) == 0) {
             selezionaMusica(String.valueOf(canzoneCorrente), 1);

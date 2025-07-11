@@ -174,6 +174,12 @@
     -fx-background-color: #505050;
 }
 
+.separator:horizontal .line {
+    -fx-border-color:  transparent;
+    -fx-text-box-border: transparent;
+    -fx-background-color: #292929; /* rosso, cambia con il colore desiderato */
+    -fx-padding: 0.5;
+}
 /* ----------------------------------------------------------------------------------------------------------- LOGIN ----------------------------------------------------------------- */
 
 .PaginaLogin_vBox{
@@ -1148,7 +1154,6 @@
     -fx-min-width: 1000;
 
     -fx-spacing: 10;
-    /*-fx-padding: 20;*/
 }
 
 .PaginaPaneUpload_hboxSuperiore{

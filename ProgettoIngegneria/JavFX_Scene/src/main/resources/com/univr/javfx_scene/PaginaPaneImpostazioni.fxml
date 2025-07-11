@@ -13,9 +13,9 @@
 
 <VBox alignment="CENTER" prefHeight="500" prefWidth="500" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneImpostazioni">
    <children>
-      <AnchorPane maxHeight="700" maxWidth="300" styleClass="PaginaPaneUpload_anchorPanePrincipale" VBox.vgrow="ALWAYS">
+      <AnchorPane maxHeight="500.0" maxWidth="500.0" styleClass="PaginaPaneUpload_anchorPanePrincipale" VBox.vgrow="ALWAYS">
    <children>
-      <HBox prefHeight="300.0" styleClass="PaginaPanePrincipale_parteSuperiore" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox prefHeight="220.0" styleClass="PaginaPanePrincipale_parteSuperiore" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label prefHeight="100.0" prefWidth="500.0" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Impostazioni utente">
                <HBox.margin>
@@ -23,7 +23,7 @@
                </HBox.margin></Label>
          </children>
       </HBox>
-      <VBox fx:id="PaginaImpostazioni_vBox" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="PaginaImpostazioni_vBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="150.0">
+      <VBox fx:id="PaginaImpostazioni_vBox" prefHeight="500.0" spacing="10.0" styleClass="PaginaPaneUpload_vboxPrincipale" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
          <children>
             <HBox fx:id="PaginaPaneImpostazioni_hboxImmagine" prefHeight="200" prefWidth="Infinity" spacing="20.0">
                <children>
