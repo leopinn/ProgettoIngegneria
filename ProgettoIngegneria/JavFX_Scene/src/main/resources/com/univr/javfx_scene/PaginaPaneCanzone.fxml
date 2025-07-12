@@ -71,8 +71,8 @@
                                     <children>
                                         <Label styleClass="labelBiancaGrande" text="File multimediali"/>
                                         <Region HBox.hgrow="ALWAYS"/>
-                                        <Button fx:id="btnCaricaMedia" text="" styleClass="PaginaPaneCanzone_bottoneImporta" onAction="#caricaMediaFile"/>
-                                        <Button fx:id="btnLinkYoutube" text="" styleClass="PaginaPaneCanzone_bottoneImporta" onAction="#aggiungiLinkYoutube"/>
+                                        <Button fx:id="btnCaricaMedia"  styleClass="PaginaPaneCanzone_bottoneImporta" onAction="#caricaMediaFile"/>
+                                        <Button fx:id="btnLinkYoutube"  styleClass="PaginaPaneCanzone_bottoneLink" onAction="#aggiungiLinkYoutube"/>
                                     </children>
                                     <VBox.margin>
                                         <Insets bottom="10"/>
