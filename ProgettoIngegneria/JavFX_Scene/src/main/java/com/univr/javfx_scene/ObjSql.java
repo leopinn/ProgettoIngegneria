@@ -207,4 +207,15 @@ public class ObjSql {
         }
         return risultati;
     }
+
+    public int cancellaCondizione(String tabella, String condizione) {
+        String query = "DELETE FROM " + tabella + " WHERE " + condizione;
+        try {
+            java.sql.Statement stmt = connection.createStatement();
+            return stmt.executeUpdate(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

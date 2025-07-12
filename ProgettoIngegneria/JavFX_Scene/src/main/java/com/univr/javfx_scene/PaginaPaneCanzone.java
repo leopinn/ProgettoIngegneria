@@ -229,7 +229,13 @@ public class PaginaPaneCanzone {
                         scarica.getStyleClass().add("PaginaPaneCanzone_bottoneDownload");
                         scarica.setOnAction(e -> salvaFile(file));
 
-                        fileRow.getChildren().addAll(nome, spacer, apri, scarica);
+                        // Bottone elimina
+                        Button elimina = new Button();
+                        elimina.getStyleClass().add("PaginaPaneCanzone_bottoneElimina");
+                        elimina.setOnAction(e -> eliminaFileAssociato(nomeFile, contenutiDocumenti, fileRow));
+
+                        fileRow.getChildren().addAll(nome, spacer, apri, scarica, elimina);
+
                         contenutiDocumenti.getChildren().add(fileRow);
                     }
                 }
@@ -270,7 +276,12 @@ public class PaginaPaneCanzone {
                     download.getStyleClass().add("PaginaPaneCanzone_bottoneDownload");
                     download.setOnAction(e -> salvaFile(file));
 
-                    mediaRow.getChildren().addAll(label, spacer, play, download);
+                    Button elimina = new Button();
+                    elimina.getStyleClass().add("PaginaPaneCanzone_bottoneElimina");
+                    elimina.setOnAction(e -> eliminaFileAssociato(nomeFile, contenutiMedia, mediaRow));
+
+                    mediaRow.getChildren().addAll(label, spacer, play, download, elimina);
+
                     contenutiMedia.getChildren().add(mediaRow);
                 }
             }
@@ -525,5 +536,26 @@ public class PaginaPaneCanzone {
 
             popolaFileMultimediali();
         });
+    }
+
+
+    // Elimina il file allegato selezionato
+    private void eliminaFileAssociato(String nomeFile, VBox contenitore, HBox riga) {
+        boolean conferma = objGenerici.yesNoMessage("Conferma eliminazione", "Vuoi davvero eliminare il file \"" + nomeFile + "\"?");
+        if (!conferma) return;
+
+        // Rimuove visivamente la riga
+        contenitore.getChildren().remove(riga);
+
+        // Rimuove il file fisico
+        File filePdf = new File(System.getProperty("user.dir") + "/upload/pdf/" + nomeFile);
+        File fileMedia = new File(System.getProperty("user.dir") + "/upload/musiche/" + nomeFile);
+        if (filePdf.exists()) filePdf.delete();
+        if (fileMedia.exists()) fileMedia.delete();
+
+        // Rimuove la riga dal DB
+        String whereCondizione = "ID_CANZONE = " + ID_CANZONE + " AND NOME_FILE = '" + nomeFile.replace("'", "''") + "'";
+        objSql.cancellaCondizione("DATI_AGGIUNTIVI_CANZONE", whereCondizione);
+
     }
 }
