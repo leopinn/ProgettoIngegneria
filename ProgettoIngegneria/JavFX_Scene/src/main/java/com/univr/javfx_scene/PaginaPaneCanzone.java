@@ -281,6 +281,8 @@ public class PaginaPaneCanzone {
             apriYoutube.getStyleClass().add("PaginaPaneCanzone_bottoneYoutube");
             apriYoutube.setOnAction(e -> apriLink(linkYoutube));
 
+
+
             youtubeRow.getChildren().addAll(label, spacer, apriYoutube);
             boxMedia.getChildren().add(youtubeRow);
             contenutoAggiunto = true;
