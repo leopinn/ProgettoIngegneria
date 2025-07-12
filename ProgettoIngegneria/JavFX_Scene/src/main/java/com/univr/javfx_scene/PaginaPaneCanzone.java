@@ -1,4 +1,5 @@
 package com.univr.javfx_scene;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -6,6 +7,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -21,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class PaginaPaneCanzone {
@@ -31,21 +34,27 @@ public class PaginaPaneCanzone {
     private PaginaPrincipale mainController;
 
     @FXML private ImageView PaginaPaneCanzone_copertina;
-    @FXML private Label PaginaPaneCanzone_titolo, PaginaPaneCanzone_altriDati, PaginaPaneCanzone_labelYoutube;
+    @FXML private Label PaginaPaneCanzone_titolo, PaginaPaneCanzone_altriDati, PaginaPaneCanzone_labelError;
     @FXML private HBox PaginaPaneCanzone_hBoxUp;
     @FXML private VBox boxDocumenti;
     @FXML private VBox boxMedia;
     @FXML private VBox paginaContenuto;
+    @FXML private VBox contenutiDocumenti;
+    @FXML private VBox contenutiMedia;
+
 
     public void setMainController(PaginaPrincipale controller) {
         this.mainController = controller;
+        this.objGenerici = controller.getObjGenerici();
     }
+
 
     // Getter
     private String getSafe(Map<String, Object> map, String key) {
         Object val = map.get(key);
         return val != null ? val.toString() : "";
     }
+
 
     //Inizializza il Pane Canzone
     public void mostraSchermataCanzone(int parIdCanzone) {
@@ -134,6 +143,7 @@ public class PaginaPaneCanzone {
         return new Color(avgRed, avgGreen, avgBlue, 1.0);
     }
 
+
     //Colore Background
     public void applicaGradiente(HBox box, Color baseColor) {
         LinearGradient verticalGradient = new LinearGradient(
@@ -144,6 +154,7 @@ public class PaginaPaneCanzone {
         );
         box.setBackground(new Background(new BackgroundFill(verticalGradient, new CornerRadii(10), Insets.EMPTY)));
     }
+
 
     // Carica l'immagine copertina del Brano
     private void apriImmagineIngrandita(Image image) {
@@ -183,113 +194,99 @@ public class PaginaPaneCanzone {
 
     // Recupera Documenti Allegatii e popola la medesima sezione
     private void popolaDocumentiAllegati() {
-        File dirDoc = new File(System.getProperty("user.dir") + "/upload/pdf/");
-        System.out.println("Controllo documenti in: " + dirDoc.getAbsolutePath());
+        contenutiDocumenti.getChildren().clear();
 
-        // Aggiunge file PDF, se disponibili
-        if (dirDoc.exists() && dirDoc.isDirectory()) {
-            File[] files = dirDoc.listFiles((dir, name) ->
-                    name.toLowerCase().endsWith(".pdf") && name.startsWith(String.valueOf(ID_CANZONE))
-            );
+        // Recupera i nomi dei file dal DB
+        var records = objSql.leggiTutti(
+                "SELECT NOME_FILE FROM DATI_AGGIUNTIVI_CANZONE WHERE ID_CANZONE = " + ID_CANZONE +
+                        " AND NOME_FILE IS NOT NULL AND TRIM(NOME_FILE) != ''"
+        );
 
-            if (files == null || files.length == 0) {
-                System.out.println("Nessun file PDF per canzone " + ID_CANZONE);
-                return;
+        for (Map<String, Object> record : records) {
+            String nomeFile = getSafe(record, "NOME_FILE");
+
+            if (nomeFile != null && !nomeFile.trim().isEmpty()) {
+                String lower = nomeFile.toLowerCase();
+                boolean estensioneValida = lower.endsWith(".pdf") || lower.endsWith(".txt") ||
+                        lower.endsWith(".doc") || lower.endsWith(".docx");
+
+                if (estensioneValida) {
+                    File file = new File(System.getProperty("user.dir") + "/upload/pdf/" + nomeFile);
+                    if (file.exists()) {
+                        HBox fileRow = new HBox(10);
+                        fileRow.setAlignment(Pos.CENTER_LEFT);
+
+                        Label nome = new Label(file.getName().replaceFirst(ID_CANZONE + "_", ""));
+                        nome.setStyle("-fx-text-fill: white;");
+                        Region spacer = new Region();
+                        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+                        Button apri = new Button("📄");
+                        apri.setOnAction(e -> apriFile(file));
+
+                        Button scarica = new Button("⬇");
+                        scarica.setOnAction(e -> salvaFile(file));
+
+                        fileRow.getChildren().addAll(nome, spacer, apri, scarica);
+                        contenutiDocumenti.getChildren().add(fileRow);
+                    }
+                }
             }
-
-            for (File file : files) {
-                System.out.println("File PDF: " + file.getName());
-
-                HBox fileRow = new HBox(10);
-                fileRow.setAlignment(Pos.CENTER_LEFT);
-
-                Label nome = new Label(file.getName());
-                nome.getStyleClass().add("labelBiancaMedia");
-                Region spacer = new Region();
-                HBox.setHgrow(spacer, Priority.ALWAYS);
-
-                Button apri = new Button();
-                apri.getStyleClass().add("PaginaPaneCanzone_bottoneDocumento");
-                apri.setOnAction(e -> apriFile(file));
-
-                Button scarica = new Button();
-                scarica.getStyleClass().add("PaginaPaneCanzone_bottoneDownload");
-                scarica.setOnAction(e -> salvaFile(file));
-
-                fileRow.getChildren().addAll(nome, spacer, apri, scarica);
-                boxDocumenti.getChildren().add(fileRow);
-            }
-        } else {
-            System.out.println("Cartella non trovata: " + dirDoc.getAbsolutePath());
         }
     }
 
 
     // Recupera File Multimediali e popola la medesima sezione
     private void popolaFileMultimediali() {
-        File dirMedia = new File(System.getProperty("user.dir") + "/upload/musiche/");
-        System.out.println("Controllo file multimediali in: " + dirMedia.getAbsolutePath());
+        contenutiMedia.getChildren().clear();
 
-        boolean contenutoAggiunto = false;
+        // Leggi i file multimediali e i link YouTube dal DB
+        String query = "SELECT NOME_FILE, LINK_YOUTUBE FROM DATI_AGGIUNTIVI_CANZONE WHERE ID_CANZONE = " + ID_CANZONE;
+        var records = objSql.leggiTutti(query);
 
-        // Aggiunge file mp3 e mp4, se disponibili
-        if (dirMedia.exists() && dirMedia.isDirectory()) {
-            File[] files = dirMedia.listFiles((dir, name) ->
-                    (name.toLowerCase().endsWith(".mp3") || name.toLowerCase().endsWith(".mp4")) &&
-                            name.startsWith(String.valueOf(ID_CANZONE))
-            );
+        for (Map<String, Object> record : records) {
+            String nomeFile = getSafe(record, "NOME_FILE");
+            String linkYoutube = getSafe(record, "LINK_YOUTUBE");
 
-            if (files != null && files.length > 0) {
-                for (File file : files) {
-                    System.out.println("File media: " + file.getName());
-
+            // Mostra file multimediali (es. mp3/mp4)
+            if (nomeFile != null && !nomeFile.trim().isEmpty()) {
+                File file = new File(System.getProperty("user.dir") + "/upload/musiche/" + nomeFile);
+                if (file.exists() && (nomeFile.endsWith(".mp3") || nomeFile.endsWith(".mp4") || nomeFile.endsWith(".midi"))) {
                     HBox mediaRow = new HBox(10);
                     mediaRow.setAlignment(Pos.CENTER_LEFT);
 
-                    Label label = new Label(file.getName());
-                    label.getStyleClass().add("labelBiancaMedia");
-                    Region spacer = new Region();;
+                    Label label = new Label(file.getName().replaceFirst(ID_CANZONE + "_", ""));
+                    label.setStyle("-fx-text-fill: white;");
+                    Region spacer = new Region();
                     HBox.setHgrow(spacer, Priority.ALWAYS);
 
-                    Button play = new Button();
-                    play.getStyleClass().add("PaginaPaneCanzone_bottonePlay");
+                    Button play = new Button("▶");
                     play.setOnAction(e -> apriFile(file));
 
-                    Button download = new Button();
-                    download.getStyleClass().add("PaginaPaneCanzone_bottoneDownload");
+                    Button download = new Button("⬇");
                     download.setOnAction(e -> salvaFile(file));
 
                     mediaRow.getChildren().addAll(label, spacer, play, download);
-                    boxMedia.getChildren().add(mediaRow);
-                    contenutoAggiunto = true;
+                    contenutiMedia.getChildren().add(mediaRow);
                 }
             }
-        }
 
-        // Aggiunge link YouTube, se disponibile
-        String linkYoutube = getSafe(rowCanzone, "LINK_YOUTUBE");
-        if (!linkYoutube.isEmpty()) {
-            HBox youtubeRow = new HBox(10);
-            youtubeRow.setAlignment(Pos.CENTER_LEFT);
+            // Mostra eventuale link YouTube associato
+            if (linkYoutube != null && !linkYoutube.trim().isEmpty()) {
+                HBox youtubeRow = new HBox(10);
+                youtubeRow.setAlignment(Pos.CENTER_LEFT);
 
-            Label label = new Label("YouTube");
-            label.getStyleClass().add("labelBiancaMedia");
-            Region spacer = new Region();
-            HBox.setHgrow(spacer, Priority.ALWAYS);
+                Label label = new Label("YouTube");
+                label.setStyle("-fx-text-fill: white;");
+                Region spacer = new Region();
+                HBox.setHgrow(spacer, Priority.ALWAYS);
 
-            Button apriYoutube = new Button();
-            apriYoutube.getStyleClass().add("PaginaPaneCanzone_bottoneYoutube");
-            apriYoutube.setOnAction(e -> apriLink(linkYoutube));
+                Button apriYoutube = new Button("🔗");
+                apriYoutube.setOnAction(e -> apriLink(linkYoutube));
 
-
-
-            youtubeRow.getChildren().addAll(label, spacer, apriYoutube);
-            boxMedia.getChildren().add(youtubeRow);
-            contenutoAggiunto = true;
-        }
-
-        if (!contenutoAggiunto) {
-            System.out.println("Nessun file multimediale o link YouTube per canzone " + ID_CANZONE);
+                youtubeRow.getChildren().addAll(label, spacer, apriYoutube);
+                contenutiMedia.getChildren().add(youtubeRow);
+            }
         }
     }
 
@@ -303,12 +300,13 @@ public class PaginaPaneCanzone {
             try {
                 Desktop.getDesktop().browse(new URI(url));
             } catch (IOException | URISyntaxException e) {
-                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelYoutube, "Errore nell'apertura del link!");
+                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Errore nell'apertura del link!");
             }
         } else {
-            ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelYoutube, "Desktop non supportato, impossibile aprire il browser!");
+            ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Desktop non supportato, impossibile aprire il browser!");
         }
     }
+
 
     //Apre i file
     private void apriFile(File file) {
@@ -316,7 +314,7 @@ public class PaginaPaneCanzone {
             if (file.exists()) Desktop.getDesktop().open(file);
         } catch (IOException e) {
             e.printStackTrace();
-            ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelYoutube, "Errore nell'apertura:\n" + file.getAbsolutePath());
+            ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Errore nell'apertura:\n" + file.getAbsolutePath());
         }
     }
 
@@ -354,7 +352,7 @@ public class PaginaPaneCanzone {
                 );
             } catch (IOException ex) {
                 ex.printStackTrace();
-                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelYoutube,
+                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError,
                         "Errore durante il salvataggio del file:\n" + ex.getMessage());
             }
         }
@@ -370,6 +368,7 @@ public class PaginaPaneCanzone {
         return "";
     }
 
+
     // Gestione del caricamento dei Documenti inseriti dall'utente
     @FXML
     private void caricaDocumento() {
@@ -379,13 +378,46 @@ public class PaginaPaneCanzone {
 
         File fileScelto = fileChooser.showOpenDialog(null);
         if (fileScelto != null) {
-            File destinazione = new File(System.getProperty("user.dir") + "/upload/pdf/" + ID_CANZONE + "_" + fileScelto.getName());
+            String nomeFileFinale = ID_CANZONE + "_" + fileScelto.getName();
+            File destinazione = new File(System.getProperty("user.dir") + "/upload/pdf/" + nomeFileFinale);
+
+            //CONTROLLA SE IL FILE ESISTE GIA'
+            if (destinazione.exists()) {
+                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Questo file è già stato caricato.");
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(3000);
+                        Platform.runLater(() -> PaginaPaneCanzone_labelError.setText(""));
+                    } catch (InterruptedException ignored) {}
+                }).start();
+
+                return;
+            }
+
             try {
                 java.nio.file.Files.copy(fileScelto.toPath(), destinazione.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+
+                // Inserisci nel DB
+                int idUtente = objGenerici.getID_UTENTE();
+                String nomeUtente = objGenerici.getUTENTE_NOME();
+                String data = java.time.LocalDateTime.now().toString();
+
+                Map<String, Object> dati = new HashMap<>();
+                dati.put("ID_CANZONE", ID_CANZONE);
+                dati.put("NOME_FILE", nomeFileFinale);
+                dati.put("LINK_YOUTUBE", "");
+                dati.put("ID_UTENTE", idUtente);
+                dati.put("NOME_UTENTE", nomeUtente);
+
+                int esito = objSql.inserisci("DATI_AGGIUNTIVI_CANZONE", dati);
+                System.out.println("Inserimento DB: esito = " + esito);
+
+                // Dopo l'inserimento, ricarica l'interfaccia
                 popolaDocumentiAllegati();
+
             } catch (IOException ex) {
                 ex.printStackTrace();
-                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelYoutube, "Errore nel caricamento del documento:\n" + ex.getMessage());
+                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Errore nel caricamento del documento:\n" + ex.getMessage());
             }
         }
     }
@@ -402,14 +434,91 @@ public class PaginaPaneCanzone {
 
         File fileScelto = fileChooser.showOpenDialog(null);
         if (fileScelto != null) {
-            File destinazione = new File(System.getProperty("user.dir") + "/upload/musiche/" + ID_CANZONE + "_" + fileScelto.getName());
+            String nomeFileFinale = ID_CANZONE + "_" + fileScelto.getName();
+            File destinazione = new File(System.getProperty("user.dir") + "/upload/musiche/" + nomeFileFinale);
+
+            //CONTROLLA SE IL FILE ESISTE GIA'
+            if (destinazione.exists()) {
+                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Questo file è già stato caricato.");
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(3000);
+                        Platform.runLater(() -> PaginaPaneCanzone_labelError.setText(""));
+                    } catch (InterruptedException ignored) {}
+                }).start();
+
+                return;
+            }
+
             try {
                 java.nio.file.Files.copy(fileScelto.toPath(), destinazione.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+
+                int idUtente = objGenerici.getID_UTENTE();
+                String nomeUtente = objGenerici.getUTENTE_NOME();
+                String data = java.time.LocalDateTime.now().toString();
+
+                Map<String, Object> dati = new HashMap<>();
+                dati.put("ID_CANZONE", ID_CANZONE);
+                dati.put("NOME_FILE", nomeFileFinale);
+                dati.put("LINK_YOUTUBE", "");
+                dati.put("ID_UTENTE", idUtente);
+                dati.put("NOME_UTENTE", nomeUtente);
+
+                int esito = objSql.inserisci("DATI_AGGIUNTIVI_CANZONE", dati);
+                System.out.println("Inserimento DB: esito = " + esito);
+
+                // Ricarica i file dalla tabella
                 popolaFileMultimediali();
+
             } catch (IOException ex) {
                 ex.printStackTrace();
-                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelYoutube, "Errore nel caricamento del file multimediale:\n" + ex.getMessage());
+                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Errore nel caricamento del file multimediale:\n" + ex.getMessage());
             }
         }
+    }
+
+
+    // Aggiungi Link Youtube
+    @FXML
+    private void aggiungiLinkYoutube() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Aggiungi Link YouTube");
+        dialog.setHeaderText("Inserisci un link YouTube valido:");
+        dialog.setContentText("URL:");
+
+        dialog.showAndWait().ifPresent(linkInserito -> {
+            linkInserito = linkInserito.trim();
+
+            if (linkInserito.isEmpty() || !linkInserito.toLowerCase().contains("youtube.com")) {
+                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Link non valido.");
+                return;
+            }
+
+            // Controlla se il link esiste già
+            String query = "SELECT * FROM DATI_AGGIUNTIVI_CANZONE WHERE ID_CANZONE = " + ID_CANZONE +
+                    " AND LINK_YOUTUBE = '" + linkInserito.replace("'", "''") + "'";
+            Map<String, Object> esiste = objSql.leggi(query);
+
+            if (esiste != null && !esiste.isEmpty()) {
+                ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Questo link è già stato aggiunto.");
+                return;
+            }
+
+            // Inserisci nel DB
+            int idUtente = objGenerici.getID_UTENTE();
+            String nomeUtente = objGenerici.getUTENTE_NOME();
+
+            Map<String, Object> dati = new HashMap<>();
+            dati.put("ID_CANZONE", ID_CANZONE);
+            dati.put("NOME_FILE", "");
+            dati.put("LINK_YOUTUBE", linkInserito);
+            dati.put("ID_UTENTE", idUtente);
+            dati.put("NOME_UTENTE", nomeUtente);
+
+            int esito = objSql.inserisci("DATI_AGGIUNTIVI_CANZONE", dati);
+            System.out.println("Inserimento link YouTube: esito = " + esito);
+
+            popolaFileMultimediali();
+        });
     }
 }

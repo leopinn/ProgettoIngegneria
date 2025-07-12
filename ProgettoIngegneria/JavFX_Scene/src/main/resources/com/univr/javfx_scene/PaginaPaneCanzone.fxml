@@ -58,6 +58,7 @@
                                 </HBox>
                                 <Separator styleClass="SeparatoreChiaro" orientation="HORIZONTAL" prefWidth="1000"/>
                                 <!-- I file PDF verranno aggiunti qui -->
+                                <VBox fx:id="contenutiDocumenti" spacing="8" />
                             </children>
                         </VBox>
 
@@ -71,6 +72,7 @@
                                         <Label styleClass="labelBiancaGrande" text="File multimediali"/>
                                         <Region HBox.hgrow="ALWAYS"/>
                                         <Button fx:id="btnCaricaMedia" text="" styleClass="PaginaPaneCanzone_bottoneImporta" onAction="#caricaMediaFile"/>
+                                        <Button fx:id="btnLinkYoutube" text="" styleClass="PaginaPaneCanzone_bottoneImporta" onAction="#aggiungiLinkYoutube"/>
                                     </children>
                                     <VBox.margin>
                                         <Insets bottom="10"/>
@@ -78,6 +80,11 @@
                                 </HBox>
                                 <Separator styleClass="SeparatoreChiaro" orientation="HORIZONTAL" prefWidth="1000"/>
                                 <!-- I file multimediali verranno aggiunti qui -->
+                                <Label fx:id="PaginaPaneCanzone_labelError"
+                                       text=""
+                                       styleClass="PaginaLogin_labelErrore" />
+
+                                <VBox fx:id="contenutiMedia" spacing="8" />
                             </children>
                         </VBox>
                     </VBox>

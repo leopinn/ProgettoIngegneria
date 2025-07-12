@@ -167,8 +167,8 @@ public class ObjSql {
     }
 
     public boolean eseguiQuery(String sql) {
-        try (java.sql.Connection conn = this.getConnection();  // Metodo interno per ottenere connessione
-             java.sql.Statement stmt = conn.createStatement()) {
+        try (Connection conn = this.getConnection();  // Metodo interno per ottenere connessione
+             Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(sql);
             return true;
         } catch (Exception e) {
@@ -207,6 +207,4 @@ public class ObjSql {
         }
         return risultati;
     }
-
-
 }
