@@ -26,7 +26,7 @@
                   <Insets left="20" />
                </padding>
             </Label>
-            <Separator orientation="HORIZONTAL" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0" />
+            <Separator styleClass="SeparatoreScuro" orientation="HORIZONTAL" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0" />
             <VBox fx:id="PaginaPaneUpload_vboxPrincipale" styleClass="PaginaPaneUpload_vboxPrincipale" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
                <children>
                   <Label styleClass="labelBiancaGrande" text="Dati principali:" textFill="WHITE" underline="true">

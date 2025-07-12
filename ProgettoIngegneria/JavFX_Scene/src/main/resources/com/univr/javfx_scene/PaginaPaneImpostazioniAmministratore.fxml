@@ -16,7 +16,7 @@
                 <Insets left="20" top="35" />
             </padding>
         </Label>
-        <Separator orientation="HORIZONTAL" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0" />
+        <Separator styleClass="SeparatoreScuro" orientation="HORIZONTAL" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0" />
         <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
             <children>
                 <ScrollPane prefWidth="500" styleClass="PaginaPrincipale_scrollPane" HBox.hgrow="ALWAYS">

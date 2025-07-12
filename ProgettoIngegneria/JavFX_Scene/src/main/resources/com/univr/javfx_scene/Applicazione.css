@@ -174,10 +174,17 @@
     -fx-background-color: #505050;
 }
 
-.separator:horizontal .line {
+.SeparatoreScuro:horizontal .line {
     -fx-border-color:  transparent;
     -fx-text-box-border: transparent;
-    -fx-background-color: #292929; /* rosso, cambia con il colore desiderato */
+    -fx-background-color: #292929;
+    -fx-padding: 0.5;
+}
+
+.SeparatoreChiaro:horizontal .line {
+    -fx-border-color:  transparent;
+    -fx-text-box-border: transparent;
+    -fx-background-color: #3a3a3a;
     -fx-padding: 0.5;
 }
 /* ----------------------------------------------------------------------------------------------------------- LOGIN ----------------------------------------------------------------- */
