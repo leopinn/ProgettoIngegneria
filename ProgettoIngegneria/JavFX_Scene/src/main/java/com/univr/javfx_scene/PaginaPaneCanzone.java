@@ -217,14 +217,16 @@ public class PaginaPaneCanzone {
                         fileRow.setAlignment(Pos.CENTER_LEFT);
 
                         Label nome = new Label(file.getName().replaceFirst(ID_CANZONE + "_", ""));
-                        nome.setStyle("-fx-text-fill: white;");
+                        nome.getStyleClass().add("labelBiancaMedia");
                         Region spacer = new Region();
                         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-                        Button apri = new Button("📄");
+                        Button apri = new Button();
+                        apri.getStyleClass().add("PaginaPaneCanzone_bottoneDocumento");
                         apri.setOnAction(e -> apriFile(file));
 
-                        Button scarica = new Button("⬇");
+                        Button scarica = new Button();
+                        scarica.getStyleClass().add("PaginaPaneCanzone_bottoneDownload");
                         scarica.setOnAction(e -> salvaFile(file));
 
                         fileRow.getChildren().addAll(nome, spacer, apri, scarica);
@@ -256,14 +258,16 @@ public class PaginaPaneCanzone {
                     mediaRow.setAlignment(Pos.CENTER_LEFT);
 
                     Label label = new Label(file.getName().replaceFirst(ID_CANZONE + "_", ""));
-                    label.setStyle("-fx-text-fill: white;");
+                    label.getStyleClass().add("labelBiancaMedia");
                     Region spacer = new Region();
                     HBox.setHgrow(spacer, Priority.ALWAYS);
 
-                    Button play = new Button("▶");
+                    Button play = new Button();
+                    play.getStyleClass().add("PaginaPaneCanzone_bottonePlay");
                     play.setOnAction(e -> apriFile(file));
 
-                    Button download = new Button("⬇");
+                    Button download = new Button("");
+                    download.getStyleClass().add("PaginaPaneCanzone_bottoneDownload");
                     download.setOnAction(e -> salvaFile(file));
 
                     mediaRow.getChildren().addAll(label, spacer, play, download);
@@ -277,11 +281,12 @@ public class PaginaPaneCanzone {
                 youtubeRow.setAlignment(Pos.CENTER_LEFT);
 
                 Label label = new Label("YouTube");
-                label.setStyle("-fx-text-fill: white;");
+                label.getStyleClass().add("labelBiancaMedia");
                 Region spacer = new Region();
                 HBox.setHgrow(spacer, Priority.ALWAYS);
 
-                Button apriYoutube = new Button("🔗");
+                Button apriYoutube = new Button();
+                apriYoutube.getStyleClass().add("PaginaPaneCanzone_bottoneYoutube");
                 apriYoutube.setOnAction(e -> apriLink(linkYoutube));
 
                 youtubeRow.getChildren().addAll(label, spacer, apriYoutube);
