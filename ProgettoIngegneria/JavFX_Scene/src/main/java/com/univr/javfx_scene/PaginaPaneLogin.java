@@ -21,12 +21,6 @@ public class PaginaPaneLogin {
     // Dichiaro l'oggetto generico che poi inizializzo
     private ObjGenerici objGenerici;
 
-    // Dichiarazione variabili pubbliche
-    private static int ID_UTENTE;
-    private static String UTENTE_PASSWORD;
-    private static String UTENTE_NOME;
-    private static String UTENTE_EMAIL;
-
     private Stage stage;
 
     @FXML private Label PaginaLogin_labelErrore;
@@ -96,34 +90,8 @@ public class PaginaPaneLogin {
         mainController.paginaIscriviti();
     }
 
-    private void login(ActionEvent par_event, String par_usr, String par_psw) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPrincipale.fxml"));
-            Parent root = loader.load();
-
-            // Ottengo lo stage corrente dalla scena del bottone
-            stage = (Stage) ((Node)par_event.getSource()).getScene().getWindow();
-
-            // Creo una nuova scena
-            Scene nuovaScene = new Scene(root);
-            stage.setScene(nuovaScene);
-
-            // Questi passaggi servono per prendere le dimensioni dello schermo e creare uno "schermo intero appena più piccolo"
-            Screen screen = Screen.getPrimary();
-            Rectangle2D bounds = screen.getVisualBounds();
-
-            stage.setX(bounds.getMinX());
-            stage.setY(bounds.getMinY());
-            stage.setWidth(bounds.getWidth());
-            stage.setHeight(bounds.getHeight());
-
-            stage.show();
-
-            // Una volta mostrata la scena, imposto la scena a schermo intero
-            stage.setMaximized(true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void login(ActionEvent par_event, String par_usr, String par_psw) throws IOException {
+        mainController.paginaPrincipale();
     }
 
     private void erroreLogin(int par_err) {

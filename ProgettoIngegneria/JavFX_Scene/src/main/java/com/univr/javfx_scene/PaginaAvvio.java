@@ -26,7 +26,6 @@ public class PaginaAvvio extends Application {
             stage.setScene(scene);
             stage.setMinWidth(1600);
             stage.setMinHeight(900);
-            stage.setMaximized(true);
 
             Image iconaApplicazione = new Image(getClass().getResourceAsStream("/immagini/iconaApplicazione.png"));
             stage.getIcons().add(iconaApplicazione);

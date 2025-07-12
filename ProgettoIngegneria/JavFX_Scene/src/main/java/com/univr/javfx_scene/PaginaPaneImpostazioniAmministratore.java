@@ -107,7 +107,7 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
             ImageView icona, iconaHover;
 
             // In base allo stato dell'utente, capisco quale icona prendere
-            if(Integer.parseInt(rowUtente.get("STATO").toString())==2){
+            if(Integer.parseInt(rowUtente.get("STATO").toString())!=1){
                 icona = new ImageView(imageAutorizza);
                 iconaHover = new ImageView(imageAutorizzaHover);
             } else {
@@ -132,7 +132,7 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
             label.setStyle("-fx-cursor: hand;");
             label.setOnMouseEntered(event -> label.setGraphic(iconaHover));
             label.setOnMouseExited(event -> label.setGraphic(icona));
-            if(Integer.parseInt(rowUtente.get("STATO").toString())==2){
+            if(Integer.parseInt(rowUtente.get("STATO").toString())!=1){
                 label.setOnMouseClicked(event -> {
                     autorizzautente(rowUtente, riga);
                     impostaLista();
@@ -156,7 +156,7 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
             // Imposto lo stato in SOSPESO
             rowUtente.put("STATO", 2);
             objSql.aggiorna("UTENTI", locWhere, rowUtente);
-            objGenerici.mostraPopupSuccesso(PaginaPaneImpostazioniAmministrazione_vBox, "Attenzione!!\nUtente "+rowUtente.get("NOME").toString()+" sospeso con successo");
+            objGenerici.mostraPopupErrore(PaginaPaneImpostazioniAmministrazione_vBox, "Attenzione!!\nUtente "+rowUtente.get("NOME").toString()+" sospeso con successo");
         }
     }
 

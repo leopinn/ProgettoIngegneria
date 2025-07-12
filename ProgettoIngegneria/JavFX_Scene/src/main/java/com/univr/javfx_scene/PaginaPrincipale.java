@@ -20,7 +20,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -34,11 +33,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class PaginaPrincipale implements Initializable {
-    private  ObjSql objSql = ObjSql.oggettoSql();
+    private  final ObjSql objSql = ObjSql.oggettoSql();
     private  final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();
 
     private PaginaPanePrincipale controller;
@@ -47,7 +45,6 @@ public class PaginaPrincipale implements Initializable {
     private int isCommentiNascosti=0;       //0=no, 1=si nascosti.
 
     private PaginaPaneCommenti commentiController;      // Per gestire i commenti in certi range
-    private Parent PaginaPanePrincipaleParent;          // per impilarci sopra altre schermate
 
     @FXML private BorderPane PaginaPrincipale_borderPane;
     @FXML private ImageView PaginaPrincipale_imageCopertina;
@@ -92,105 +89,88 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_stackPane.getChildren().clear();   // Ogni volta che torno in home pulisco lo stack pane
 
         FXMLLoader loaderPrincipale = new FXMLLoader(getClass().getResource("PaginaPanePrincipale.fxml"));
-        PaginaPanePrincipaleParent = loaderPrincipale.load();
+        Parent PaginaPanePrincipaleParent = loaderPrincipale.load();
 
-        // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
         controller = loaderPrincipale.getController();
-        controller.setMainController(this);  // <<< passaggio chiave
+        controller.setMainController(this);
 
         PaginaPrincipale_stackPane.getChildren().add(PaginaPanePrincipaleParent);
         PaginaPrincipale_borderPane.setCenter(PaginaPrincipale_stackPane);
     }
 
     public void paginaUtente() throws IOException {
+        PaginaPrincipale_stackPane.getChildren().clear();
         FXMLLoader loaderPrincipale = new FXMLLoader(getClass().getResource("PaginaPaneUtente.fxml"));
-        Parent registerPane = loaderPrincipale.load();
-
-        // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
+        Parent paneUtente = loaderPrincipale.load();
         PaginaPaneUtente controller = loaderPrincipale.getController();
-        controller.setMainController(this);  // <<< passaggio chiave
+        controller.setMainController(this);
 
-        PaginaPrincipale_borderPane.setCenter(registerPane);
+        PaginaPrincipale_stackPane.getChildren().add(paneUtente);
     }
 
     public void impostazioni() throws IOException {
+        // Rimuove l'ultimo pannello presente. Questo serve per evitare sovrapposisizioni strane
+        if (PaginaPrincipale_stackPane.getChildren().size() > 1) { PaginaPrincipale_stackPane.getChildren().removeLast(); }
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneImpostazioni.fxml"));
         Parent impostazioniPane = loader.load();
-
         PaginaPaneImpostazioni controllerImpostazioni = loader.getController();
-        controllerImpostazioni.setMainController(this, PaginaPrincipale_stackPane);  // Passaggio chiave
+        controllerImpostazioni.setMainController(this, PaginaPrincipale_stackPane);
 
-        // Applica sfocatura allo sfondo (pagina principale)
-        Node background = PaginaPrincipale_stackPane.getChildren().get(0);
+        // Applico la sfocatura allo sfondo (pagina principale)
+        Node background = PaginaPrincipale_stackPane.getChildren().getFirst();
         background.setEffect(new GaussianBlur(10));
-        background.setDisable(true);        // Disabilito la schermata di sfondo
+        background.setDisable(true);
 
         // Aggiunge impostazioniPane sopra
         PaginaPrincipale_stackPane.getChildren().add(impostazioniPane);
         PaginaPrincipale_borderPane.setCenter(PaginaPrincipale_stackPane);
     }
 
-    public void PaginaPaneImpostazioniAmministratore() throws IOException {
-        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneImpostazioniAmministratore.fxml"));
-        Parent registerPane = loader.load();
-
-        PaginaPaneImpostazioniAmministratore controller = loader.getController();
-        controller.setMainController(this);  // <<< passaggio chiave
-
-        PaginaPrincipale_borderPane.setCenter(registerPane);*/
-    }
-
     public void upload(ActionEvent actionEvent) throws IOException {
-        // Imposto al centro dello stack pane paginaUtente, come sfondo
-        PaginaPrincipale_stackPane.getChildren().clear();   // Ogni volta che chiamo upload, meglio pulire lo stack
-
+        PaginaPrincipale_stackPane.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneUtente.fxml"));
         Parent utentePane = loader.load();
-
         PaginaPaneUtente controllerUtente = loader.getController();
         controllerUtente.setMainController(this);
 
         PaginaPrincipale_stackPane.getChildren().setAll(utentePane);
 
-        // Apro successivamente paginaCanzone
+        // Applico la sfocatura allo sfondo
+        Node background = PaginaPrincipale_stackPane.getChildren().getFirst();
+        background.setEffect(new GaussianBlur(10));
+        background.setDisable(true);
+
+        // Apro successivamente PaginaPaneUpload
         loader = new FXMLLoader(getClass().getResource("PaginaPaneUpload.fxml"));
         Parent canzonePane = loader.load();
-
         PaginaPaneUpload controllerUpload = loader.getController();
         controllerUpload.setMainController(PaginaPrincipale_stackPane, controllerUtente);
-
         nascondiCommenti();
-
-        // Applica sfocatura allo sfondo (paginaUtente)
-        Node background = PaginaPrincipale_stackPane.getChildren().get(0);
-        background.setEffect(new GaussianBlur(10));
-        background.setDisable(true);    // La pagina viene inizialmente utilizzata solo come sfondo, dunque la disabilito
 
         // Aggiunge canzonePane sopra
         PaginaPrincipale_stackPane.getChildren().add(canzonePane);
         PaginaPrincipale_borderPane.setCenter(PaginaPrincipale_stackPane);
-
     }
 
     public void paginaCanzone() throws IOException {
+        PaginaPrincipale_stackPane.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneCanzone.fxml"));
         Parent paneCanzone = loader.load();
-
         PaginaPaneCanzone controller = loader.getController();
-        controller.setMainController(this);  // <<< passaggio chiave
+        controller.setMainController(this);
         controller.mostraSchermataCanzone(ID_CANZONE);
 
-        PaginaPrincipale_borderPane.setCenter(paneCanzone);
+        PaginaPrincipale_stackPane.getChildren().add(paneCanzone);
     }
 
     public void mostraCommenti(int id_canzone) throws IOException {
         FXMLLoader loaderCommenti = new FXMLLoader(getClass().getResource("PaginaPaneCommenti.fxml"));
         Parent registerPane = loaderCommenti.load();
-
         PaginaPaneCommenti controller = loaderCommenti.getController();
-
         commentiController = loaderCommenti.getController();
-        controller.setMainController(this);  // <<< passaggio chiave
+
+        controller.setMainController(this);
         controller.caricaCommenti(id_canzone);
 
         PaginaPrincipale_borderPane.setRight(registerPane);
@@ -205,31 +185,30 @@ public class PaginaPrincipale implements Initializable {
         isCommentiNascosti=1;
     }
 
+    public void logout(ActionEvent event) throws IOException {
+        if(mediaPlayer!=null)   // Questo nel caso in cui non fosse stata ancora avviata una musica prima del logout
+            mediaPlayer.stop();
+
+        objGenerici.logout();   // Pulisco tutte le variabili globali
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaLogin.fxml"));
+        Parent registerPane = loader.load();
+        PaginaLogin controller = loader.getController();
+
+        Scene scena = PaginaPrincipale_borderPane.getScene();
+        scena.setRoot(registerPane);
+    }
+
     /* ---------- FINE - CAMBIO SCHERMATA ----------*/
 
 
 
     public void aggiornaMusiche(String val) throws IOException {
+        String lowerCase = val.trim().replace("'", "''").toLowerCase();
         List<Map<String, Object>> listaBrani = objSql.leggiLista("SELECT * FROM CANZONE WHERE (TITOLO LIKE '"
-                + val.trim().replace("'", "''").toLowerCase()
-                + "%' OR AUTORE LIKE '" + val.trim().replace("'", "''").toLowerCase() + "%')COLLATE NOCASE");
+                + lowerCase
+                + "%' OR AUTORE LIKE '" + lowerCase + "%')COLLATE NOCASE");
         controller.ricercaMusica(listaBrani, val);
-    }
-
-    public void logout(ActionEvent event) throws IOException {
-        if(mediaPlayer!=null)   // Questo nel caso in cui non fosse stata ancora avviata una musica prima del logout
-            mediaPlayer.stop();
-
-        Parent root = FXMLLoader.load(getClass().getResource("PaginaLogin.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();  // Mi recupero lo stage corrente
-
-        double locWidth = stage.getWidth();
-        double locHeight = stage.getHeight();
-
-        // Richiamo la scena con le dimensioni correnti
-        Scene scene = new Scene(root, locWidth, locHeight);
-        stage.setScene(scene);
-        stage.show();
     }
 
     public void selezionaMusica(int parId, PaginaPanePrincipale controller) throws IOException {
@@ -267,8 +246,7 @@ public class PaginaPrincipale implements Initializable {
         if (pulsanteVideo != null) {
             PaginaPrincipale_hBox.getChildren().remove(pulsanteVideo);
             pulsanteVideo = null;
-        }
-        if (pulsanteVideo == null) {
+        } else {
             pulsanteVideo = new Button("");
             pulsanteVideo.getStyleClass().add("PaginaPrincipale_bottoneYT");
             pulsanteVideo.setOnAction(e -> {
@@ -278,10 +256,10 @@ public class PaginaPrincipale implements Initializable {
                     try {
                         Desktop.getDesktop().browse(new URI(locUrl));
                     } catch (IOException | URISyntaxException err) {
-                        objGenerici.mostraPopupErrore(PaginaPrincipale_borderPane, "Attenzione!! Errore nella apertura del browser");
+                        ObjGenerici.mostraPopupErrore(PaginaPrincipale_borderPane, "Attenzione!! Errore nella apertura del browser");
                     }
                 } else {
-                    objGenerici.mostraPopupErrore(PaginaPrincipale_borderPane, "Attenzione!! Errore nella apertura del browser");
+                    ObjGenerici.mostraPopupErrore(PaginaPrincipale_borderPane, "Attenzione!! Errore nella apertura del browser");
                 }
             });
 
@@ -394,9 +372,7 @@ public class PaginaPrincipale implements Initializable {
         });
 
         // Modifica del volume in tempo reale
-        PaginaPrincipale_sliderVolume.valueProperty().addListener((obs, oldVal, newVal) -> {
-            mediaPlayer.setVolume(newVal.doubleValue() / 100.0);
-        });
+        PaginaPrincipale_sliderVolume.valueProperty().addListener((obs, oldVal, newVal) -> mediaPlayer.setVolume(newVal.doubleValue() / 100.0));
     }
 
     public void sliderPressed(){

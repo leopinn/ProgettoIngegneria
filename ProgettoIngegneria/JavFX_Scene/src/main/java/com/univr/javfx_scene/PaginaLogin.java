@@ -5,8 +5,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
@@ -17,12 +17,9 @@ import java.util.ResourceBundle;
 
 public class PaginaLogin implements Initializable {
 
-    @FXML
-    private BorderPane PaginaLogin_borderPane;
-    @FXML
-    private Label PaginaLogin_labelRichiestaAccount;
-    @FXML
-    private StackPane PaginaLogin_stackPane;
+    @FXML private BorderPane PaginaLogin_borderPane;
+    @FXML private Label PaginaLogin_labelRichiestaAccount;
+    @FXML private StackPane PaginaLogin_stackPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -33,29 +30,33 @@ public class PaginaLogin implements Initializable {
         }
     }
 
+    // Una volta effettuato l'accesso alla piattaforma
+    public void paginaPrincipale() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPrincipale.fxml"));
+        Parent registerPane = loader.load();
+        PaginaPrincipale controller = loader.getController();
+
+        // Questo passaggio server per sostituire completamente la scena, ossia sto completamente trascrivendo il broderpane
+        Scene scena = PaginaLogin_borderPane.getScene();
+        scena.setRoot(registerPane);
+    }
+
     public void impostaSchermata() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneLogin.fxml"));
         Parent registerPane = loader.load();
-
-        // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
         PaginaPaneLogin controller = loader.getController();
-        controller.setMainController(this);  // <<< passaggio chiave
+        controller.setMainController(this);
 
         PaginaLogin_borderPane.setCenter(registerPane);
     }
 
     public void paginaIscriviti() throws IOException {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneIscrizione.fxml"));
-            Parent iscrizionePane = loader.load();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneIscrizione.fxml"));
+        Parent iscrizionePane = loader.load();
+        PaginaPaneIscrizione controller = loader.getController();
+        controller.setMainController(this);
 
-            PaginaPaneIscrizione controller = loader.getController();
-            controller.setMainController(this);  // << chiave per comunicare
-
-            PaginaLogin_borderPane.setCenter(iscrizionePane);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        PaginaLogin_borderPane.setCenter(iscrizionePane);
     }
 
     public void mostraLabelIscrizione() {
@@ -86,7 +87,5 @@ public class PaginaLogin implements Initializable {
 
         fadeIn.play();
     }
-
-
 
 }

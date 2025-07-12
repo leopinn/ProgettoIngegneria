@@ -13,7 +13,7 @@
     <children>
         <Label fx:id="PaginaPaneUtente_label" prefWidth="1000" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Lista utenti">
             <padding>
-                <Insets left="20.0" top="30.0" />
+                <Insets left="20" top="35" />
             </padding>
         </Label>
         <Separator orientation="HORIZONTAL" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0" />

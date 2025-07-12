@@ -1,11 +1,14 @@
 package com.univr.javfx_scene;
 
 import javafx.animation.FadeTransition;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.stage.*;
 import javafx.util.Duration;
 import java.io.File;
@@ -20,9 +23,7 @@ public class ObjGenerici {
     private int ID_UTENTE;
     private String UTENTE_NOME, UTENTE_EMAIL;
 
-    int a;
-
-    // Inizializzo il costruttore
+    // LOGIN -> Inizializzo il costruttore
     public ObjGenerici(int idUtente, String utenteNome, String utenteEmail) {
         ID_UTENTE = idUtente;
         UTENTE_NOME = utenteNome;
@@ -35,6 +36,16 @@ public class ObjGenerici {
     public static ObjGenerici oggettoGenerico() {
         return instance;
     }
+
+    // LOGOUNT -> Cancello le variabili
+    void logout(){
+        ID_UTENTE = 0;
+        UTENTE_NOME = "";
+        UTENTE_EMAIL = "";
+
+        instance=null;
+    }
+
 
     /* ---------- Inizio - UTILIZZO VARIABILI GLOBALI ----------*/
 
@@ -71,10 +82,11 @@ public class ObjGenerici {
         contenuto.setStyle("""
         -fx-background-color: #28a745;
         -fx-text-fill: white;
-        -fx-padding: 12px 24px;
-        -fx-font-size: 14px;
+        -fx-padding: 12 24;
+        -fx-font-size: 16;
         -fx-background-radius: 10;
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
+        -fx-line-spacing: 10;
     """);
 
         generaPopUp(contenuto, parNodo);
@@ -85,9 +97,10 @@ public class ObjGenerici {
         contenuto.setStyle("""
         -fx-background-color: #dc3545;
         -fx-text-fill: white;
-        -fx-padding: 12px 24px;
-        -fx-font-size: 14px;
+        -fx-padding: 12 24;
+        -fx-font-size: 16;
         -fx-background-radius: 10;
+        -fx-line-spacing: 10;
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
     """);
 
@@ -186,7 +199,7 @@ public class ObjGenerici {
                 "SELECT TITOLO FROM CANZONE WHERE ID_CANZONE = " + idCanzone
         );
         if (!risultato.isEmpty()) {
-            titoloBrano = (String) risultato.get(0).get("TITOLO");
+            titoloBrano = (String) risultato.getFirst().get("TITOLO");
         }
 
         // Finestra di selezione cartella per far scegliere all'utente dove salvare
@@ -222,7 +235,7 @@ public class ObjGenerici {
 
         } catch (IOException e) {
             // Errore durante la copia dei file
-            e.printStackTrace();
+            // e.printStackTrace();
             mostraPopupSuccesso(parNodo, "Errore durante il download di: " + titoloBrano);
         }
     }
