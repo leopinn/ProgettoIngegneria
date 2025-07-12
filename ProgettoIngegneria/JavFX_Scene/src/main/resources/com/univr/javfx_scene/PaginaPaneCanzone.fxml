@@ -49,7 +49,7 @@
                                     <children>
                                         <Label styleClass="LabelBoxAllegati" text="Documenti allegati" style="-fx-text-fill: white; -fx-font-weight: bold;" />
                                         <Region HBox.hgrow="ALWAYS"/>
-                                        <Button fx:id="btnCaricaDocumento" text="📤" onAction="#caricaDocumento"/>
+                                        <Button fx:id="btnCaricaDocumento" text="" styleClass="PaginaPaneCanzone_bottoneImporta" onAction="#caricaDocumento"/>
                                     </children>
                                     <VBox.margin>
                                         <Insets bottom="10"/>
@@ -68,7 +68,7 @@
                                     <children>
                                         <Label styleClass="LabelBoxAllegati" text="File multimediali" style="-fx-text-fill: white; -fx-font-weight: bold;" />
                                         <Region HBox.hgrow="ALWAYS"/>
-                                        <Button fx:id="btnCaricaMedia" text="📤" onAction="#caricaMediaFile"/>
+                                        <Button fx:id="btnCaricaMedia" text="" styleClass="PaginaPaneCanzone_bottoneImporta" onAction="#caricaMediaFile"/>
                                     </children>
                                     <VBox.margin>
                                         <Insets bottom="10"/>

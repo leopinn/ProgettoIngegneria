@@ -204,10 +204,9 @@ public class PaginaPrincipale implements Initializable {
 
 
     public void aggiornaMusiche(String val) throws IOException {
-        String lowerCase = val.trim().replace("'", "''").toLowerCase();
         List<Map<String, Object>> listaBrani = objSql.leggiLista("SELECT * FROM CANZONE WHERE (TITOLO LIKE '"
-                + lowerCase
-                + "%' OR AUTORE LIKE '" + lowerCase + "%')COLLATE NOCASE");
+                + val.trim().replace("'", "''").toLowerCase()
+                + "%' OR AUTORE LIKE '" + val.trim().replace("'", "''").toLowerCase() + "%')COLLATE NOCASE");
         controller.ricercaMusica(listaBrani, val);
     }
 

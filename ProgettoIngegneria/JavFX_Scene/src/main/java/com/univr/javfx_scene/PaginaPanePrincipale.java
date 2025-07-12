@@ -1,14 +1,11 @@
 package com.univr.javfx_scene;
 
-import javafx.animation.FadeTransition;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -16,24 +13,17 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Window;
-import javafx.util.Duration;
-import javafx.stage.Popup;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-import javafx.stage.DirectoryChooser;
-
-
 public class PaginaPanePrincipale implements Initializable {
 
-    private  ObjSql objSql = ObjSql.oggettoSql();
-    private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();;
+    private final ObjSql objSql = ObjSql.oggettoSql();
+    private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();
 
     private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
     private List<Map<String, Object>> listaBrani, listaBraniTutto, listaBraniGeneri, listaBraniArtisti, listaBraniMancanti, listaTipi;
@@ -46,7 +36,7 @@ public class PaginaPanePrincipale implements Initializable {
     private int canzoneCorrente;
     private int tabCorrente;        // 0=tutto, 1=generi, 2=artisti, 3=concerti
 
-    public ArrayList<Integer> codaBrani = new ArrayList<Integer>();
+    public ArrayList<Integer> codaBrani = new ArrayList<>();
 
 
     public void setMainController(PaginaPrincipale controller) {
@@ -191,7 +181,7 @@ public class PaginaPanePrincipale implements Initializable {
 
     /* ---------- Inizio - GESTIONE GRIGLIA TUTTO ----------*/
 
-    @FXML private void paginaTutto() throws IOException {
+    @FXML private void paginaTutto() {
         impostaTab(0);
         inizializzaListaBrani();
     }
@@ -428,13 +418,11 @@ public class PaginaPanePrincipale implements Initializable {
 
         ContextMenu contextMenu = new ContextMenu(downloadItem, apriCommenti);
 
-        card.setOnContextMenuRequested(e -> {
-            contextMenu.show(card, e.getScreenX(), e.getScreenY());
-        });
+        card.setOnContextMenuRequested(e -> contextMenu.show(card, e.getScreenX(), e.getScreenY()));
 
 
         // Controllo se eventualmente è un PNG o JPEG
-        String locPath = objGenerici.ritornaCopertina(Integer.parseInt(rowBrano.get("ID_CANZONE").toString()));
+        String locPath = ObjGenerici.ritornaCopertina(Integer.parseInt(rowBrano.get("ID_CANZONE").toString()));
 
         Image immagine = new Image(new File(locPath).toURI().toString());
         ImageView copertina = new ImageView(immagine);

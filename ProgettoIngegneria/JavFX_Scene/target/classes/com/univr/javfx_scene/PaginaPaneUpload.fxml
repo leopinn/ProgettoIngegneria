@@ -9,6 +9,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -20,11 +21,12 @@
    <children>
       <AnchorPane maxHeight="700" maxWidth="300" styleClass="PaginaPaneUpload_anchorPanePrincipale" VBox.vgrow="ALWAYS">
          <children>
-            <HBox fx:id="PaginaPaneUpload_hboxSuperiore" prefHeight="220" styleClass="PaginaPaneUpload_hboxSuperiore" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <Label minHeight="100.0" prefHeight="100.0" prefWidth="1180.0" styleClass="PaginaPanePrincipale_labelMusiche" text="Carica brano" />
-               </children>
-            </HBox>
+            <Label minHeight="100.0" prefHeight="100.0" prefWidth="1180.0" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Carica brano">
+               <padding>
+                  <Insets left="20" />
+               </padding>
+            </Label>
+            <Separator orientation="HORIZONTAL" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0" />
             <VBox fx:id="PaginaPaneUpload_vboxPrincipale" styleClass="PaginaPaneUpload_vboxPrincipale" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
                <children>
                   <Label styleClass="labelBiancaGrande" text="Dati principali:" textFill="WHITE" underline="true">
