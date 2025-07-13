@@ -1563,7 +1563,28 @@
     -fx-max-width: 25;
     -fx-max-height: 25;
 }
+
 .PaginaPaneCanzone_bottoneLink:hover{
     -fx-background-image: url("../../../immagini/iconaLinkHover.png");
+    -fx-cursor: hand;
+}
+
+.PaginaPaneCanzone_bottoneCestino{
+    -fx-background-image: url("../../../immagini/iconaCestino.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 25 25;
+
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-min-width: 25;
+    -fx-min-height: 25;
+    -fx-max-width: 25;
+    -fx-max-height: 25;
+}
+
+.PaginaPaneCanzone_bottoneCestino:hover{
+    -fx-background-image: url("../../../immagini/iconaCestinoHover.png");
     -fx-cursor: hand;
 }

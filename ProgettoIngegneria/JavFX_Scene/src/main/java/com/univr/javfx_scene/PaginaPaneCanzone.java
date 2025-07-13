@@ -231,8 +231,8 @@ public class PaginaPaneCanzone {
 
                         // Bottone elimina
                         Button elimina = new Button();
-                        elimina.getStyleClass().add("PaginaPaneCanzone_bottoneElimina");
-                        elimina.setOnAction(e -> eliminaFileAssociato(nomeFile, contenutiDocumenti, fileRow));
+                        elimina.getStyleClass().add("PaginaPaneCanzone_bottoneCestino");
+                        elimina.setOnAction(e -> eliminaElementoDatiAggiuntivi("file", nomeFile, contenutiDocumenti, fileRow));
 
                         fileRow.getChildren().addAll(nome, spacer, apri, scarica, elimina);
 
@@ -277,8 +277,9 @@ public class PaginaPaneCanzone {
                     download.setOnAction(e -> salvaFile(file));
 
                     Button elimina = new Button();
-                    elimina.getStyleClass().add("PaginaPaneCanzone_bottoneElimina");
-                    elimina.setOnAction(e -> eliminaFileAssociato(nomeFile, contenutiMedia, mediaRow));
+                    elimina.getStyleClass().add("PaginaPaneCanzone_bottoneCestino");
+                    elimina.setOnAction(e -> eliminaElementoDatiAggiuntivi("file", nomeFile, contenutiMedia, mediaRow));
+
 
                     mediaRow.getChildren().addAll(label, spacer, play, download, elimina);
 
@@ -300,7 +301,13 @@ public class PaginaPaneCanzone {
                 apriYoutube.getStyleClass().add("PaginaPaneCanzone_bottoneYoutube");
                 apriYoutube.setOnAction(e -> apriLink(linkYoutube));
 
-                youtubeRow.getChildren().addAll(label, spacer, apriYoutube);
+                Button elimina = new Button();
+                elimina.getStyleClass().add("PaginaPaneCanzone_bottoneCestino");
+                elimina.setOnAction(e -> eliminaElementoDatiAggiuntivi("link", linkYoutube, contenutiMedia, youtubeRow));
+
+
+
+                youtubeRow.getChildren().addAll(label, spacer, apriYoutube, elimina);
                 contenutiMedia.getChildren().add(youtubeRow);
             }
         }
@@ -539,23 +546,45 @@ public class PaginaPaneCanzone {
     }
 
 
-    // Elimina il file allegato selezionato
-    private void eliminaFileAssociato(String nomeFile, VBox contenitore, HBox riga) {
-        boolean conferma = objGenerici.yesNoMessage("Conferma eliminazione", "Vuoi davvero eliminare il file \"" + nomeFile + "\"?");
+    // Elimina il file allegato selezionato (documento, file multimediale o link)
+    private void eliminaElementoDatiAggiuntivi(String tipo, String valore, VBox contenitore, HBox riga) {
+        String campo = tipo.equalsIgnoreCase("file") ? "NOME_FILE" : "LINK_YOUTUBE";
+        String messaggio = tipo.equalsIgnoreCase("file") ? "Vuoi davvero eliminare il file \"" + valore + "\"?"
+                : "Vuoi davvero eliminare il link YouTube?";
+
+        boolean conferma = objGenerici.yesNoMessage("Conferma eliminazione", messaggio);
         if (!conferma) return;
 
-        // Rimuove visivamente la riga
+        String nomeUtenteCorrente = objGenerici.getUTENTE_NOME();
+        String query = "SELECT NOME_UTENTE FROM DATI_AGGIUNTIVI_CANZONE WHERE ID_CANZONE = " + ID_CANZONE +
+                " AND " + campo + " = '" + valore.replace("'", "''") + "'";
+
+        Map<String, Object> record = objSql.leggi(query);
+        if (record == null || record.isEmpty()) {
+            ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Elemento non trovato nel database.");
+            return;
+        }
+
+        String autore = getSafe(record, "NOME_UTENTE");
+        if (!nomeUtenteCorrente.equals(autore) && !nomeUtenteCorrente.equalsIgnoreCase("adm")) {
+            ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Non hai i permessi per eliminare questo elemento.");
+            return;
+        }
+
+        // Rimuove dalla GUI
         contenitore.getChildren().remove(riga);
 
-        // Rimuove il file fisico
-        File filePdf = new File(System.getProperty("user.dir") + "/upload/pdf/" + nomeFile);
-        File fileMedia = new File(System.getProperty("user.dir") + "/upload/musiche/" + nomeFile);
-        if (filePdf.exists()) filePdf.delete();
-        if (fileMedia.exists()) fileMedia.delete();
+        // Se è un file, rimuove anche dal disco
+        if (tipo.equalsIgnoreCase("file")) {
+            File filePdf = new File(System.getProperty("user.dir") + "/upload/pdf/" + valore);
+            File fileMedia = new File(System.getProperty("user.dir") + "/upload/musiche/" + valore);
+            if (filePdf.exists()) filePdf.delete();
+            if (fileMedia.exists()) fileMedia.delete();
+        }
 
-        // Rimuove la riga dal DB
-        String whereCondizione = "ID_CANZONE = " + ID_CANZONE + " AND NOME_FILE = '" + nomeFile.replace("'", "''") + "'";
+        // Rimuove dal database
+        String whereCondizione = "ID_CANZONE = " + ID_CANZONE +
+                " AND " + campo + " = '" + valore.replace("'", "''") + "'";
         objSql.cancellaCondizione("DATI_AGGIUNTIVI_CANZONE", whereCondizione);
-
     }
 }

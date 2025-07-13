@@ -80,10 +80,7 @@
                                 </HBox>
                                 <Separator styleClass="SeparatoreChiaro" orientation="HORIZONTAL" prefWidth="1000"/>
                                 <!-- I file multimediali verranno aggiunti qui -->
-                                <Label fx:id="PaginaPaneCanzone_labelError"
-                                       text=""
-                                       styleClass="PaginaLogin_labelErrore" />
-
+                                <Label fx:id="PaginaPaneCanzone_labelError" text="" styleClass="PaginaLogin_labelErrore" />
                                 <VBox fx:id="contenutiMedia" spacing="8" />
                             </children>
                         </VBox>
