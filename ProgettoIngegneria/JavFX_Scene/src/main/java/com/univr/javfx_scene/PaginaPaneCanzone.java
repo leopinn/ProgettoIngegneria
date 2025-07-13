@@ -196,7 +196,6 @@ public class PaginaPaneCanzone {
     private void popolaDocumentiAllegati() {
         contenutiDocumenti.getChildren().clear();
 
-        // Recupera i nomi dei file dal DB
         var records = objSql.leggiTutti(
                 "SELECT NOME_FILE FROM DATI_AGGIUNTIVI_CANZONE WHERE ID_CANZONE = " + ID_CANZONE +
                         " AND NOME_FILE IS NOT NULL AND TRIM(NOME_FILE) != ''"
@@ -218,6 +217,7 @@ public class PaginaPaneCanzone {
 
                         Label nome = new Label(file.getName().replaceFirst(ID_CANZONE + "_", ""));
                         nome.getStyleClass().add("labelBiancaMedia");
+
                         Region spacer = new Region();
                         HBox.setHgrow(spacer, Priority.ALWAYS);
 
@@ -229,16 +229,17 @@ public class PaginaPaneCanzone {
                         scarica.getStyleClass().add("PaginaPaneCanzone_bottoneDownload");
                         scarica.setOnAction(e -> salvaFile(file));
 
-                        // Bottone elimina. Solo chi ha caricato la canzone e chi è adm può eliminare i dati
-                        if(controllaInserimentoBottoneElimina("file", nomeFile)){
+                        fileRow.getChildren().addAll(nome, spacer, apri, scarica);
+
+                        // Solo se autorizzato, aggiungi il bottone elimina
+                        if (controllaInserimentoBottoneElimina("file", nomeFile)) {
                             Button elimina = new Button();
                             elimina.getStyleClass().add("PaginaPaneCanzone_bottoneCestino");
                             elimina.setOnAction(e -> eliminaElementoDatiAggiuntivi("file", nomeFile, contenutiDocumenti, fileRow));
-
-                            fileRow.getChildren().addAll(nome, spacer, apri, scarica, elimina);
-
-                            contenutiDocumenti.getChildren().add(fileRow);
+                            fileRow.getChildren().add(elimina);
                         }
+
+                        contenutiDocumenti.getChildren().add(fileRow);
                     }
                 }
             }
@@ -246,11 +247,11 @@ public class PaginaPaneCanzone {
     }
 
 
+
     // Recupera File Multimediali e popola la medesima sezione
     private void popolaFileMultimediali() {
         contenutiMedia.getChildren().clear();
 
-        // Leggi i file multimediali e i link YouTube dal DB
         String query = "SELECT NOME_FILE, LINK_YOUTUBE FROM DATI_AGGIUNTIVI_CANZONE WHERE ID_CANZONE = " + ID_CANZONE;
         var records = objSql.leggiTutti(query);
 
@@ -258,7 +259,6 @@ public class PaginaPaneCanzone {
             String nomeFile = getSafe(record, "NOME_FILE");
             String linkYoutube = getSafe(record, "LINK_YOUTUBE");
 
-            // Mostra file multimediali (es. mp3/mp4)
             if (nomeFile != null && !nomeFile.trim().isEmpty()) {
                 File file = new File(System.getProperty("user.dir") + "/upload/musiche/" + nomeFile);
                 if (file.exists() && (nomeFile.endsWith(".mp3") || nomeFile.endsWith(".mp4") || nomeFile.endsWith(".midi"))) {
@@ -267,6 +267,7 @@ public class PaginaPaneCanzone {
 
                     Label label = new Label(file.getName().replaceFirst(ID_CANZONE + "_", ""));
                     label.getStyleClass().add("labelBiancaMedia");
+
                     Region spacer = new Region();
                     HBox.setHgrow(spacer, Priority.ALWAYS);
 
@@ -274,34 +275,30 @@ public class PaginaPaneCanzone {
                     play.getStyleClass().add("PaginaPaneCanzone_bottonePlay");
                     play.setOnAction(e -> apriFile(file));
 
-                    Button download = new Button("");
+                    Button download = new Button();
                     download.getStyleClass().add("PaginaPaneCanzone_bottoneDownload");
                     download.setOnAction(e -> salvaFile(file));
 
-                    if(controllaInserimentoBottoneElimina("file", nomeFile)) {
+                    mediaRow.getChildren().addAll(label, spacer, play, download);
+
+                    if (controllaInserimentoBottoneElimina("file", nomeFile)) {
                         Button elimina = new Button();
                         elimina.getStyleClass().add("PaginaPaneCanzone_bottoneCestino");
                         elimina.setOnAction(e -> eliminaElementoDatiAggiuntivi("file", nomeFile, contenutiMedia, mediaRow));
-
-                        mediaRow.getChildren().addAll(label, spacer, play, download, elimina);
-                    } else{
-                        mediaRow.getChildren().addAll(label, spacer, play, download);
+                        mediaRow.getChildren().add(elimina);
                     }
-
-
-
 
                     contenutiMedia.getChildren().add(mediaRow);
                 }
             }
 
-            // Mostra eventuale link YouTube associato
             if (linkYoutube != null && !linkYoutube.trim().isEmpty()) {
                 HBox youtubeRow = new HBox(10);
                 youtubeRow.setAlignment(Pos.CENTER_LEFT);
 
                 Label label = new Label("YouTube");
                 label.getStyleClass().add("labelBiancaMedia");
+
                 Region spacer = new Region();
                 HBox.setHgrow(spacer, Priority.ALWAYS);
 
@@ -309,14 +306,13 @@ public class PaginaPaneCanzone {
                 apriYoutube.getStyleClass().add("PaginaPaneCanzone_bottoneYoutube");
                 apriYoutube.setOnAction(e -> apriLink(linkYoutube));
 
-                if(controllaInserimentoBottoneElimina("link", nomeFile)) {
+                youtubeRow.getChildren().addAll(label, spacer, apriYoutube);
+
+                if (controllaInserimentoBottoneElimina("link", nomeFile)) {
                     Button elimina = new Button();
                     elimina.getStyleClass().add("PaginaPaneCanzone_bottoneCestino");
                     elimina.setOnAction(e -> eliminaElementoDatiAggiuntivi("link", linkYoutube, contenutiMedia, youtubeRow));
-
-                    youtubeRow.getChildren().addAll(label, spacer, apriYoutube, elimina);
-                } else{
-                    youtubeRow.getChildren().addAll(label, spacer, apriYoutube);
+                    youtubeRow.getChildren().add(elimina);
                 }
 
                 contenutiMedia.getChildren().add(youtubeRow);
