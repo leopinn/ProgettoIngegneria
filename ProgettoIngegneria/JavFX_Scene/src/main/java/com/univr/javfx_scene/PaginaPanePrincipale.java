@@ -357,6 +357,7 @@ public class PaginaPanePrincipale implements Initializable {
     @FXML private void paginaConcerti() throws IOException {
         impostaTab(3);
         listaBraniConcerti = objSql.leggiLista("SELECT * FROM CANZONE WHERE IS_CONCERTO = true");
+        PaginaPanePrincipale_labelMusiche.setText("Concerti");
         setGrigliaMusicaConcerti();
     }
 
