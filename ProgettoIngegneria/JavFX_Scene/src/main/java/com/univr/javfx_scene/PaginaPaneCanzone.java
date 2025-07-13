@@ -229,14 +229,16 @@ public class PaginaPaneCanzone {
                         scarica.getStyleClass().add("PaginaPaneCanzone_bottoneDownload");
                         scarica.setOnAction(e -> salvaFile(file));
 
-                        // Bottone elimina
-                        Button elimina = new Button();
-                        elimina.getStyleClass().add("PaginaPaneCanzone_bottoneCestino");
-                        elimina.setOnAction(e -> eliminaElementoDatiAggiuntivi("file", nomeFile, contenutiDocumenti, fileRow));
+                        // Bottone elimina. Solo chi ha caricato la canzone e chi è adm può eliminare i dati
+                        if(controllaInserimentoBottoneElimina("file", nomeFile)){
+                            Button elimina = new Button();
+                            elimina.getStyleClass().add("PaginaPaneCanzone_bottoneCestino");
+                            elimina.setOnAction(e -> eliminaElementoDatiAggiuntivi("file", nomeFile, contenutiDocumenti, fileRow));
 
-                        fileRow.getChildren().addAll(nome, spacer, apri, scarica, elimina);
+                            fileRow.getChildren().addAll(nome, spacer, apri, scarica, elimina);
 
-                        contenutiDocumenti.getChildren().add(fileRow);
+                            contenutiDocumenti.getChildren().add(fileRow);
+                        }
                     }
                 }
             }
@@ -276,12 +278,18 @@ public class PaginaPaneCanzone {
                     download.getStyleClass().add("PaginaPaneCanzone_bottoneDownload");
                     download.setOnAction(e -> salvaFile(file));
 
-                    Button elimina = new Button();
-                    elimina.getStyleClass().add("PaginaPaneCanzone_bottoneCestino");
-                    elimina.setOnAction(e -> eliminaElementoDatiAggiuntivi("file", nomeFile, contenutiMedia, mediaRow));
+                    if(controllaInserimentoBottoneElimina("file", nomeFile)) {
+                        Button elimina = new Button();
+                        elimina.getStyleClass().add("PaginaPaneCanzone_bottoneCestino");
+                        elimina.setOnAction(e -> eliminaElementoDatiAggiuntivi("file", nomeFile, contenutiMedia, mediaRow));
+
+                        mediaRow.getChildren().addAll(label, spacer, play, download, elimina);
+                    } else{
+                        mediaRow.getChildren().addAll(label, spacer, play, download);
+                    }
 
 
-                    mediaRow.getChildren().addAll(label, spacer, play, download, elimina);
+
 
                     contenutiMedia.getChildren().add(mediaRow);
                 }
@@ -301,13 +309,16 @@ public class PaginaPaneCanzone {
                 apriYoutube.getStyleClass().add("PaginaPaneCanzone_bottoneYoutube");
                 apriYoutube.setOnAction(e -> apriLink(linkYoutube));
 
-                Button elimina = new Button();
-                elimina.getStyleClass().add("PaginaPaneCanzone_bottoneCestino");
-                elimina.setOnAction(e -> eliminaElementoDatiAggiuntivi("link", linkYoutube, contenutiMedia, youtubeRow));
+                if(controllaInserimentoBottoneElimina("link", nomeFile)) {
+                    Button elimina = new Button();
+                    elimina.getStyleClass().add("PaginaPaneCanzone_bottoneCestino");
+                    elimina.setOnAction(e -> eliminaElementoDatiAggiuntivi("link", linkYoutube, contenutiMedia, youtubeRow));
 
+                    youtubeRow.getChildren().addAll(label, spacer, apriYoutube, elimina);
+                } else{
+                    youtubeRow.getChildren().addAll(label, spacer, apriYoutube);
+                }
 
-
-                youtubeRow.getChildren().addAll(label, spacer, apriYoutube, elimina);
                 contenutiMedia.getChildren().add(youtubeRow);
             }
         }
@@ -545,6 +556,30 @@ public class PaginaPaneCanzone {
         });
     }
 
+    private boolean controllaInserimentoBottoneElimina(String tipo, String valore){
+        String nomeUtenteCorrente=objGenerici.getUTENTE_NOME();
+
+        String campo = tipo.equalsIgnoreCase("file") ? "NOME_FILE" : "LINK_YOUTUBE";
+        String query = "SELECT NOME_UTENTE FROM DATI_AGGIUNTIVI_CANZONE WHERE ID_CANZONE = " + ID_CANZONE +
+                " AND " + campo + " = '" + valore.replace("'", "''") + "'";
+
+        Map<String, Object> rowDatiAggiuntivi = objSql.leggi(query);
+        if (rowDatiAggiuntivi == null || rowDatiAggiuntivi.isEmpty()) {
+            ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Elemento non trovato nel database.");
+            return false;
+        }
+        String autoreDati = getSafe(rowDatiAggiuntivi, "NOME_UTENTE");  // Utente che ha caricato i dati
+
+        // Prendo il nome di chi ha inserito la canzone
+        String autoreCanzone = getSafe(rowCanzone, "UTENTE_INS");
+
+        // Se è chi ha inserito il dato, oppure se è chi ha inserito la canzone, oppure se è l'amministratore
+        if (nomeUtenteCorrente.equals(autoreDati) || nomeUtenteCorrente.equals(autoreCanzone) || nomeUtenteCorrente.equalsIgnoreCase("adm")) {
+            return true;
+        }
+        return false;
+    }
+
 
     // Elimina il file allegato selezionato (documento, file multimediale o link)
     private void eliminaElementoDatiAggiuntivi(String tipo, String valore, VBox contenitore, HBox riga) {
@@ -562,12 +597,6 @@ public class PaginaPaneCanzone {
         Map<String, Object> record = objSql.leggi(query);
         if (record == null || record.isEmpty()) {
             ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Elemento non trovato nel database.");
-            return;
-        }
-
-        String autore = getSafe(record, "NOME_UTENTE");
-        if (!nomeUtenteCorrente.equals(autore) && !nomeUtenteCorrente.equalsIgnoreCase("adm")) {
-            ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Non hai i permessi per eliminare questo elemento.");
             return;
         }
 
