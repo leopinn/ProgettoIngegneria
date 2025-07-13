@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="800" maxWidth="600" prefHeight="500" prefWidth="600" styleClass="PaginaPaneUpload_anchorPanePrincipale" stylesheets="Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneImpostazioniAmministratore">
+    <children>
+        <Label fx:id="PaginaPaneUtente_label" prefWidth="1000" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Lista utenti">
+            <padding>
+                <Insets left="20" top="35" />
+            </padding>
+        </Label>
+        <Separator styleClass="SeparatoreScuro" orientation="HORIZONTAL" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0" />
+        <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
+            <children>
+                <ScrollPane prefWidth="500" styleClass="PaginaPrincipale_scrollPane" HBox.hgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="PaginaPaneImpostazioniAmministrazione_vBox" styleClass="PaginaPaneUtente_vboxCanzoni" />
+                    </content>
+                </ScrollPane>
+            <Button mnemonicParsing="false" onAction="#indietro" styleClass="buttonRosso" text="Indietro" />
+            </children>
+        </HBox>
+    </children>
+
+</AnchorPane>
