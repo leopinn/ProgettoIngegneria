@@ -47,7 +47,7 @@ public class PaginaPrincipale implements Initializable {
     private int isCommentiNascosti=0;       //0=no, 1=si nascosti.
 
     private PaginaPaneCommenti commentiController;      // Per gestire i commenti in certi range
-    private Parent PaginaPanePrincipaleParent;          // per impilarci sopra altre schermate
+    private Parent PaginaPanePrincipaleParent;          // Mi salvo solo la pagina principale per avere continuità
 
     @FXML private BorderPane PaginaPrincipale_borderPane;
     @FXML private ImageView PaginaPrincipale_imageCopertina;
@@ -88,20 +88,24 @@ public class PaginaPrincipale implements Initializable {
     /* ---------- INIZIO - CAMBIO SCHERMATA ----------*/
 
     public void paginaPrincipale() throws IOException {
-        PaginaPrincipale_stackPane.getChildren().clear();   // Ogni volta che torno in home pulisco lo stack pane
+        PaginaPrincipale_stackPane.getChildren().clear();
 
-        FXMLLoader loaderPrincipale = new FXMLLoader(getClass().getResource("PaginaPanePrincipale.fxml"));
-        PaginaPanePrincipaleParent = loaderPrincipale.load();
+        // Controllo se la pagina principale è già stata caricata almeno una volta.
+        if(PaginaPanePrincipaleParent==null) {
+            FXMLLoader loaderPrincipale = new FXMLLoader(getClass().getResource("PaginaPanePrincipale.fxml"));
+            PaginaPanePrincipaleParent = loaderPrincipale.load();
 
-        // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
-        controller = loaderPrincipale.getController();
-        controller.setMainController(this);  // <<< passaggio chiave
-
-        PaginaPrincipale_stackPane.getChildren().add(PaginaPanePrincipaleParent);
-        PaginaPrincipale_borderPane.setCenter(PaginaPrincipale_stackPane);
+            // Ottieni il controller della registrazione e passa il riferimento a questo controller principale
+            controller = loaderPrincipale.getController();
+            controller.setMainController(this);  // <<< passaggio chiave
+        }
+            PaginaPrincipale_stackPane.getChildren().add(PaginaPanePrincipaleParent);
     }
 
     public void paginaUtente() throws IOException {
+        // Lascio come base la pagina principale caricata
+        PaginaPrincipale_stackPane.getChildren().clear();
+
         FXMLLoader loaderPrincipale = new FXMLLoader(getClass().getResource("PaginaPaneUtente.fxml"));
         Parent registerPane = loaderPrincipale.load();
 
@@ -109,7 +113,7 @@ public class PaginaPrincipale implements Initializable {
         PaginaPaneUtente controller = loaderPrincipale.getController();
         controller.setMainController(this);  // <<< passaggio chiave
 
-        PaginaPrincipale_borderPane.setCenter(registerPane);
+        PaginaPrincipale_stackPane.getChildren().add(registerPane);
     }
 
     public void impostazioni() throws IOException {
@@ -120,7 +124,7 @@ public class PaginaPrincipale implements Initializable {
         controllerImpostazioni.setMainController(this, PaginaPrincipale_stackPane);  // Passaggio chiave
 
         // Applica sfocatura allo sfondo (pagina principale)
-        Node background = PaginaPrincipale_stackPane.getChildren().get(0);
+        Node background = PaginaPrincipale_stackPane.getChildren().getFirst();
         background.setEffect(new GaussianBlur(10));
         background.setDisable(true);        // Disabilito la schermata di sfondo
 
@@ -130,8 +134,8 @@ public class PaginaPrincipale implements Initializable {
     }
 
     public void upload(ActionEvent actionEvent) throws IOException {
-        // Imposto al centro dello stack pane paginaUtente, come sfondo
-        PaginaPrincipale_stackPane.getChildren().clear();   // Ogni volta che chiamo upload, meglio pulire lo stack
+        // Lascio come base la pagina principale caricata
+        PaginaPrincipale_stackPane.getChildren().clear();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneUtente.fxml"));
         Parent utentePane = loader.load();
@@ -139,7 +143,7 @@ public class PaginaPrincipale implements Initializable {
         PaginaPaneUtente controllerUtente = loader.getController();
         controllerUtente.setMainController(this);
 
-        PaginaPrincipale_stackPane.getChildren().setAll(utentePane);
+        PaginaPrincipale_stackPane.getChildren().add(utentePane);
 
         // Apro successivamente paginaCanzone
         loader = new FXMLLoader(getClass().getResource("PaginaPaneUpload.fxml"));
@@ -148,20 +152,21 @@ public class PaginaPrincipale implements Initializable {
         PaginaPaneUpload controllerUpload = loader.getController();
         controllerUpload.setMainController(PaginaPrincipale_stackPane, controllerUtente);
 
-        nascondiCommenti();
+        nascondiCommenti(0);    // 0 indica la chiusura forzata da parte del programma
 
         // Applica sfocatura allo sfondo (paginaUtente)
-        Node background = PaginaPrincipale_stackPane.getChildren().get(0);
+        Node background = PaginaPrincipale_stackPane.getChildren().getFirst();
         background.setEffect(new GaussianBlur(10));
         background.setDisable(true);    // La pagina viene inizialmente utilizzata solo come sfondo, dunque la disabilito
 
         // Aggiunge canzonePane sopra
         PaginaPrincipale_stackPane.getChildren().add(canzonePane);
-        PaginaPrincipale_borderPane.setCenter(PaginaPrincipale_stackPane);
 
     }
 
     public void paginaCanzone() throws IOException {
+        PaginaPrincipale_stackPane.getChildren().clear();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneCanzone.fxml"));
         Parent paneCanzone = loader.load();
 
@@ -169,7 +174,7 @@ public class PaginaPrincipale implements Initializable {
         controller.setMainController(this);  // <<< passaggio chiave
         controller.mostraSchermataCanzone(ID_CANZONE);
 
-        PaginaPrincipale_borderPane.setCenter(paneCanzone);
+        PaginaPrincipale_stackPane.getChildren().add(paneCanzone);
     }
 
     public void mostraCommenti(int id_canzone) throws IOException {
@@ -187,22 +192,14 @@ public class PaginaPrincipale implements Initializable {
         isCommentiNascosti=0;
     }
 
-    public void nascondiCommenti() {
+    /* Il parametro serve a capire se i commenti sono nascosti dall'utente o forzati dall'apertura di una finestra
+       0=no, 1=si*/
+    public void nascondiCommenti(int parIsNascostiUtente) {
         VBox locVBoxSpacer = new VBox();
         locVBoxSpacer.setPrefWidth(10);
         PaginaPrincipale_borderPane.setRight(locVBoxSpacer);
-        isCommentiNascosti=1;
-    }
 
-    /* ---------- FINE - CAMBIO SCHERMATA ----------*/
-
-
-
-    public void aggiornaMusiche(String val) throws IOException {
-        List<Map<String, Object>> listaBrani = objSql.leggiLista("SELECT * FROM CANZONE WHERE (TITOLO LIKE '"
-                + val.trim().replace("'", "''").toLowerCase()
-                + "%' OR AUTORE LIKE '" + val.trim().replace("'", "''").toLowerCase() + "%')COLLATE NOCASE");
-        controller.ricercaMusica(listaBrani, val);
+        isCommentiNascosti=parIsNascostiUtente;
     }
 
     public void logout(ActionEvent event) throws IOException {
@@ -220,6 +217,18 @@ public class PaginaPrincipale implements Initializable {
         scena.setRoot(registerPane);
     }
 
+    /* ---------- FINE - CAMBIO SCHERMATA ----------*/
+
+
+
+    public void aggiornaMusiche(String val) throws IOException {
+        List<Map<String, Object>> listaBrani = objSql.leggiLista("SELECT * FROM CANZONE WHERE (TITOLO LIKE '"
+                + val.trim().replace("'", "''").toLowerCase()
+                + "%' OR AUTORE LIKE '" + val.trim().replace("'", "''").toLowerCase() + "%')COLLATE NOCASE");
+        controller.ricercaMusica(listaBrani, val);
+    }
+
+    // IsCasuale=0 -> no, IsCasuale=1 -> è casuale
     public void selezionaMusica(int parId, PaginaPanePrincipale controller) throws IOException {
         impostaDatiCanzone(parId);
         riproduciCanzone(parId, controller);

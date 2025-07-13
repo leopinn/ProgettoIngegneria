@@ -427,6 +427,6 @@ public class PaginaPaneCommenti {
 
     @FXML
     private void chiudiCommenti(){
-        mainController.nascondiCommenti();
+        mainController.nascondiCommenti(1);     // 1 indica la chiusura voluta dall'utente
     }
 }
