@@ -64,6 +64,14 @@ public class ObjGenerici {
     /* ---------- Fine - UTILIZZO VARIABILI GLOBALI ----------*/
 
 
+    void logout(){
+        instance=null;
+
+        ID_UTENTE=0;
+        UTENTE_NOME="";
+        UTENTE_EMAIL="";
+    }
+
     /* ---------- Inizio - GESTIONE POPUP ----------*/
 
     public static void mostraPopupSuccesso(Node parNodo, String parMsg) {

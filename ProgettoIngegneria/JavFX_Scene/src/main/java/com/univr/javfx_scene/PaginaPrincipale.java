@@ -129,16 +129,6 @@ public class PaginaPrincipale implements Initializable {
         PaginaPrincipale_borderPane.setCenter(PaginaPrincipale_stackPane);
     }
 
-    public void PaginaPaneImpostazioniAmministratore() throws IOException {
-        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneImpostazioniAmministratore.fxml"));
-        Parent registerPane = loader.load();
-
-        PaginaPaneImpostazioniAmministratore controller = loader.getController();
-        controller.setMainController(this);  // <<< passaggio chiave
-
-        PaginaPrincipale_borderPane.setCenter(registerPane);*/
-    }
-
     public void upload(ActionEvent actionEvent) throws IOException {
         // Imposto al centro dello stack pane paginaUtente, come sfondo
         PaginaPrincipale_stackPane.getChildren().clear();   // Ogni volta che chiamo upload, meglio pulire lo stack
@@ -219,16 +209,15 @@ public class PaginaPrincipale implements Initializable {
         if(mediaPlayer!=null)   // Questo nel caso in cui non fosse stata ancora avviata una musica prima del logout
             mediaPlayer.stop();
 
-        Parent root = FXMLLoader.load(getClass().getResource("PaginaLogin.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();  // Mi recupero lo stage corrente
+        objGenerici.logout();
 
-        double locWidth = stage.getWidth();
-        double locHeight = stage.getHeight();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaLogin.fxml"));
+        Parent registerPane = loader.load();
+        PaginaLogin controllerLogin = loader.getController();
 
-        // Richiamo la scena con le dimensioni correnti
-        Scene scene = new Scene(root, locWidth, locHeight);
-        stage.setScene(scene);
-        stage.show();
+        // Questo passaggio server per sostituire completamente la scena, ossia sto completamente trascrivendo il broderpane
+        Scene scena = PaginaPrincipale_borderPane.getScene();
+        scena.setRoot(registerPane);
     }
 
     public void selezionaMusica(int parId, PaginaPanePrincipale controller) throws IOException {
