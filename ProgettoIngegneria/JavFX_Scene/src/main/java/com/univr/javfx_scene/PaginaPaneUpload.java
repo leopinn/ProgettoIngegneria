@@ -40,6 +40,7 @@ public class PaginaPaneUpload {
     @FXML private Label PaginaPaneUplaod_labelMusica, PaginaPaneUplaod_labelCopertina, PaginaPaneUplaod_labelPdf;
     @FXML private CheckBox checkboxUsaNomeUtente;
     @FXML private ListView<String> listStrumenti;
+    @FXML private CheckBox is_concerto;
 
     public void setMainController(StackPane controller, PaginaPaneUtente paneUtenteControllore) {
         this.mainController = controller;
@@ -247,6 +248,12 @@ public class PaginaPaneUpload {
         rowCanzone.put("STRUMENTI", strumenti);
         rowCanzone.put("UTENTE_INS", objGenerici.getUTENTE_NOME());
         rowCanzone.put("ID_UTENTE", objGenerici.getID_UTENTE());
+
+        if(is_concerto.isSelected()) {
+            rowCanzone.put("IS_CONCERTO", true);
+        } else {
+            rowCanzone.put("IS_CONCERTO", false);
+        }
 
         ObjSql objSql = ObjSql.oggettoSql();
         int risultato = objSql.inserisci("CANZONE", rowCanzone);

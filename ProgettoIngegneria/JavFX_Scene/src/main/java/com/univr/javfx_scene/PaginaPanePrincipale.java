@@ -36,7 +36,7 @@ public class PaginaPanePrincipale implements Initializable {
     private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();;
 
     private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
-    private List<Map<String, Object>> listaBrani, listaBraniTutto, listaBraniGeneri, listaBraniArtisti, listaBraniMancanti, listaTipi;
+    private List<Map<String, Object>> listaBrani, listaBraniTutto, listaBraniGeneri, listaBraniArtisti, listaBraniMancanti, listaTipi, listaBraniConcerti;
 
     @FXML private ScrollPane PaginaPrincipale_scrollPane;
     @FXML private Label PaginaPanePrincipale_labelMusiche;
@@ -356,8 +356,32 @@ public class PaginaPanePrincipale implements Initializable {
 
     @FXML private void paginaConcerti() throws IOException {
         impostaTab(3);
-
+        listaBraniConcerti = objSql.leggiLista("SELECT * FROM CANZONE WHERE IS_CONCERTO = true");
+        setGrigliaMusicaConcerti();
     }
+
+    public void setGrigliaMusicaConcerti () {
+        impostaTab(0);
+
+        PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().clear();
+
+        // Creo un TilePane per avere una gestione automatica delle card
+        TilePane tilePane = new TilePane();
+        tilePane.setHgap(15);
+        tilePane.setVgap(15);
+        tilePane.setPrefColumns(4);  // Numero colonne preferite (opzionale)
+        tilePane.setTileAlignment(Pos.CENTER);
+
+
+        for (Map<String, Object> rowBrano : listaBraniConcerti) {
+            VBox card = creaCard(rowBrano);
+            tilePane.getChildren().add(card);
+        }
+        PaginaPanePrincipale_vBoxGrigliaMusiche.getChildren().add(tilePane);
+
+        refreshSchermata();
+    }
+
 
     /* ---------- Fine - GESTIONE GRIGLIA CONCERTI ----------*/
 
