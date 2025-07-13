@@ -1514,7 +1514,7 @@
 .PaginaPaneCanzone_bottoneYoutube{
     -fx-background-image: url("../../../immagini/iconaYoutube.png");
     -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
+    -fx-background-position: 2 center;
     -fx-background-size: 30 30;
 
     -fx-background-color: transparent;
