@@ -1,0 +1,6 @@
+- Nomi metodi e nomi variabili tutti in camelcase;
+- I parametri di un metodo devono essere riconosciuti da parNomeVariabile;
+- Tutti i nome di variabili in italiano;
+- Evitare metodi ripetitivi, creando metodi parametrizzati;
+- Gestire lo stile solo su CSS;
+- Gli ID degli oggetti devono essere tipo -> PaginaLogin_vBox;

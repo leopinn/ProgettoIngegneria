@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="PaginaCommenti_anchorPane" prefHeight="762.0" prefWidth="350.0" styleClass="PaginaCommenti_anchorPane" stylesheets="@Applicazione.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneCommenti">
+
+    <children>
+      <HBox prefHeight="300.0" styleClass="PaginaPanePrincipale_parteSuperiore" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+                <Label fx:id="PaginaPaneCommenti_label" prefWidth="230" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Commenti">
+               <padding>
+                  <Insets top="30" />
+               </padding>
+            </Label>
+            <Region prefHeight="280.0" prefWidth="82.0" HBox.hgrow="ALWAYS" />
+            <Label fx:id="PaginaPaneCommenti_chiudiCommenti" onMouseClicked="#chiudiCommenti" styleClass="PaginaPaneCommenti_chiudiCommenti" text="X" textAlignment="CENTER">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+         </children>
+      </HBox>
+        <VBox fx:id="PaginaPaneCommenti_vBox" maxHeight="Infinity" prefWidth="350.0" styleClass="PaginaPaneCommenti_vBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+            <children>
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" styleClass="PaginaPrincipale_scrollPane" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="commentiContainer" prefWidth="1.0" spacing="5.0" styleClass="commentiContainer" VBox.vgrow="ALWAYS" />
+                    </content>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+                </ScrollPane>
+            <HBox fx:id="PaginaPaneCommenti_hBoxMinutaggio" alignment="CENTER" minHeight="50.0" prefHeight="50.0" prefWidth="340.0" styleClass="PaginaPaneCommenti_hBoxMinutaggio">
+               <children>
+                  <TextField fx:id="PaginaPaneCommenti_testoInizio" prefHeight="40.0" prefWidth="160.0" promptText="Sec. inizio" styleClass="PaginaPaneCommenti_testoInizio" />
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <TextField fx:id="PaginaPaneCommenti_testoFine" prefHeight="40.0" prefWidth="160.0" promptText="Sec. fine" styleClass="PaginaPaneCommenti_testoFine" />
+               </children>
+            </HBox>
+                <TextArea fx:id="commentoTextArea" minHeight="100.0" prefRowCount="4" promptText="Scrivi un commento..." styleClass="commentoTextArea" wrapText="true" />
+            <HBox alignment="CENTER" prefHeight="40.0">
+               <children>
+                  <Button fx:id="PaginaPaneCommenti_bottoneAnnullaInvio" minWidth="100.0" mnemonicParsing="false" onAction="#annullaCommento" prefWidth="100.0" styleClass="buttonRosso" text="Annulla" />
+                  <Region HBox.hgrow="ALWAYS" />
+                      <Button fx:id="PaginaPaneCommenti_bottoneInvia" minWidth="200.0" onAction="#inviaCommento" prefWidth="200.0" styleClass="buttonVerde" text="Invia" />
+               </children>
+            </HBox>
+            <VBox fx:id="PaginaPaneCommenti_vBoxMinutaggio" prefHeight="10.0" styleClass="PaginaPaneCommenti_vBoxMinutaggio" />
+            </children>
+        </VBox>
+    </children>
+
+</AnchorPane>

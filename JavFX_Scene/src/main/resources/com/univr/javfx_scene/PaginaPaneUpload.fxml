@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="500" prefWidth="500" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univr.javfx_scene.PaginaPaneUpload">
+   <children>
+      <AnchorPane maxHeight="700" maxWidth="300" styleClass="PaginaPaneUpload_anchorPanePrincipale" VBox.vgrow="ALWAYS">
+         <children>
+            <Label minHeight="100.0" prefHeight="100.0" prefWidth="1180.0" styleClass="PaginaPanePrincipale_labelMusicheSopra" text="Carica brano">
+               <padding>
+                  <Insets left="20" />
+               </padding>
+            </Label>
+            <Separator styleClass="SeparatoreScuro" orientation="HORIZONTAL" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0" />
+            <VBox fx:id="PaginaPaneUpload_vboxPrincipale" styleClass="PaginaPaneUpload_vboxPrincipale" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+               <children>
+                  <Label styleClass="labelBiancaGrande" text="Dati principali:" textFill="WHITE" underline="true">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox styleClass="PaginaPaneUpload_hboxGenerico">
+                     <children>
+                        <VBox prefHeight="135.0" prefWidth="578.0" styleClass="PaginaPaneUpload_vboxGenerica">
+                           <children>
+                              <Label styleClass="labelBiancaMedia" text="Upload musica (mp3, mp4, midi...)" />
+                              <VBox id="paneMusica" fx:id="PaginaPaneUpload_dragCanzone" minHeight="100.0" onDragDropped="#dropCanzone" onDragOver="#dragFile" style="-fx-border-color: gray; -fx-border-style: dashed; -fx-alignment: center;">
+                                 <children>
+                                    <Label fx:id="PaginaPaneUplaod_labelMusica" styleClass="labelBiancaPiccola" text="Trascina qui il tuo brano" />
+                                 </children>
+                                 <cursor>
+                                    <Cursor fx:constant="CLOSED_HAND" />
+                                 </cursor>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="135.0" prefWidth="629.0" styleClass="PaginaPaneUpload_vboxGenerica">
+                           <children>
+                              <Label styleClass="labelBiancaMedia" text="Upload copertina  (jpg, png...)" />
+                              <VBox id="paneCopertina" fx:id="PaginaPaneUpload_dragCopertina" minHeight="100.0" onDragDropped="#dropCopertina" onDragOver="#dragFile" style="-fx-border-color: gray; -fx-border-style: dashed; -fx-alignment: center;">
+                                 <children>
+                                    <Label fx:id="PaginaPaneUplaod_labelCopertina" styleClass="labelBiancaPiccola" text="Trascina qui la tua copertina" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox fx:id="PaginaPaneUpload_hboxDati1" alignment="TOP_CENTER" styleClass="PaginaPaneUpload_hboxCentrale">
+                     <children>
+                        <VBox prefHeight="109.0" prefWidth="381.0" styleClass="PaginaPaneUpload_vboxGenerica">
+                           <children>
+                              <Label styleClass="labelBiancaMedia" text="Titolo *" />
+                              <TextField fx:id="PaginaPaneUpload_textTitolo" promptText="Titolo" styleClass="textFieldGenerico" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="109.0" prefWidth="275.0" styleClass="PaginaPaneUpload_vboxGenerica">
+                           <children>
+                              <Label styleClass="labelBiancaMedia" text="Autore *" />
+                              <HBox spacing="5.0">
+                                 <children>
+                                    <ComboBox fx:id="PaginaPaneUpload_comboAutore" promptText="Autore" styleClass="PaginaPaneUpload_comboGenere">
+                                       <items>
+                                          <FXCollections fx:factory="observableArrayList">
+                                             <String fx:value="Pop" />
+                                             <String fx:value="Rock" />
+                                             <String fx:value="Trap" />
+                                             <String fx:value="Jazz" />
+                                             <String fx:value="Hip Hop" />
+                                             <String fx:value="Classica" />
+                                             <String fx:value="Reggaetton" />
+                                             <String fx:value="Blues" />
+                                             <String fx:value="Elettronica" />
+                                             <String fx:value="Metal" />
+                                             <String fx:value="Country" />
+                                          </FXCollections>
+                                       </items>
+                                    </ComboBox>
+                                    <CheckBox fx:id="checkboxUsaNomeUtente" ellipsisString="" onAction="#abilitaDatiAggiuntivi" styleClass="PaginaPaneUpload_checkbox">
+                                       <tooltip>
+                                          <Tooltip text="Imposta utente corrente come autore" />
+                                       </tooltip>
+                                    </CheckBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" spacing="5.0">
+                                 <children>
+                                    <TextField fx:id="PaginaPaneUpload_textNuovoAutore" promptText="Nuovo autore..." styleClass="textFieldGenerico" HBox.hgrow="ALWAYS">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <Button alignment="TOP_LEFT" onAction="#aggiungiAutore" styleClass="PaginaPaneUpload_bottoneAggiungi" text="+" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="109.0" prefWidth="222.0" styleClass="PaginaPaneUpload_vboxGenerica">
+                           <children>
+                              <Label styleClass="labelBiancaMedia" text="Genere *" />
+                              <ComboBox fx:id="PaginaPaneUpload_comboGenere" promptText="Genere" styleClass="PaginaPaneUpload_comboGenere">
+                                 <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                       <String fx:value="Pop" />
+                                       <String fx:value="Rock" />
+                                       <String fx:value="Trap" />
+                                       <String fx:value="Jazz" />
+                                       <String fx:value="Hip Hop" />
+                                       <String fx:value="Classica" />
+                                       <String fx:value="Reggaetton" />
+                                       <String fx:value="Blues" />
+                                       <String fx:value="Elettronica" />
+                                       <String fx:value="Metal" />
+                                       <String fx:value="Country" />
+                                    </FXCollections>
+                                 </items>
+                              </ComboBox>
+                              <HBox alignment="CENTER" spacing="5.0">
+                                 <children>
+                                    <TextField fx:id="textNuovoGenere" promptText="Nuovo genere..." styleClass="textFieldGenerico" HBox.hgrow="ALWAYS">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <Button alignment="TOP_LEFT" onAction="#aggiungiGenere" styleClass="PaginaPaneUpload_bottoneAggiungi" text="+" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="109.0" prefWidth="171.0" styleClass="PaginaPaneUpload_vboxGenerica">
+                           <children>
+                              <Label styleClass="labelBiancaMedia" text="Anno di uscita" />
+                              <TextField fx:id="PaginaPaneUpload_textAnno" prefHeight="25.0" prefWidth="148.0" promptText="Anno di uscita" styleClass="textFieldGenerico" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Label styleClass="labelBiancaGrande" text="Dati extra:" textFill="WHITE" underline="true">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox alignment="TOP_CENTER" styleClass="PaginaPaneUpload_hboxGenerico">
+                     <children>
+                        <VBox prefHeight="178.0" prefWidth="361.0" styleClass="PaginaPaneUpload_vboxGenerica">
+                           <children>
+                              <Label styleClass="labelBiancaMedia" text="Upload spartiti (pdf, doc...)" />
+                              <VBox id="paneSpartiti" fx:id="PaginaPaneUpload_dragPdf" minHeight="100.0" onDragDropped="#dropPdf" onDragOver="#dragFile" style="-fx-border-color: gray; -fx-border-style: dashed; -fx-alignment: center;">
+                                 <children>
+                                    <Label fx:id="PaginaPaneUplaod_labelPdf" styleClass="labelBiancaPiccola" text="Trascina qui il tuo spartito" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="155.0" prefWidth="438.0" styleClass="PaginaPaneUpload_vboxGenerica">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" styleClass="PaginaPaneUpload_vboxGenerica">
+                                 <children>
+                                    <Label styleClass="labelBiancaMedia" text="Link YouTube correlato" />
+                                    <TextField fx:id="PaginaPaneUpload_textLink" promptText="Link YouTube" styleClass="textFieldGenerico" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" styleClass="PaginaPaneUpload_vboxGenerica">
+                                 <children>
+                                    <Label styleClass="labelBiancaMedia" text="Ruolo nel brano" />
+                                    <ComboBox fx:id="comboRuolo" disable="true" promptText="Seleziona ruolo" styleClass="PaginaPaneUpload_comboGenere">
+                                       <items>
+                                          <FXCollections fx:factory="observableArrayList">
+                                             <String fx:value="Autore" />
+                                             <String fx:value="Interprete" />
+                                          </FXCollections>
+                                       </items>
+                                    </ComboBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="178.0" prefWidth="391.0" styleClass="PaginaPaneUpload_vboxGenerica">
+                           <children>
+                              <Label styleClass="labelBiancaMedia" text="Strumenti usati" />
+                              <ListView fx:id="listStrumenti" prefHeight="115" prefWidth="Infinity" styleClass="PaginaPaneUpload_listView" visible="true" />
+                              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                                 <children>
+                                    <TextField fx:id="textNuovoStrumento" promptText="Nuovo strumento..." styleClass="textFieldGenerico" HBox.hgrow="ALWAYS">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <Button onAction="#aggiungiStrumento" styleClass="PaginaPaneUpload_bottoneAggiungi" text="+" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Region VBox.vgrow="ALWAYS" />
+                  <HBox fx:id="PaginaImpostazioni_hBox" alignment="BOTTOM_LEFT" styleClass="PaginaImpostazioni_hBox">
+                     <children>
+                        <Label styleClass="labelBiancaPiccola" text="* campi obbligatori" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="PaginaImpostazioni_bottoneAnnulla" minWidth="100.0" mnemonicParsing="false" onAction="#chiudiPaneUpload" prefWidth="100.0" styleClass="buttonRosso" text="Annulla" />
+                        <Button fx:id="PaginaImpostazioni_bottoneSalva" minWidth="200.0" mnemonicParsing="false" onAction="#richiediInserimentoCanzone" prefWidth="200.0" styleClass="buttonVerde" text="Salva" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </AnchorPane>
+   </children>
+</VBox>
