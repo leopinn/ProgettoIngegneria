@@ -119,7 +119,7 @@ public class PaginaPanePrincipale implements Initializable {
                     listaBraniMancanti = objSql.leggiLista("SELECT * FROM CANZONE WHERE AUTORE='"+locRowBrano.get("AUTORE")+"'");
                     break;
                 case 3:
-                    // Da gestire
+                    listaBraniMancanti = objSql.leggiLista("SELECT * FROM CANZONE WHERE IS_CONCERTO='TRUE'");
                     break;
                 default:
                     break;
