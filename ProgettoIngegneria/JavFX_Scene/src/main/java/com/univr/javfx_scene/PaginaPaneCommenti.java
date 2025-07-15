@@ -26,6 +26,10 @@ public class PaginaPaneCommenti {
     private int ID_CANZONE;
     private List<Map<String, Object>> listaCommenti, listaCommentiRange;    // Messa pubblica per averla disponibile in tutta la gestione commenti
     private Map<String, Object> rowCommento, rowCanzone;            // Il commento attualmente selezionato e la canzone attuale in riproduzione
+    private VBox commentoMostrato = null;
+    private PaginaPrincipale mainController;
+    private int rangeInizioCorrente = -1;
+    private int rangeFineCorrente = -1;
 
     public int tipoCommento=0;      // 0=commento a se stante, 1=risposta ad un commento esistente
 
@@ -34,10 +38,6 @@ public class PaginaPaneCommenti {
     @FXML private TextArea commentoTextArea;
     @FXML private TextField PaginaPaneCommenti_testoInizio, PaginaPaneCommenti_testoFine;
 
-    private VBox commentoMostrato = null;
-    private int rangeInizioCorrente = -1;
-    private int rangeFineCorrente = -1;
-    private PaginaPrincipale mainController;
     public void setMainController(PaginaPrincipale mainController) {this.mainController=mainController;}
 
     // Carica i commenti presenti nel db per quella canzone

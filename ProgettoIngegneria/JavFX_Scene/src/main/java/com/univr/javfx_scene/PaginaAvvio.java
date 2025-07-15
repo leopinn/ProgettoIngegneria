@@ -6,10 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.Optional;
 
 public class PaginaAvvio extends Application {
 
@@ -56,15 +58,25 @@ public class PaginaAvvio extends Application {
     }
 
     public void logout(Stage stage) {
-
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Logout");
-        alert.setHeaderText("Stai per uscire dal programma!");
-        alert.setContentText("Vuoi salvare i tuoi progressi prima di uscire?");
+        alert.setHeaderText(null);
+        alert.setContentText("Vuoi veramente uscire da UniSound?");
 
-        if(alert.showAndWait().get() == ButtonType.OK) {
-            System.out.println("Programma chiuso con successo");
+        // Creo i pulsanti per scegliere si o no
+        ButtonType buttonYes = new ButtonType("✔ Sì");
+        ButtonType buttonNo = new ButtonType("✖ No");
+        alert.getButtonTypes().setAll(buttonYes, buttonNo);
+
+        // Applico lo stile
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(PaginaAvvio.class.getResource("Applicazione.css").toExternalForm());
+        dialogPane.getStyleClass().add("yesNoMessage");
+
+        // Prendo il risultato e lo restituisco
+        Optional<ButtonType> risultato = alert.showAndWait();
+
+        if(risultato.get() == buttonYes)
             stage.close();
         }
-    }
 }

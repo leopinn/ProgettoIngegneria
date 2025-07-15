@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class PaginaPaneCanzone {
     private static ObjSql objSql = ObjSql.oggettoSql();
-    private ObjGenerici objGenerici;
+    private static ObjGenerici objGenerici = ObjGenerici.oggettoGenerico();
     private int ID_CANZONE;
     private Map<String, Object> rowCanzone;
     private PaginaPrincipale mainController;
@@ -43,18 +43,7 @@ public class PaginaPaneCanzone {
     @FXML private VBox contenutiMedia;
 
 
-    public void setMainController(PaginaPrincipale controller) {
-        this.mainController = controller;
-        this.objGenerici = controller.getObjGenerici();
-    }
-
-
-    // Getter
-    private String getSafe(Map<String, Object> map, String key) {
-        Object val = map.get(key);
-        return val != null ? val.toString() : "";
-    }
-
+    public void setMainController(PaginaPrincipale controller) { this.mainController = controller;}
 
     //Inizializza il Pane Canzone
     public void mostraSchermataCanzone(int parIdCanzone) {
@@ -81,11 +70,11 @@ public class PaginaPaneCanzone {
         clip.setArcHeight(10);
         PaginaPaneCanzone_copertina.setClip(clip);
 
-        PaginaPaneCanzone_titolo.setText(getSafe(rowCanzone, "TITOLO"));
+        PaginaPaneCanzone_titolo.setText(objGenerici.getSafe(rowCanzone, "TITOLO"));
 
-        String locDatiAggiuntivi = getSafe(rowCanzone, "AUTORE") + " • " +
-                getSafe(rowCanzone, "GENERE") + " • " +
-                getSafe(rowCanzone, "ANNO_COMPOSIZIONE");
+        String locDatiAggiuntivi = objGenerici.getSafe(rowCanzone, "AUTORE") + " • " +
+                objGenerici.getSafe(rowCanzone, "GENERE") + " • " +
+                objGenerici.getSafe(rowCanzone, "ANNO_COMPOSIZIONE");
 
         PaginaPaneCanzone_altriDati.setText(locDatiAggiuntivi);
 
@@ -202,7 +191,7 @@ public class PaginaPaneCanzone {
         );
 
         for (Map<String, Object> record : records) {
-            String nomeFile = getSafe(record, "NOME_FILE");
+            String nomeFile = objGenerici.getSafe(record, "NOME_FILE");
 
             if (nomeFile != null && !nomeFile.trim().isEmpty()) {
                 String lower = nomeFile.toLowerCase();
@@ -256,8 +245,8 @@ public class PaginaPaneCanzone {
         var records = objSql.leggiTutti(query);
 
         for (Map<String, Object> record : records) {
-            String nomeFile = getSafe(record, "NOME_FILE");
-            String linkYoutube = getSafe(record, "LINK_YOUTUBE");
+            String nomeFile = objGenerici.getSafe(record, "NOME_FILE");
+            String linkYoutube = objGenerici.getSafe(record, "LINK_YOUTUBE");
 
             if (nomeFile != null && !nomeFile.trim().isEmpty()) {
                 File file = new File(System.getProperty("user.dir") + "/upload/musiche/" + nomeFile);
@@ -564,10 +553,10 @@ public class PaginaPaneCanzone {
             ObjGenerici.mostraPopupErrore(PaginaPaneCanzone_labelError, "Elemento non trovato nel database.");
             return false;
         }
-        String autoreDati = getSafe(rowDatiAggiuntivi, "NOME_UTENTE");  // Utente che ha caricato i dati
+        String autoreDati = objGenerici.getSafe(rowDatiAggiuntivi, "NOME_UTENTE");  // Utente che ha caricato i dati
 
         // Prendo il nome di chi ha inserito la canzone
-        String autoreCanzone = getSafe(rowCanzone, "UTENTE_INS");
+        String autoreCanzone = objGenerici.getSafe(rowCanzone, "UTENTE_INS");
 
         // Se è chi ha inserito il dato, oppure se è chi ha inserito la canzone, oppure se è l'amministratore
         if (nomeUtenteCorrente.equals(autoreDati) || nomeUtenteCorrente.equals(autoreCanzone) || nomeUtenteCorrente.equalsIgnoreCase("adm")) {

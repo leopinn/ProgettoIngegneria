@@ -1,9 +1,6 @@
 package com.univr.javfx_scene;
 
 import com.univr.javfx_scene.Classi.UTENTI;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -11,26 +8,25 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
-
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
 public class PaginaPaneImpostazioniAmministratore implements Initializable {
     private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();
-    private  ObjSql objSql = ObjSql.oggettoSql();
+    private final ObjSql objSql = ObjSql.oggettoSql();
 
     private PaginaPaneImpostazioni mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
     private StackPane stackPaneMainController;
+    private List<Map<String, Object>> listaUtenti;
+
+    @FXML private TableView<UTENTI> PaginaPaneImpostazioniAmministrazione_tabelView;
+    @FXML private VBox PaginaPaneImpostazioniAmministrazione_vBox;
+
     public void setMainController(PaginaPaneImpostazioni controller, StackPane stackPaneMainController) {
         this.mainController = controller;
         this.stackPaneMainController = stackPaneMainController;
     }
-
-    @FXML private TableView<UTENTI> PaginaPaneImpostazioniAmministrazione_tabelView;
-    @FXML private VBox PaginaPaneImpostazioniAmministrazione_vBox;
-    private List<Map<String, Object>> listaUtenti;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -43,10 +39,7 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
     }
 
     private void leggiUtenti() {
-        String locQuery="";
-
-        locQuery = "SELECT * FROM UTENTI   WHERE NOME!='adm' ORDER BY NOME ASC";
-
+        String locQuery = "SELECT * FROM UTENTI   WHERE NOME!='adm' ORDER BY NOME ASC";
         listaUtenti= objSql.leggiLista(locQuery);
     }
 
@@ -83,25 +76,25 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
             copertina.setClip(contenitore); // In modo che l'immagine abbia i borsi smussati
 
 
-            Label nomeBrano = new Label(getSafe(rowUtente, "NOME") + " • " +
-                    getSafe(rowUtente, "COGNOME") + " • " +
-                    getSafe(rowUtente, "EMAIL"));
+            Label nomeBrano = new Label(objGenerici.getSafe(rowUtente, "NOME") + " • " +
+                    objGenerici.getSafe(rowUtente, "COGNOME") + " • " +
+                    objGenerici.getSafe(rowUtente, "EMAIL"));
 
             nomeBrano.setStyle(
                     """
                     -fx-text-fill: #cccccc;
                     -fx-font-size: 16;
-                            """
+                    """
             );
 
             Region spacer = new Region();
             HBox.setHgrow(spacer, Priority.ALWAYS);
 
             // Imposto in primis le icone
-            Image imageSospendi = new Image(getClass().getResource("/immagini/iconaSospendi.png").toExternalForm());
-            Image imageSospendiHover = new Image(getClass().getResource("/immagini/iconaSospendiHover.png").toExternalForm());
-            Image imageAutorizza = new Image(getClass().getResource("/immagini/iconaAutorizza.png").toExternalForm());
-            Image imageAutorizzaHover = new Image(getClass().getResource("/immagini/iconaAutorizzaHover.png").toExternalForm());
+            Image imageSospendi = new Image(Objects.requireNonNull(getClass().getResource("/immagini/iconaSospendi.png")).toExternalForm());
+            Image imageSospendiHover = new Image(Objects.requireNonNull(getClass().getResource("/immagini/iconaSospendiHover.png")).toExternalForm());
+            Image imageAutorizza = new Image(Objects.requireNonNull(getClass().getResource("/immagini/iconaAutorizza.png")).toExternalForm());
+            Image imageAutorizzaHover = new Image(Objects.requireNonNull(getClass().getResource("/immagini/iconaAutorizzaHover.png")).toExternalForm());
 
 
             ImageView icona, iconaHover;
@@ -156,7 +149,7 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
             // Imposto lo stato in SOSPESO
             rowUtente.put("STATO", 2);
             objSql.aggiorna("UTENTI", locWhere, rowUtente);
-            objGenerici.mostraPopupErrore(PaginaPaneImpostazioniAmministrazione_vBox, "Attenzione!!\nUtente "+rowUtente.get("NOME").toString()+" sospeso con successo");
+            ObjGenerici.mostraPopupErrore(PaginaPaneImpostazioniAmministrazione_vBox, "Attenzione!! Utente "+rowUtente.get("NOME").toString()+" sospeso con successo");
         }
     }
 
@@ -167,19 +160,14 @@ public class PaginaPaneImpostazioniAmministratore implements Initializable {
             // Imposto lo stato in AUTORIZZATO
             rowUtente.put("STATO", 1);
             objSql.aggiorna("UTENTI", locWhere, rowUtente);
-            objGenerici.mostraPopupSuccesso(PaginaPaneImpostazioniAmministrazione_vBox, "Attenzione!!\nUtente "+rowUtente.get("NOME").toString()+" autorizzato con successo");
+            ObjGenerici.mostraPopupSuccesso(PaginaPaneImpostazioniAmministrazione_vBox, "Attenzione!! Utente "+rowUtente.get("NOME").toString()+" autorizzato con successo");
         }
     }
 
     @FXML
     private void indietro() {
         if (stackPaneMainController.getChildren().size() > 1) {
-            stackPaneMainController.getChildren().remove(stackPaneMainController.getChildren().size() - 1);
+            stackPaneMainController.getChildren().removeLast();
         }
-    }
-
-    private String getSafe(Map<String, Object> map, String key) {
-        Object val = map.get(key);
-        return val != null ? val.toString() : "";
     }
 }

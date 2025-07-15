@@ -10,13 +10,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PaginaLogin implements Initializable {
-
     @FXML private BorderPane PaginaLogin_borderPane;
     @FXML private Label PaginaLogin_labelRichiestaAccount;
     @FXML private StackPane PaginaLogin_stackPane;
@@ -30,7 +28,27 @@ public class PaginaLogin implements Initializable {
         }
     }
 
-    // Una volta effettuato l'accesso alla piattaforma
+    // Parte iniziale per cariacre il primo pane centrale
+    public void impostaSchermata() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneLogin.fxml"));
+        Parent registerPane = loader.load();
+        PaginaPaneLogin controller = loader.getController();
+        controller.setMainController(this);     //Passo l'istanza di PaginaLogin a PaginaPaneLogin in modo che quest'ultima possa interagire anche con la sua pagina chiamante
+
+        PaginaLogin_borderPane.setCenter(registerPane);
+    }
+
+    // Per accedere alla pagina di iscrizione
+    public void paginaIscriviti() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneIscrizione.fxml"));
+        Parent iscrizionePane = loader.load();
+        PaginaPaneIscrizione controller = loader.getController();
+        controller.setMainController(this);
+
+        PaginaLogin_borderPane.setCenter(iscrizionePane);
+    }
+
+    // Una volta che si viene autentificati, viene chiamato questo metodo
     public void paginaPrincipale() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPrincipale.fxml"));
         Parent registerPane = loader.load();
@@ -41,26 +59,9 @@ public class PaginaLogin implements Initializable {
         scena.setRoot(registerPane);
     }
 
-    public void impostaSchermata() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneLogin.fxml"));
-        Parent registerPane = loader.load();
-        PaginaPaneLogin controller = loader.getController();
-        controller.setMainController(this);
-
-        PaginaLogin_borderPane.setCenter(registerPane);
-    }
-
-    public void paginaIscriviti() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("PaginaPaneIscrizione.fxml"));
-        Parent iscrizionePane = loader.load();
-        PaginaPaneIscrizione controller = loader.getController();
-        controller.setMainController(this);
-
-        PaginaLogin_borderPane.setCenter(iscrizionePane);
-    }
-
+    // Animazione gestita non avendo ancora a disposizione objGenerici
     public void mostraLabelIscrizione() {
-        // FADE IN
+        // Fade-in iniziale
         FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), PaginaLogin_labelRichiestaAccount);
         fadeIn.setFromValue(0.0);
         fadeIn.setToValue(1.0);
@@ -81,11 +82,10 @@ public class PaginaLogin implements Initializable {
             fadeOut.play();
         });
 
-        // Assicura che il nodo sia visibile e gestito prima del fade-in
+        // Per evitare sorprese
         PaginaLogin_stackPane.setVisible(true);
         PaginaLogin_stackPane.setManaged(true);
 
         fadeIn.play();
     }
-
 }

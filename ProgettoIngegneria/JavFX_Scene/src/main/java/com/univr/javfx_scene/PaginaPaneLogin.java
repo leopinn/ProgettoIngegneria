@@ -2,61 +2,51 @@ package com.univr.javfx_scene;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
 
 public class PaginaPaneLogin {
-    // Dichiaro l'oggetto generico che poi inizializzo
-    private ObjGenerici objGenerici;
-
-    private Stage stage;
+    private final ObjSql objSql = ObjSql.oggettoSql();     // Inizializzazione dell'oggetto per la prima volta
 
     @FXML private Label PaginaLogin_labelErrore;
     @FXML private PaginaLogin mainController;
     @FXML private TextField PaginaLogin_nameTextField;
     @FXML private PasswordField PaginaLogin_passwordField;
 
+    // Per salvarmi l'istanza di PaginaLogin
     public void setMainController(PaginaLogin controller) {
         this.mainController = controller;
     }
 
+
+    /* ---------- Inizio - AUTENTICAZIONE SUL PROGRAMMA ----------*/
+
     public void invio(ActionEvent event) throws IOException, SQLException {
-        // Salvo in una variabile username e password
-        String loc_username = PaginaLogin_nameTextField.getText();
-        String loc_password = PaginaLogin_passwordField.getText();
+        // Salvo in una variabile locale username e password
+        String locUsername = PaginaLogin_nameTextField.getText();
+        String locPassword = PaginaLogin_passwordField.getText();
 
         // Controlli su username e password. Se è diverso da 0, c'è un errore
-        int loc_err=controlli(loc_username, loc_password);
-        if (loc_err!=0){
-            erroreLogin(loc_err);
-            return;
+        int locErr=controlliAutenticazione(locUsername, locPassword);
+        if (locErr>0){
+            erroreLogin(locErr);
+            return;     // Usciamo dalla fase di login
         }
 
         // Login avvenuto con successo
-        login(event, loc_username, loc_password);
+        login(event, locUsername, locPassword);
     }
 
-    private int controlli(String par_usr, String par_psw) throws SQLException {
+    private int controlliAutenticazione(String parUsr, String parPsw) throws SQLException {
         // Controlli base
-        if (par_usr.length()<=0)
+        if (parUsr.isEmpty())
             return 1;  //Errore manca utente
 
-        if (par_psw.length()<=0)
+        if (parPsw.isEmpty())
             return 2;  //Errore manca password
-
-        ObjSql objSql = ObjSql.oggettoSql();  // Creo l'oggetto connettendom al server
 
         // Creo la query tramite text block per prendere l'utente
         String query= String.format("""
@@ -65,33 +55,39 @@ public class PaginaPaneLogin {
                 WHERE 1=1
                 AND NOME="%s"
                 AND PASSWORD='%s'
-                """, par_usr, par_psw);
+                """, parUsr, parPsw);
 
-        Map<String, Object> loc_row = objSql.leggi(query);  // Eseguo la query di lettura dell'utente
-        if (loc_row == null) return 3;   // Errore utente o password errati
+        // Leggo nel database se trovo l'utente
+        Map<String, Object> locRowUtente = objSql.leggi(query);
+        if (locRowUtente == null) return 3;   // Utente non trovato per i dati inseriti
 
-        int stato = (int) loc_row.get("STATO"); //0=DA AUTORIZZARE, 1=AUTORIZZATO, 2=SOSPESO
-        if(stato!=1) return 4;       // Utente non autorizzato
+        int locStato = (int) locRowUtente.get("STATO");     //0=DA AUTORIZZARE, 1=AUTORIZZATO, 2=SOSPESO
+        if(locStato!=1) return 4;       // Utente non autorizzato all'accesso
 
-        // Se è andato tutto a buon fine, salvo in variabili globali ID_UTENTE e NOME
-        int loc_chiave = (int) loc_row.get("ID_UTENTE");
-        String loc_username = (String) loc_row.get("NOME");
-        int idUtente=loc_chiave;
-        String utenteNome=loc_username;
-        String utenteEmail = (String) loc_row.get("EMAIL");
+        // Se è andato tutto a buon fine, istanzio anche l'objGenerici e salvo le variabili globali
+        int locIdUtente;
+        String locUsername, locEmail;
+
+        locIdUtente = (int) locRowUtente.get("ID_UTENTE");
+        locUsername = (String) locRowUtente.get("NOME");
+        locEmail = (String) locRowUtente.get("EMAIL");
 
         // Inizializzo l'oggetto generico
-        objGenerici=new ObjGenerici(idUtente, utenteNome, utenteEmail);
+        ObjGenerici locObjGenerici=new ObjGenerici(locIdUtente, locUsername, locEmail);
 
         return 0;
     }
 
-    public void iscriviti(MouseEvent par_event) throws IOException {
-        mainController.paginaIscriviti();
-    }
-
+    // Se viene chiamato questo metodo, significa che è andato tutto a buon fine e tutti i dati che mi servono sono stati letti e salvati
     private void login(ActionEvent par_event, String par_usr, String par_psw) throws IOException {
         mainController.paginaPrincipale();
+    }
+
+    /* ---------- Fine - AUTENTICAZIONE SUL PROGRAMMA ----------*/
+
+
+    public void iscriviti(MouseEvent par_event) throws IOException {
+        mainController.paginaIscriviti();
     }
 
     private void erroreLogin(int par_err) {

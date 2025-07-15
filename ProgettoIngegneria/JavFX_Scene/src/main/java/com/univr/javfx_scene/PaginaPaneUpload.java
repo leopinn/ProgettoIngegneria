@@ -22,18 +22,14 @@ import java.time.Year;
 import java.util.*;
 
 public class PaginaPaneUpload {
-    private  ObjSql objSql = ObjSql.oggettoSql();
+    private final ObjSql objSql = ObjSql.oggettoSql();
     private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();
 
     private StackPane mainController;
     private PaginaPaneUtente paneUtenteControllore;
-
     private String nomeUtente, autore, titolo, link_youtube, anno_composizione, genere, ruolo, strumenti;
     private int ID_CANZONE;
-
-    // Variabili temporanee per musica, copertina e pdf
-    private File fileMusica, fileCopertina, filePdf;
-
+    private File fileMusica, fileCopertina, filePdf;        // Variabili temporanee per musica, copertina e pdf
 
     @FXML private TextField PaginaPaneUpload_textTitolo, PaginaPaneUpload_textLink, PaginaPaneUpload_textAnno, PaginaPaneUpload_textNuovoAutore,textNuovoStrumento, textNuovoGenere;
     @FXML private ComboBox<String> PaginaPaneUpload_comboGenere, PaginaPaneUpload_comboAutore, comboRuolo;
@@ -48,14 +44,13 @@ public class PaginaPaneUpload {
         this.nomeUtente = objGenerici.getUTENTE_NOME(); // recupera il nome utente
     }
 
-
     // Metodo per tornare alla pagina principale
     public void chiudiPaneUpload() throws IOException, CloneNotSupportedException {
         if (mainController.getChildren().size() > 1) {
-            mainController.getChildren().remove(mainController.getChildren().size() - 1);   // Rimuove l'ultimo pannello (paginaCanzone)
+            mainController.getChildren().removeLast();   // Rimuove l'ultimo pannello (paginaCanzone)
 
             // Ripristina lo sfondo
-            Node sfondo = mainController.getChildren().get(0);
+            Node sfondo = mainController.getChildren().getFirst();
             sfondo.setEffect(null);
             sfondo.setDisable(false);
 
@@ -70,9 +65,8 @@ public class PaginaPaneUpload {
             erroreUpload(errore);
             return;
         }
-            aggiungiCanzone();
-        }
-
+        aggiungiCanzone();
+    }
 
     //Controllo correttezza dei dati
     public int controllaDati() {
@@ -92,7 +86,6 @@ public class PaginaPaneUpload {
         anno_composizione = PaginaPaneUpload_textAnno.getText();
         genere = PaginaPaneUpload_comboGenere.getValue();
 
-        // if (titolo.isEmpty() || autore.isEmpty() || genere == null || genere.isEmpty() || ruolo == null) Leo -> ho tolto l'obbligo per il ruolo
         if (titolo.isEmpty() || autore.isEmpty() || genere == null || genere.isEmpty())
             return 1;
 
@@ -106,7 +99,6 @@ public class PaginaPaneUpload {
             anno_composizione = "";
         }
 
-        // if (fileMusica == null || filePdf == null || fileCopertina == null)  Leo -> ho tolto l'obbligo per il PDF
         if (fileMusica == null || fileCopertina == null)
             return 3;
 
@@ -158,7 +150,6 @@ public class PaginaPaneUpload {
         });
     }
 
-
     //Permette all'utente di aggiungere generi musicali
     @FXML
     private void aggiungiGenere() {
@@ -170,10 +161,10 @@ public class PaginaPaneUpload {
         }
 
         // Controllo case-insensitive per evitare duplicati
-        boolean giàPresente = PaginaPaneUpload_comboGenere.getItems().stream()
+        boolean locGiaPresente = PaginaPaneUpload_comboGenere.getItems().stream()
                 .anyMatch(g -> g.equalsIgnoreCase(nuovoGenere));
 
-        if (giàPresente) {
+        if (locGiaPresente) {
             ObjGenerici.mostraPopupErrore(PaginaPaneUpload_textTitolo,"Questo genere esiste già");
             return;
         } else{
@@ -194,10 +185,10 @@ public class PaginaPaneUpload {
         }
 
         // Controllo case-insensitive per evitare duplicati
-        boolean giàPresente = PaginaPaneUpload_comboGenere.getItems().stream()
+        boolean locGiaPresente = PaginaPaneUpload_comboGenere.getItems().stream()
                 .anyMatch(g -> g.equalsIgnoreCase(locNuovoAutore));
 
-        if (giàPresente) {
+        if (locGiaPresente) {
             ObjGenerici.mostraPopupErrore(PaginaPaneUpload_textTitolo,"Questo autore esiste già");
             return;
         } else{
@@ -208,7 +199,6 @@ public class PaginaPaneUpload {
         }
     }
 
-
     @FXML
     private void aggiungiStrumento() {
         String nuovoStrumento = textNuovoStrumento.getText().trim();
@@ -218,10 +208,10 @@ public class PaginaPaneUpload {
             return;
         }
 
-        boolean giàPresente = listStrumenti.getItems().stream()
+        boolean locGiaPresente = listStrumenti.getItems().stream()
                 .anyMatch(s -> s.equalsIgnoreCase(nuovoStrumento));
 
-        if (giàPresente) {
+        if (locGiaPresente) {
             ObjGenerici.mostraPopupErrore(PaginaPaneUpload_textTitolo, "Questo strumento è già presente nella lista.");
             return;
         }
@@ -231,7 +221,6 @@ public class PaginaPaneUpload {
         textNuovoStrumento.clear();
         ObjGenerici.mostraPopupSuccesso(PaginaPaneUpload_textTitolo,"Strumento aggiunto.");
     }
-
 
     public void aggiungiCanzone() {
         ruolo = comboRuolo.getValue();
@@ -255,7 +244,6 @@ public class PaginaPaneUpload {
             rowCanzone.put("IS_CONCERTO", false);
         }
 
-        ObjSql objSql = ObjSql.oggettoSql();
         int risultato = objSql.inserisci("CANZONE", rowCanzone);
 
         // Vendor code che indica violazione di un vincolo -> titolo già presente nel database
@@ -307,7 +295,7 @@ public class PaginaPaneUpload {
     public void dropCanzone(DragEvent event) {
         Dragboard db = event.getDragboard();
         if (db.hasFiles()) {
-            File file = db.getFiles().get(0);
+            File file = db.getFiles().getFirst();
 
             // (opzionale) puoi mostrare anteprima con un label
             if (file.getName().toLowerCase().matches(".*\\.(mp3|mp4|midi)$")) {
@@ -322,7 +310,7 @@ public class PaginaPaneUpload {
     public void dropCopertina(DragEvent event) {
         Dragboard db = event.getDragboard();
         if (db.hasFiles()) {
-            File file = db.getFiles().get(0);
+            File file = db.getFiles().getFirst();
         if (file.getName().toLowerCase().matches(".*\\.(jpg|jpeg|png)$")) {
             fileCopertina = file;
             PaginaPaneUplaod_labelCopertina.setText("File selezionato: " + file.getName());
@@ -335,7 +323,7 @@ public class PaginaPaneUpload {
     public void dropPdf(DragEvent event) {
         Dragboard db = event.getDragboard();
         if (db.hasFiles()) {
-            File file = db.getFiles().get(0);
+            File file = db.getFiles().getFirst();
 
             // (opzionale) puoi mostrare anteprima con un label
             if (file.getName().toLowerCase().matches(".*\\.(pdf|txt|doc|docx)$")) {

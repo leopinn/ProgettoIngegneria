@@ -1,35 +1,26 @@
 package com.univr.javfx_scene;
 
-import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class PaginaPaneIscrizione {
+    private final ObjSql objSql = ObjSql.oggettoSql();
     private String nome, cognome, email, ripetiEmail, password, ripetiPassword;
     private LocalDate dataNascita;
+    private PaginaLogin mainController;
 
     @FXML private TextField PaginaIscrizione_textNome, PaginaIscrizione_textCognome, PaginaIscrizione_textEmail, PaginaIscrizione_textRipetiEmail;
     @FXML private PasswordField PaginaIscrizione_textPassword, PaginaIscrizione_textRipetiPassword;
     @FXML private DatePicker PaginaIscrizione_dataNascita;
     @FXML private Label PaginaIscrizione_labelErrore;
-    @FXML private VBox paginaIscrizione_vBox;
-
-    private PaginaLogin mainController;
 
     public void setMainController(PaginaLogin controller) {
         this.mainController = controller;
@@ -39,18 +30,20 @@ public class PaginaPaneIscrizione {
         mainController.impostaSchermata();
     }
 
+
+    /* ---------- Inizio - ISCRIZIONE SUL PROGRAMMA ----------*/
+
     public void richiediIscrizione(){
-        int errore = controllaDati();
-        if(errore>0) {
-            erroreIscrizione(errore);
+        int locErrore = controllaDatiIscrizione();
+        if(locErrore>0) {
+            erroreIscrizione(locErrore);
             return;
         }
-
         iscriviUtente();
     }
 
-    public int controllaDati(){
-        int errore = 0;
+    public int controllaDatiIscrizione(){
+        int locErrore = 0;
         LocalDate dataMinima = LocalDate.of((LocalDate.now().getYear()-14), 1, 1); // anno, mese, giorno
 
         // Recupero i dati inseriti
@@ -60,7 +53,7 @@ public class PaginaPaneIscrizione {
         ripetiEmail = PaginaIscrizione_textRipetiEmail.getText();
         password = PaginaIscrizione_textPassword.getText();
         ripetiPassword = PaginaIscrizione_textRipetiPassword.getText();
-        dataNascita = (LocalDate) PaginaIscrizione_dataNascita.getValue();
+        dataNascita = PaginaIscrizione_dataNascita.getValue();
 
         if(nome.isEmpty() || cognome.isEmpty() || email.isEmpty() || ripetiEmail.isEmpty() || password.isEmpty() || ripetiPassword.isEmpty() || dataNascita.lengthOfYear()==0)  return 1;
 
@@ -74,31 +67,30 @@ public class PaginaPaneIscrizione {
 
         if(!email.contains("@")) return 6;
 
-        return errore;
+        return locErrore;
     }
 
     public void iscriviUtente() {
         Map<String, Object> rowUtente = new LinkedHashMap<>();
 
-        rowUtente.put("NOME", nome);
+        rowUtente.put("NOME", nome);        // Deve essere univoco
         rowUtente.put("COGNOME", cognome);
-        rowUtente.put("EMAIL", email);
+        rowUtente.put("EMAIL", email);      // Deve essere univoco
         rowUtente.put("DATA_NASCITA", dataNascita);
         rowUtente.put("PASSWORD", password);
         rowUtente.put("RUOLO", 0);  //0=UTENTE NORMALE, 1=ADMIN
         rowUtente.put("STATO", 0);  //0=DA AUTORIZZARE, 1=AUTORIZZATO, 2=SOSPESO
 
-        ObjSql objSql = ObjSql.oggettoSql();
-        int risultato=objSql.inserisci("UTENTI", rowUtente);
+        int locRisultato=objSql.inserisci("UTENTI", rowUtente);
 
-        // Vendor code che indica violazione di un vincolo -> email già presente nel database
-        if(risultato==19){
-            erroreIscrizione(risultato);
+        // Vendor code che indica violazione di un vincolo -> email o nome utente già presente nel database
+        if(locRisultato==19){
+            erroreIscrizione(locRisultato);
             return;
         }
 
         // Se ritorna 1 è andato tutto a buon fine
-        if(risultato==1){
+        if(locRisultato==1){
             try {
                 mainController.mostraLabelIscrizione();
                 mainController.impostaSchermata();
@@ -106,9 +98,10 @@ public class PaginaPaneIscrizione {
                 e.printStackTrace();
             }
         }
-
-
     }
+
+    /* ---------- Fine - ISCRIZIONE SUL PROGRAMMA ----------*/
+
 
     private void erroreIscrizione(int errore) {
         PaginaIscrizione_labelErrore.setStyle("");
@@ -135,7 +128,7 @@ public class PaginaPaneIscrizione {
                 txt = "Inserire una e-mail valida!";
                 break;
             case 19:
-                txt = "La seguente e-mail risulta già registrata!";
+                txt = "Nome utente e/o e-mail già registrati!";
                 break;
             default:
                 txt = "Errore generico";

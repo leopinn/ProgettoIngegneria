@@ -15,21 +15,23 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class PaginaPaneUtente implements Initializable {
-    private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
-    public void setMainController(PaginaPrincipale controller) {
-        this.mainController = controller;
-    }
-
-    private  ObjSql objSql = ObjSql.oggettoSql();
+    private final ObjSql objSql = ObjSql.oggettoSql();
     private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();
+
+    private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
+    private List<Map<String, Object>> listaBrani;
 
     @FXML private AnchorPane PaginaPaneUtente_anteprimaCanzone;
     @FXML private VBox PaginaPaneUtente_vboxCanzoni;
     @FXML private Label PaginaPaneUtente_label;
-    private List<Map<String, Object>> listaBrani;
+
+    public void setMainController(PaginaPrincipale controller) {
+        this.mainController = controller;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -94,17 +96,17 @@ public class PaginaPaneUtente implements Initializable {
                     """
                     -fx-text-fill: #cccccc;
                     -fx-font-size: 16;
-                            """
+                    """
             );
 
             Region spacer = new Region();
             HBox.setHgrow(spacer, Priority.ALWAYS);
 
             // Imposto in primis le icone
-            Image imageCestino = new Image(getClass().getResource("/immagini/iconaCestino.png").toExternalForm());
-            Image imageCestinoHover = new Image(getClass().getResource("/immagini/iconaCestinoHover.png").toExternalForm());
-            Image imageAnteprima = new Image(getClass().getResource("/immagini/iconaAnteprima.png").toExternalForm());
-            Image imageAnteprimaHover = new Image(getClass().getResource("/immagini/iconaAnteprimaHover.png").toExternalForm());
+            Image imageCestino = new Image(Objects.requireNonNull(getClass().getResource("/immagini/iconaCestino.png")).toExternalForm());
+            Image imageCestinoHover = new Image(Objects.requireNonNull(getClass().getResource("/immagini/iconaCestinoHover.png")).toExternalForm());
+            Image imageAnteprima = new Image(Objects.requireNonNull(getClass().getResource("/immagini/iconaAnteprima.png")).toExternalForm());
+            Image imageAnteprimaHover = new Image(Objects.requireNonNull(getClass().getResource("/immagini/iconaAnteprimaHover.png")).toExternalForm());
 
             // Creo l'icona normale
             ImageView iconaCestino = new ImageView(imageCestino);
@@ -181,7 +183,7 @@ public class PaginaPaneUtente implements Initializable {
     }
 
     private void eliminaBrano(Map<String, Object> rowBrano, HBox parRigaCorrente) {
-        boolean locRisposta = objGenerici.yesNoMessage("Attenzione!!", "Cancellare il brano "+'"'+rowBrano.get("TITOLO").toString()+'"'+" e tutti i suoi dati?");
+        boolean locRisposta = ObjGenerici.yesNoMessage("Attenzione!!", "Cancellare il brano "+'"'+rowBrano.get("TITOLO").toString()+'"'+" e tutti i suoi dati?");
         if(!locRisposta) {
             return;
         }

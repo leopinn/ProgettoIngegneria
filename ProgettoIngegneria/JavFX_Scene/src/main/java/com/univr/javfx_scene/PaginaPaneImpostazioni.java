@@ -1,20 +1,17 @@
 package com.univr.javfx_scene;
 
-import com.univr.javfx_scene.Classi.UTENTI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -23,7 +20,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class PaginaPaneImpostazioni implements Initializable {
-    private  ObjSql objSql = ObjSql.oggettoSql();
+    private final ObjSql objSql = ObjSql.oggettoSql();
     private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();
 
     @FXML private Label PaginaImpostazioni_labelNomeUtente, PaginaPaneImpostazioni_labelAmministratore;
@@ -117,7 +114,7 @@ public class PaginaPaneImpostazioni implements Initializable {
                 caricaImmagineUtente();
             } catch (IOException e) {
                 e.printStackTrace();
-                objGenerici.mostraPopupErrore(PaginaPaneImpostazioni_hboxImmagine,
+                ObjGenerici.mostraPopupErrore(PaginaPaneImpostazioni_hboxImmagine,
                         "Errore durante il salvataggio della foto:\n" + e.getMessage());
             }
         }
@@ -136,7 +133,7 @@ public class PaginaPaneImpostazioni implements Initializable {
 
         Map<String, Object> loc_row = objSql.leggi(query);
         password=PaginaImpostazioni_textPassword.getText();
-        if(password.length()>0){
+        if(!password.isEmpty()){
             if(!password.equals(loc_row.get("PASSWORD"))) {
                 rowUtente.put("PASSWORD", password);
             }
@@ -146,24 +143,20 @@ public class PaginaPaneImpostazioni implements Initializable {
             String where = "WHERE ID_UTENTE="+objGenerici.getID_UTENTE();
             objSql.aggiorna("UTENTI", where, rowUtente);
             objGenerici.putUTENTE_EMAIL(email); // Aggiorno la variabile globale
-            mostraLabelIscrizione();
+            ObjGenerici.mostraPopupSuccesso(PaginaPaneImpostazioni_hboxImmagine, "Modifiche salvate con successo!");
+            PaginaImpostazioni_textPassword.setText("");
         }
     }
 
     public void annulla() throws IOException, CloneNotSupportedException {
         if (stackPaneMainController.getChildren().size() > 1) {
-            stackPaneMainController.getChildren().remove(stackPaneMainController.getChildren().size() - 1);   // Rimuove l'ultimo pannello (paginaImpostazioni)
+            stackPaneMainController.getChildren().removeLast();   // Rimuove l'ultimo pannello (paginaImpostazioni)
 
             // Ripristina lo sfondo
-            Node sfondo = stackPaneMainController.getChildren().get(0);
+            Node sfondo = stackPaneMainController.getChildren().getFirst();
             sfondo.setEffect(null);
             sfondo.setDisable(false);
         }
-    }
-
-    public void mostraLabelIscrizione() {
-        // FADE IN
-        objGenerici.mostraPopupSuccesso(PaginaPaneImpostazioni_hboxImmagine, "Modifiche salvate con successo!");
     }
 
     public void mostraImpostazioniAmministratore() throws IOException {

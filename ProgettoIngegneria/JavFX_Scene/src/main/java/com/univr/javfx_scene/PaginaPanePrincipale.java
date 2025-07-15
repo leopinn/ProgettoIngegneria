@@ -1,14 +1,11 @@
 package com.univr.javfx_scene;
 
-import javafx.animation.FadeTransition;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -16,43 +13,30 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Window;
-import javafx.util.Duration;
-import javafx.stage.Popup;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-import javafx.stage.DirectoryChooser;
-
-
 public class PaginaPanePrincipale implements Initializable {
-
-    private  ObjSql objSql = ObjSql.oggettoSql();
+    private final ObjSql objSql = ObjSql.oggettoSql();
     private final ObjGenerici objGenerici=ObjGenerici.oggettoGenerico();;
 
     private PaginaPrincipale mainController; // Importante per permettere il cambio dei vari pane nella pagina principale
     private List<Map<String, Object>> listaBrani, listaBraniTutto, listaBraniGeneri, listaBraniArtisti, listaBraniMancanti, listaTipi, listaBraniConcerti;
+    private int canzoneCorrente, tabCorrente;   // tabCorrente-> 0=tutto, 1=generi, 2=artisti, 3=concerti
+    public ArrayList<Integer> codaBrani = new ArrayList<Integer>();
 
     @FXML private ScrollPane PaginaPrincipale_scrollPane;
     @FXML private Label PaginaPanePrincipale_labelMusiche;
     @FXML private VBox PaginaPanePrincipale_vBoxGrigliaMusiche;
     @FXML private HBox PaginaPanePrincipale_parteSuperiore;
 
-    private int canzoneCorrente;
-    private int tabCorrente;        // 0=tutto, 1=generi, 2=artisti, 3=concerti
-
-    public ArrayList<Integer> codaBrani = new ArrayList<Integer>();
-
-
     public void setMainController(PaginaPrincipale controller) {
         this.mainController = controller;
     }
-
     public PaginaPrincipale getController(){
         return mainController;
     }
@@ -63,20 +47,18 @@ public class PaginaPanePrincipale implements Initializable {
         inizializzaListaBrani();
     }
 
+
+    /* ---------- INIZIO - GESTIONE BRANI ----------*/
+
     // Metodo per trovare il brano a partire dall'ID_CANZONE mandato
     private Map<String, Object> trovaBrano(String parId, List<Map<String, Object>> parListaBrani){
-        for (Map<String, Object> rowBrano:parListaBrani){
-            if(rowBrano.get("ID_CANZONE").toString().equals(parId)){
-                return rowBrano;
+        for (Map<String, Object> locRowBrano:parListaBrani){
+            if(locRowBrano.get("ID_CANZONE").toString().equals(parId)){
+                return locRowBrano;
             }
         }
         return null;
     }
-
-    public ObjGenerici getObjGenerici() {
-        return objGenerici;
-    }
-
 
     // Metodo per eliminare un brano dalla lista di quelli mancanti alla riproduzione
     private void rimuoviBrano(String parId){
@@ -87,7 +69,11 @@ public class PaginaPanePrincipale implements Initializable {
         listaBraniMancanti.add(trovaBrano(parId, listaBrani));
     }
 
-    /* ---------- Inizio - GESTIONE MUSICA AUTOMATICA ----------*/
+    /* ---------- FINE - GESTIONE BRANI ----------*/
+
+
+
+    /* ---------- INIZIO - GESTIONE MUSICA AUTOMATICA ----------*/
 
     // isCasuale=0 -> no. isCasuale=1 -> è casuale
     private void selezionaMusica(String parId, int isCasuale) throws IOException {
@@ -98,24 +84,23 @@ public class PaginaPanePrincipale implements Initializable {
                     listaBrani=listaBraniTutto;
                     break;
                 case 1:
-                    listaBrani = listaBraniGeneri;  // Se abbiamo appena premuto una card dentro Generi per la prima volta
+                    listaBrani = listaBraniGeneri;      // Se abbiamo appena premuto una card dentro Generi per la prima volta
                     break;
                 case 2:
-                    listaBrani = listaBraniArtisti; // Se abbiamo appena premuto una card dentro Artisti per la prima volta
+                    listaBrani = listaBraniArtisti;     // Se abbiamo appena premuto una card dentro Artisti per la prima volta
                     break;
                 case 3:
-                    // Da gestire concerti
+                    listaBrani = listaBraniConcerti;    // Se abbiamo appena premuto una card dentro Concerti per la prima volta
                     break;
                 default:
                     listaBrani=listaBraniTutto;
                     break;
             }
-            listaBraniMancanti=listaBrani;
+            listaBraniMancanti=listaBrani;              // Inizializzo anche la lista dei brani mancanti all'ascolto
         }
 
-        Map<String, Object> rowBrano = trovaBrano(parId, listaBrani);
-
-        if(rowBrano == null){
+        Map<String, Object> locRowBrano = trovaBrano(parId, listaBrani);
+        if(locRowBrano == null){
             objGenerici.mostraPopupErrore(PaginaPrincipale_scrollPane, "Attenzione!! Brano non trovato");
             return;
         }
@@ -128,10 +113,10 @@ public class PaginaPanePrincipale implements Initializable {
                     listaBraniMancanti = objSql.leggiLista("SELECT * FROM CANZONE");
                     break;
                 case 1:
-                    listaBraniMancanti = objSql.leggiLista("SELECT * FROM CANZONE WHERE GENERE='"+rowBrano.get("GENERE")+"'");
+                    listaBraniMancanti = objSql.leggiLista("SELECT * FROM CANZONE WHERE GENERE='"+locRowBrano.get("GENERE")+"'");
                     break;
                 case 2:
-                    listaBraniMancanti = objSql.leggiLista("SELECT * FROM CANZONE WHERE AUTORE='"+rowBrano.get("AUTORE")+"'");
+                    listaBraniMancanti = objSql.leggiLista("SELECT * FROM CANZONE WHERE AUTORE='"+locRowBrano.get("AUTORE")+"'");
                     break;
                 case 3:
                     // Da gestire

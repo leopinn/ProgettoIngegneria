@@ -15,9 +15,8 @@ public class ObjSql {
     private ObjSql() {
         try {
             connection = DriverManager.getConnection(DB_URL);
-            //logger.info("Connessione al database stabilita.");
         } catch (SQLException e) {
-            //logger.warning("Errore connessione: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -103,7 +102,7 @@ public class ObjSql {
             statement.executeUpdate();
             //logger.info(locQuery+"\n->eseguita con successo!");
         } catch (SQLException e) {
-            //logger.info(e.toString());
+            e.printStackTrace();
         }
     }
 
@@ -118,10 +117,8 @@ public class ObjSql {
             while (rs.next()) {
                 row=passaRiga(rs);
             }
-            //logger.info(par_query+"\n->eseguita con successo!");
-
         } catch (SQLException e) {
-            //logger.info(e.toString());
+          e.printStackTrace();
         }
 
         return row;
@@ -140,12 +137,9 @@ public class ObjSql {
                 row=passaRiga(rs);
                 lista.add(row);
             }
-            //logger.info(par_query+"\n->eseguita con successo!");
-
         } catch (SQLException e) {
-            //logger.info(e.toString());
+            e.printStackTrace();
         }
-
         return lista;
     }
 

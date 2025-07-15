@@ -82,6 +82,7 @@ public class ObjGenerici {
         -fx-padding: 12px 24px;
         -fx-font-size: 14px;
         -fx-background-radius: 10;
+        -fx-line-spacing: 5;
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
     """);
 
@@ -96,6 +97,7 @@ public class ObjGenerici {
         -fx-padding: 12px 24px;
         -fx-font-size: 14px;
         -fx-background-radius: 10;
+        -fx-line-spacing: 5;
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
     """);
 
@@ -249,5 +251,10 @@ public class ObjGenerici {
     }
 
     /* ---------- Fine - DOWNLOAD MUSICA ----------*/
+
+    public String getSafe(Map<String, Object> map, String key) {
+        Object val = map.get(key);
+        return val != null ? val.toString() : "";
+    }
 
 }
